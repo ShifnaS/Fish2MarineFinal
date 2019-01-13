@@ -116,6 +116,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     private static final int POS_CONTACTUS = 6;
     private static final int POS_ABOUT = 7;
     private static final int POS_LOGOUT = 8;
+    private static final String KEY_REMEMBER = "remember";
+
 
     private String[] screenTitles;
     private Drawable[] screenIcons;
@@ -131,7 +133,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     private Intent intent;
     private String mAction="",sLoc="",sLat,sLng;
     String CustomerID = "",CustomerName="";
-  //  AddressUpdateListner addressUpdateListner;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    private static final String PREF_NAME = "prefs";
+
+
+
+    //  AddressUpdateListner addressUpdateListner;
     List<HashMap<String, String>> SQLData_Item,SQLData_Item_customer ;
 
     private static NavigationDrawerActivity mainActivity;
@@ -154,6 +162,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         setContentView(R.layout.activity_drawer);
         mainActivity=this;
         helper = new SqliteHelper(getApplicationContext(), "Fish2Marine", null, 5);
@@ -212,10 +222,10 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
 
 
 
-        Toast.makeText(mainActivity, "CArt Count "+sPreferences.getString("CartCount",""), Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(mainActivity, "CArt Count "+sPreferences.getString("CartCount",""), Toast.LENGTH_SHORT).show();
         mycart=(ImageView) findViewById(R.id.mycart);
         //cartbadge.setText(SQLData_Item.get(0).get("cartcount"));
-       // cartbadge.setText(sPreferences.getString("CartCount",""));
+        cartbadge.setText(sPreferences.getString("CartCount",""));
         mycart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,20 +276,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 }
             }
         });
-
-      /*  toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if(slidingRootNav.isMenuOpened()){
-                    slidingRootNav.closeMenu();
-                }
-                else {
-                    slidingRootNav.openMenu();
-                }
-                return true;
-            }
-        });*/
-
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
 
@@ -307,19 +303,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
         adapter.setSelected(POS_HOME);
 
     }
-    /* @Override
-     public boolean dispatchTouchEvent(MotionEvent ev) {
-         if (slidingRootNav != null && !slidingRootNav.isMenuClosed()) {
-             boolean menuTouched = fg_title.dispatchTouchEvent(ev);
-             if(!menuTouched) {
-                 slidingRootNav.closeMenu();
-             }
-             return true;
-         } else {
-             return super.dispatchTouchEvent(ev);
-         }
 
-     }*/
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
@@ -373,23 +357,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 Log.d("111111111", "Latitude is: "+sLat+", Longtitude is: "+sLng);
                 InitGetLocation(sLat,sLng,sLoc);
 
-                //  searched_address.setText(place.getAddress());
-                /*  mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
-                        place.getId(), place.getAddress(), place.getPhoneNumber(),
-                        place.getWebsiteUri()));*/
-
-                // Display the third party attributions if set.
                 final CharSequence thirdPartyAttribution = places.getAttributions();
-                /*
-                if (thirdPartyAttribution == null) {
-                    mPlaceDetailsAttribution.setVisibility(View.GONE);
-                } else {
-                    mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
-                    mPlaceDetailsAttribution.setText(
-                            Html.fromHtml(thirdPartyAttribution.toString()));
-                }
-                */
-
                 Log.d("111111Place3", "Place details received: " + place.getName());
 
                 places.release();
@@ -474,41 +442,43 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 Fragment contactus = new ContactUsFragment();
                 showFragment(contactus);
                 break;
-        }
-        if (position == POS_LOGOUT) {
-            //finish();
-            FirebaseAuth.getInstance().signOut();
-            LoginManager.getInstance().logOut();
-            /*Intent setupIntent = new Intent(getBaseContext(), LoginActivity.class);
-            Toast.makeText(getBaseContext(), "Logged Out", Toast.LENGTH_LONG).show(); //if u want to show some text
-            setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(setupIntent);
-            finish();*/
-            GoogleSignInClient mGoogleSignInClient;
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build();
-            mGoogleSignInClient = GoogleSignIn.getClient(getBaseContext(), gso);
-            mGoogleSignInClient.signOut().addOnCompleteListener(NavigationDrawerActivity.this,
-                    new OnCompleteListener<Void>() {  //signout Google
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            FirebaseAuth.getInstance().signOut(); //signout firebase
-                            /*Intent setupIntent = new Intent(getBaseContext(), LoginActivity.class);
-                            Toast.makeText(getBaseContext(), "Logged Out", Toast.LENGTH_LONG).show(); //if u want to show some text
-                            setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(setupIntent);
-                            finish();*/
-                        }
-                    });
-            Intent setupIntent = new Intent(getBaseContext(), LoginActivity.class);
-            Toast.makeText(getBaseContext(), "Logged Out", Toast.LENGTH_LONG).show(); //if u want to show some text
-            setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(setupIntent);
-            finish();
+            case POS_LOGOUT:
+                logout();
+
+                    break;
         }
 
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
+        GoogleSignInClient mGoogleSignInClient;
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(getBaseContext(), gso);
+        mGoogleSignInClient.signOut().addOnCompleteListener(NavigationDrawerActivity.this,
+                new OnCompleteListener<Void>() {  //signout Google
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        FirebaseAuth.getInstance().signOut(); //signout firebase
+
+                    }
+                });
+
+        SharedPreferences preferences =getSharedPreferences("prefs",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+
+
+        Intent setupIntent = new Intent(getBaseContext(), LoginActivity.class);
+        Toast.makeText(getBaseContext(), "Logged Out", Toast.LENGTH_LONG).show(); //if u want to show some text
+        setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(setupIntent);
+        finish();
     }
 
     private void showFragment(Fragment fragment) {
@@ -581,8 +551,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
              }
          };
      }*/
-    public void updateCartCount(){
-        cartbadge.setText(sPreferences.getString("CartCount",""));
+    public void updateCartCount(String count){
+        cartbadge.setText(count);
     }
 
     /*@Override
@@ -648,6 +618,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     @Override
     public void userItemClick(int count) {
 
+      //  Toast.makeText(mainActivity, "cart count "+count, Toast.LENGTH_SHORT).show();
         cartbadge.setText(""+count);
 
     }

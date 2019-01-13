@@ -162,7 +162,7 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
                     RadioButton btn = (RadioButton) group.getChildAt(x);
                     if (btn.getId() == checkedId) {
                         holder.mCuttypeValue=btn.getText().toString();
-                        Toast.makeText(mContext, btn.getText().toString()+""+holder.ProductName.getText(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(mContext, btn.getText().toString()+""+holder.ProductName.getText(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -478,11 +478,11 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
                         CustomToast.info(mContext,jsonObj.getString("message").toString()).show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
                         Log.e("data/////////////","//////////////20"+jsonObj.toString());
-                        Toast.makeText(mContext, "hiiiii "+jsonObj.getJSONObject("data").toString(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(mContext, "hiiiii "+jsonObj.getJSONObject("data").toString(), Toast.LENGTH_SHORT).show();
 
                         List<HashMap<String, String>> fillMaps = new ArrayList<HashMap<String, String>>();
                         JSONObject jsonObj1 = jsonObj.getJSONObject("data");
-                        Toast.makeText(mContext, "cart id ****"+jsonObj1.getString("id").trim(), Toast.LENGTH_SHORT).show();
+                       /// Toast.makeText(mContext, "cart id ****"+jsonObj1.getString("id").trim(), Toast.LENGTH_SHORT).show();
                         for (int i = 0; i < jsonObj1.length(); i++) {
                             HashMap<String, String> map;
                             map = new HashMap<String, String>();
@@ -496,6 +496,7 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
                         mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));
+                     //   Toast.makeText(mContext, "cart count in adapter "+jsonObj1.getInt("itemsCount"), Toast.LENGTH_SHORT).show();
                         updateListner.onClick(jsonObj1.getInt("itemsCount"));
                         updatecartcount(mholder);
                         Log.d("111111111",sPreferences.getString("CartCount",""));
@@ -517,7 +518,7 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
     }
     private void updatecartcount(ViewHolder holder){
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("data_changed"));
-        NavigationDrawerActivity.getInstance().updateCartCount();
+      //  NavigationDrawerActivity.getInstance().updateCartCount();
        /* Intent intent = new Intent(mContext, ProductViewActivity.class);
         Log.d("11111111shared",sPreferences.getString("CategoryName",""));
         Log.d("11111111shared",sPreferences.getString("CategoryID",""));

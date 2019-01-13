@@ -63,7 +63,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
     private TextView error_label_retry, empty_label_retry, mTitle,
             txt_product_name,txt_product_code,txt_product_stock,txt_product_price,
             txt_product_special_price,txt_ordered_qty,txt_cleaned_qty,txt_product_description,txt_sold_by;
-    private ImageView opendrawer;
+    private ImageView opendrawer,icon_cart;
     Button addtocart;
     FrameLayout maincontent,subcontent;
     LinearLayout layout_specialPrice,layout_spinner;
@@ -101,6 +101,8 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
         loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        icon_cart = ((ImageView) findViewById(R.id.icon));
+        icon_cart.setOnClickListener(this);
         InitIdView();
     }
     private void InitIdView(){
@@ -156,6 +158,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         empty_label_retry.setOnClickListener(this);
         addtocart.setOnClickListener(this);
         opendrawer.setOnClickListener(this);
+
 
         Plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,6 +264,11 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
             case R.id.opendrawer:
                 onBackPressed();
                 break;
+            case R.id.icon:
+                Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
+                startActivity(i);
+                finish();
+                break;
             case R.id.addtocart:
                 if(sPreferences.getString("DeliveryCenter_ID","").equals("")){
                     CustomToast.error(v.getContext(), "Please Choose ur location"+sPreferences.getString("DeliveryCenter_ID","")).show();
@@ -290,7 +298,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-          //  switcher.showProgressView();
+            //  switcher.showProgressView();
             progressdialog.show();
             spinnerdataItem=new ArrayList<>();
 
@@ -521,7 +529,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
                         mConfig.savePreferences(getApplicationContext(),"CartCount",Data_Item.get(0).get("cartcount"));
-                        updatecartcount();
+                        updatecartcount(Data_Item.get(0).get("cartcount"));
                         Log.d("111111111",sPreferences.getString("CartCount",""));
 
                     }
@@ -536,9 +544,9 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
             }
         }
     }
-    private void updatecartcount(){
+    private void updatecartcount(String cartcount){
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent("data_changed"));
-        NavigationDrawerActivity.getInstance().updateCartCount();
+        NavigationDrawerActivity.getInstance().updateCartCount(cartcount);
        /* Intent intent = new Intent(mContext, ProductViewActivity.class);
         Log.d("11111111shared",sPreferences.getString("CategoryName",""));
         Log.d("11111111shared",sPreferences.getString("CategoryID",""));

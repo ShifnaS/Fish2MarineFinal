@@ -107,7 +107,7 @@ public class EditProfileActivity extends AppCompatActivity {
         mback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // back();
+                back();
             }
         });
         mpwdtoggle.setChecked(true);

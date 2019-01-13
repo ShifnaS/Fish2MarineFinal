@@ -146,9 +146,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Then we will get the GoogleSignInClient object from GoogleSignIn class
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        //Now we will attach a click listener to the sign_in_button
-        //and inside onClick() method we are calling the signIn() method that will open
-        //google sign in intent
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,23 +153,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-       /* if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        } else {
-            View decorView = getWindow().getDecorView();
-            // Hide the status bar.
-            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
-            // Remember that you should never show the action bar if the
-            // status bar is hidden, so hide that too if necessary.
-        }*/
         InitIdView();
     }
     private void InitIdView(){
 
-        login_gif=(ImageView)findViewById(R.id.login_gif);
+       login_gif=(ImageView)findViewById(R.id.login_gif);
         Glide.with(getApplicationContext())
                 .load(R.drawable.login_gif_background)
                 .into(login_gif);
@@ -188,8 +174,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mpwdtoggle.setChecked(true);
         mButtonLogin.setOnClickListener(this);
-
-
 
         if(sharedPreferences.getBoolean(KEY_REMEMBER, false))
             mRemember.setChecked(true);
@@ -237,22 +221,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
 
     }
-
-   /* //facebook
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Pass the activity result back to the Facebook SDK
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }*/
-
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
     }
 
     @Override
@@ -274,7 +246,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //authenticating with firebase
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Toast.makeText(LoginActivity.this,"errorr"+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this,"error"+ e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }

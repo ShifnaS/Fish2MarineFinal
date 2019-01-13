@@ -77,9 +77,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 onBackPressed();
                 break;
             case R.id.setpassword:
-                if (loading.getVisibility() == View.VISIBLE) {
-                    CustomToast.info(getApplicationContext(), "Please wait while we process your request").show();
-                } else {
+
                     if (otp.getText().toString().trim().equals("")) {
                         otp.setError("Enter OTP");
                     } else if (newpassword.getText().toString().trim().equals("")) {
@@ -91,7 +89,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                     } else {
                         ResetPassword();
                     }
-                }
+               // }
                 break;
             case R.id.resendotp:
                 ResendOTP("mobile");

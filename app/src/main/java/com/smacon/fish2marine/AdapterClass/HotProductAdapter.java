@@ -423,7 +423,7 @@ public class HotProductAdapter extends RecyclerView.Adapter<HotProductAdapter.Vi
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
                         mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));
-                        updatecartcount(mholder);
+                        updatecartcount(mholder,Data_Item.get(0).get("cartcount"));
                         Log.d("111111111",sPreferences.getString("CartCount",""));
 
                     }
@@ -438,9 +438,9 @@ public class HotProductAdapter extends RecyclerView.Adapter<HotProductAdapter.Vi
             }
         }
     }
-    private void updatecartcount(ViewHolder holder){
+    private void updatecartcount(ViewHolder holder,String count){
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("data_changed"));
-        NavigationDrawerActivity.getInstance().updateCartCount();
+        NavigationDrawerActivity.getInstance().updateCartCount(count);
        /* Intent intent = new Intent(mContext, ProductViewActivity.class);
         Log.d("11111111shared",sPreferences.getString("CategoryName",""));
         Log.d("11111111shared",sPreferences.getString("CategoryID",""));

@@ -92,7 +92,7 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
         mConfig = new Config(getApplicationContext());
         IntentFilter inF = new IntentFilter("data_changed");
         LocalBroadcastManager.getInstance(this).registerReceiver(dataChangeReceiver,inF);
-        Toast.makeText(getApplicationContext(), "hiiiiii", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(), "hiiiiii", Toast.LENGTH_SHORT).show();
         View inflatedView = getLayoutInflater().inflate(R.layout.view_progress, null);
        // progress_view =  inflatedView.findViewById(R.id.progress_view);
        // progress_view.setBackgroundDrawable(new ColorDrawable(Color.BLACK));

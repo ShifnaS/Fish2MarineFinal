@@ -36,12 +36,14 @@ import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.f2mlibrary.Switcher.Switcher;
 import com.smacon.fish2marine.AdapterClass.CheckoutAddressListAdapter;
 import com.smacon.fish2marine.AdapterClass.ShippingMethodListAdapter;
+import com.smacon.fish2marine.EditProfileActivity;
 import com.smacon.fish2marine.HelperClass.AddressListItem;
 import com.smacon.fish2marine.HelperClass.CartListItem;
 import com.smacon.fish2marine.HelperClass.MessageConstants;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.HelperClass.Utilities;
 import com.smacon.fish2marine.MyCartActivity;
+import com.smacon.fish2marine.NavigationDrawerActivity;
 import com.smacon.fish2marine.OrderSummaryActivity;
 import com.smacon.fish2marine.R;
 import com.smacon.fish2marine.Util.Config;
@@ -192,17 +194,22 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                 showAddDialog();
                 break;
             case R.id.back:
-                onBackPressed();
+               // onBackPressed();
+                back();
                 break;
             case R.id.next:
-                if(STEP=="SHIPPING_METHOD"){
+                Toast.makeText(addressActivity, "Step "+STEP, Toast.LENGTH_SHORT).show();
+                if(STEP=="SHIPPING_METHOD") {
                     lay_delivery_address.setVisibility(View.GONE);
                     lay_shipping_method.setVisibility(View.GONE);
                     deliveryslot_indicator.setVisibility(View.VISIBLE);
                     lay_delivery_slots.setVisibility(View.VISIBLE);
+                    InitGetSlotData();
+
                 }
                 else if(STEP=="PAYMENT_METHOD"){
                     if (!paymentmethod_code.equals("")){
+                        Toast.makeText(addressActivity," init payment method", Toast.LENGTH_SHORT).show();
                         InitPaymentMode();
                     }
                     else {
@@ -215,12 +222,13 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                         lay_payment_method.setVisibility(View.VISIBLE);
                         try {
                             getAllValues();
-                        } catch (ParseException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                    else {
-                        CustomToast.error(getApplicationContext(),"Please Choose a delivery Slot.").show();
+                    if (delivery_slot.equals("")) {
+                        CustomToast.error(getApplicationContext(), "Please Choose a delivery Slot.").show();
+
                     }
                 }
                 else {
@@ -305,7 +313,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-         //   progressdialog.show();
+            progressdialog.show();
 
         }
         @Override
@@ -321,7 +329,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         @Override
         protected void onPostExecute(StringBuilder result) {
             super.onPostExecute(result);
-           // progressdialog.cancel();
+            progressdialog.cancel();
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
                 if (jsonObj0.has("status")) {
@@ -381,6 +389,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                                         }
                                     }
                                 }
+                             //   STEP="";
                             }
                         }
                     }else {
@@ -446,32 +455,41 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
 
                 JSONArray jsonArray=new JSONArray(result.toString());
                 //JSONObject jsonObj0 = new JSONObject(result.toString());
-                Log.d("111111111", "here "+jsonArray);
-                STEP="SHIPPING_METHOD";
-                shippingdataItem.clear();
-                shipping_indicator.setVisibility(View.GONE);
-                next.setText("NEXT");
-                next.setVisibility(View.VISIBLE);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    CartListItem items = new CartListItem();
-                    JSONObject feedObj1 = (JSONObject) jsonArray.get(i);
-                    Log.d("111111111", "here1 ");
-                    if(i==0){
-                        shipping_carrier_code=feedObj1.getString("carrier_code");
-                        shipping_method_code=feedObj1.getString("method_code");
-                        shipping_method_title=feedObj1.getString("carrier_title");
+                if(jsonArray.length()!=0)
+                {
+                  //
+                    Log.d("111111111", "here "+jsonArray);
+                    STEP="SHIPPING_METHOD";
+                    shippingdataItem.clear();
+                    shipping_indicator.setVisibility(View.GONE);
+                    next.setText("NEXT");
+                    next.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        CartListItem items = new CartListItem();
+                        JSONObject feedObj1 = (JSONObject) jsonArray.get(i);
+                        Log.d("111111111", "here1 ");
+                        if(i==0){
+                            shipping_carrier_code=feedObj1.getString("carrier_code");
+                            shipping_method_code=feedObj1.getString("method_code");
+                            shipping_method_title=feedObj1.getString("carrier_title");
+                        }
+                        items.setCarrier_title(feedObj1.getString("carrier_title"));
+                        items.setAmount(feedObj1.getString("amount"));
+                        items.setMethod_code(feedObj1.getString("method_code"));
+                        items.setCarrier_code(feedObj1.getString("carrier_code"));
+                        shippingdataItem.add(items);
+                        Log.d("111111111", "here2 ");
                     }
-                    items.setCarrier_title(feedObj1.getString("carrier_title"));
-                    items.setAmount(feedObj1.getString("amount"));
-                    items.setMethod_code(feedObj1.getString("method_code"));
-                    items.setCarrier_code(feedObj1.getString("carrier_code"));
-                    shippingdataItem.add(items);
-                    Log.d("111111111", "here2 ");
-                }
-                mShippingAdapter = new ShippingMethodListAdapter(getApplicationContext(), shippingdataItem);
-                shippingListView.setAdapter(mShippingAdapter);
+                    mShippingAdapter = new ShippingMethodListAdapter(getApplicationContext(), shippingdataItem);
+                    shippingListView.setAdapter(mShippingAdapter);
 
-            } catch (JSONException e) {
+
+                }
+                else
+                {
+                    Toast.makeText(Checkout_SetAddress.this, "empty array", Toast.LENGTH_SHORT).show();
+                }
+                         } catch (JSONException e) {
                 e.printStackTrace();
                 Log.e("errorr","//////3"+e.getMessage());
 
@@ -628,7 +646,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                                 lay_shipping_method.setVisibility(View.VISIBLE);
                                 shipping_indicator.setVisibility(View.VISIBLE);
                                 InitShippingMethod(feedObj1.getString("id"));
-                                InitGetSlotData();
+                               // InitGetSlotData();
                                 txt_address_name.setText(feedObj1.getString("firstname")+" "+feedObj1.getString("lastname"));
                                 //item.setAddress_id(feedObj1.getString("id"));
                                 if(feedObj1.getString("company").equals("")||feedObj1.getString("company").equals("null")){
@@ -643,6 +661,8 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                                 txt_country.setText(feedObj1.getString("country"));
                                 txt_phone.setText(feedObj1.getString("phone"));
                             }
+                          //  STEP="ADDRESS";
+
                         }
                     }else {
                         switcher.showEmptyView();
@@ -1049,7 +1069,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressdialog.show();
+         //   progressdialog.show();
         }
 
         @Override
@@ -1065,7 +1085,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         @Override
         protected void onPostExecute(StringBuilder result) {
             super.onPostExecute(result);
-            progressdialog.cancel();
+           // progressdialog.cancel();
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
                 if (jsonObj0.has("payment_methods")) {
@@ -1165,7 +1185,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                     String id=jsonObj0.getString("id");
                     Log.d("11111111QuoteId","ID"+id);
 
-
+                    getAllValues();
                     Intent intent = new Intent(Checkout_SetAddress.this,OrderSummaryActivity.class);
                     intent.putExtra("PLACEORDER_ID",id);
                     intent.putExtra("SUBTOTAL",SubTotal);
@@ -1210,5 +1230,12 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
     public void onBackPressed() {
         super.onBackPressed();
     }
+    public void back(){
+        Intent intent = new Intent(Checkout_SetAddress.this,NavigationDrawerActivity.class);
+        intent.putExtra("PAGE","HOME");
+        startActivity(intent);
+        finish();
+    }
+
 
 }

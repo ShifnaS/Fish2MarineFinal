@@ -312,7 +312,7 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ViewHolder
 
                         Intent i =new Intent( mContext, MyCartActivity.class);
                         mContext.startActivity(i);
-                      //  updatecartcount(mholder);
+                        updatecartcount(mholder);
                         Log.d("111111111",sPreferences.getString("CartCount",""));
 
                     }
@@ -331,7 +331,7 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ViewHolder
 
     private void updatecartcount(ViewHolder holder){
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("data_changed"));
-        NavigationDrawerActivity.getInstance().updateCartCount();
+      //  NavigationDrawerActivity.getInstance().updateCartCount();
         holder.layout.setVisibility(View.VISIBLE);
         holder.layout_indicator.setVisibility(View.GONE);
         mListItem.remove(holder.getAdapterPosition());

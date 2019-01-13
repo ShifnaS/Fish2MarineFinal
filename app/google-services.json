@@ -1,39 +1,35 @@
 {
   "project_info": {
-    "project_number": "332786647125",
-    "firebase_url": "https://fish2marine-200106.firebaseio.com",
-    "project_id": "fish2marine-200106",
-    "storage_bucket": "fish2marine-200106.appspot.com"
+    "project_number": "263538261063",
+    "firebase_url": "https://fishtomarine-181206.firebaseio.com",
+    "project_id": "fishtomarine-181206",
+    "storage_bucket": "fishtomarine-181206.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:332786647125:android:1b229f25becf2653",
+        "mobilesdk_app_id": "1:263538261063:android:1b229f25becf2653",
         "android_client_info": {
           "package_name": "com.smacon.fish2marine"
         }
       },
       "oauth_client": [
         {
-          "client_id": "332786647125-bcbr7kkll1c4tnig7dj1as482rla22er.apps.googleusercontent.com",
+          "client_id": "263538261063-k64121sakl9q4ac7hi88ef9luvpgdl6n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.smacon.fish2marine",
-            "certificate_hash": "835139184ca6617700b468c72c9f22c1c67c6757"
+            "certificate_hash": "0cb2ae2588bec68f28f089c54a292c5df310b4f2"
           }
         },
         {
-          "client_id": "332786647125-kss5r4en0hc8o3v2657og3lf4q08f78d.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "332786647125-kss5r4en0hc8o3v2657og3lf4q08f78d.apps.googleusercontent.com",
+          "client_id": "263538261063-26euh1u0qu7t5d5li3iluvk7bs65u68e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB1dh1-UbWFQRYP32Pz9pnWhpA-6G5_NUg"
+          "current_key": "AIzaSyDGgrROz_95h4xtQTJIdiGs2FxttSUBOwU"
         }
       ],
       "services": {
@@ -44,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "332786647125-kss5r4en0hc8o3v2657og3lf4q08f78d.apps.googleusercontent.com",
+              "client_id": "263538261063-26euh1u0qu7t5d5li3iluvk7bs65u68e.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

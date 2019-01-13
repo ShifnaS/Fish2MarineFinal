@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.smacon.f2mlibrary.Button.LiquidRadioButton.LiquidRadioButton;
 import com.smacon.f2mlibrary.CustomToast;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
+import com.smacon.fish2marine.Fragment.HomeFragment;
 import com.smacon.fish2marine.HelperClass.ProductListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.NavigationDrawerActivity;
@@ -62,12 +63,14 @@ public class FeaturedProductSnapperAdapter extends RecyclerView.Adapter<Featured
     ListView mlistview;
     AVLoadingIndicatorView indicator;
     ArrayList<ProductListItem> cuttype_dataItem;
+    HomeFragment.UpdateListner updateListner;
 
 
-    public FeaturedProductSnapperAdapter(Activity context, ArrayList<ProductListItem> listitem, String CustomerID) {
+    public FeaturedProductSnapperAdapter(Activity context, ArrayList<ProductListItem> listitem, String CustomerID, HomeFragment.UpdateListner updateListner) {
         this.mContext = context;
         this.mListItem = listitem;
         this.Customer_ID=CustomerID;
+        this.updateListner=updateListner;
     }
 
     @Override
@@ -477,6 +480,8 @@ public class FeaturedProductSnapperAdapter extends RecyclerView.Adapter<Featured
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
                         mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));
+                      //  Toast.makeText(mContext, "cart count in adapter "+jsonObj1.getInt("itemsCount"), Toast.LENGTH_SHORT).show();
+                        updateListner.onClick(jsonObj1.getInt("itemsCount"));
                         updatecartcount(mholder);
                         Log.d("111111111",sPreferences.getString("CartCount",""));
 
@@ -494,7 +499,7 @@ public class FeaturedProductSnapperAdapter extends RecyclerView.Adapter<Featured
     }
     private void updatecartcount(ViewHolder holder){
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("data_changed"));
-        NavigationDrawerActivity.getInstance().updateCartCount();
+    //    NavigationDrawerActivity.getInstance().updateCartCount();
        /* Intent intent = new Intent(mContext, ProductViewActivity.class);
         Log.d("11111111shared",sPreferences.getString("CategoryName",""));
         Log.d("11111111shared",sPreferences.getString("CategoryID",""));

@@ -150,7 +150,7 @@ public class HttpOperations {
     }
 
     //Place Order
-    public StringBuilder doPlaceOrder(final String quote_id) {
+    public StringBuilder doPlaceOrder(final int quote_id) {
         HashMap<String, String> params = new HashMap<String, String>();
         //   params.put("order_id", order_id);
         return sendRequest(params, APIS.API_PLACEORDER,"/"+quote_id+"/order","");

@@ -189,7 +189,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener{
                         firstname.setText(jsonObj1.getString("firstname").toString());
                         lastname.setText(jsonObj1.getString("lastname").toString());
                         email.setText(jsonObj1.getString("email").toString());
-                        Toast.makeText(getContext(), "mobile "+jsonObj1.getString("mobile").toString(), Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(getContext(), "mobile "+jsonObj1.getString("mobile").toString(), Toast.LENGTH_SHORT).show();
                         if(jsonObj1.getString("mobile").toString().equals("")||jsonObj1.getString("mobile").toString().equals("null")){
                             mobile.setText("");
                             mobile_heading.setVisibility(View.GONE);

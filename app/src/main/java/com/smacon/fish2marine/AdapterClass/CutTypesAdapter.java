@@ -122,7 +122,7 @@ public class CutTypesAdapter extends RecyclerView.Adapter {
         //customerid,productid,cuttype,qty
         Config mConfig = new Config(mContext);
         if(mConfig.isOnline(mContext)){
-            CustomToast.error(mContext,"Values: "+Customer_ID+" "+P_ID+" "+Cuttype+" "+qty).show();
+         //   CustomToast.error(mContext,"Values: "+Customer_ID+" "+P_ID+" "+Cuttype+" "+qty).show();
             LoadAddToCartInitiate mLoadAddToCartInitiate = new LoadAddToCartInitiate(
                     Customer_ID,P_ID,Cuttype,qty);
             mLoadAddToCartInitiate.execute((Void) null);

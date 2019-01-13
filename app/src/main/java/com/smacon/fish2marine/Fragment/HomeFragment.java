@@ -159,7 +159,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
         updateListner=new UpdateListner() {
             @Override
             public void onClick(int count) {
-                Toast.makeText(getContext(), "count "+count, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getContext(), "count in home fragment"+count, Toast.LENGTH_SHORT).show();
                 recycleviewInterface.userItemClick(count);
             }
         };
@@ -314,7 +314,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
 
     @Override
     public void userItemClick(int pos) {
-        Toast.makeText(getActivity(), "Clicked User : " + newproduct_dataItem.get(pos).getnewproduct_name(), Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(getActivity(), "Clicked User : " + newproduct_dataItem.get(pos).getnewproduct_name(), Toast.LENGTH_SHORT).show();
         // cuttypeDialog();
         dialog=new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -330,7 +330,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
 
         // add 5 radio buttons to the group
         LiquidRadioButton rb;
-        Toast.makeText(getActivity(), "Clicked User : " + newproduct_dataItem.get(pos).getnewproduct_name(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), "Clicked User : " + newproduct_dataItem.get(pos).getnewproduct_name(), Toast.LENGTH_SHORT).show();
         for (int i = 0; i < newproduct_dataItem.get(pos).getCuttype_valuelist().size(); i++){
             rb = new LiquidRadioButton(getActivity());
             rb.setText(newproduct_dataItem.get(pos).getCuttype_valuelist().get(i));
@@ -568,7 +568,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                     featured_dataItem.add(item);
                                 }
                                 start = featured_dataItem.size();
-                                mFeatuedProductAdapter = new FeaturedProductSnapperAdapter(getActivity(), featured_dataItem,CustomerID);
+                                mFeatuedProductAdapter = new FeaturedProductSnapperAdapter(getActivity(), featured_dataItem,CustomerID,updateListner);
                                 //Log.d("1111228", "API_DASHBOARD_RESPONSE start" + start);
                                 FeaturedRecyclerview.setAdapter(mFeatuedProductAdapter);
                             }
@@ -612,7 +612,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                     bestseller_dataItem.add(item);
                                 }
                                 start = bestseller_dataItem.size();
-                                mBestSellerAdapter = new BestSellerSnapperAdapter(getActivity(), bestseller_dataItem,CustomerID);
+                                mBestSellerAdapter = new BestSellerSnapperAdapter(getActivity(), bestseller_dataItem,CustomerID,updateListner);
                                 BestSellerRecyclerview.setAdapter(mBestSellerAdapter);
 
                             }

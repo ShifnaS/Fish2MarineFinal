@@ -110,6 +110,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
 
         mIntent = getIntent();
         QuoteID=mIntent.getExtras().getString("PLACEORDER_ID");
+
         carttotal.setText("Rs. "+mIntent.getExtras().getString("SUBTOTAL"));
         shipping.setText("Rs. "+mIntent.getExtras().getString("SHIPPING"));
         tax.setText("Rs. "+mIntent.getExtras().getString("TAX"));
@@ -196,9 +197,10 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
         }
         @Override
         protected StringBuilder doInBackground(Void... params) {
+            int id=Integer.parseInt(mQuoteId);
             HttpOperations httpOperations = new HttpOperations(getApplicationContext());
-            StringBuilder result = httpOperations.doPlaceOrder(mQuoteId);
-            Log.d("1112","PASSING VALUE: QUOTE ID "+mQuoteId);
+            StringBuilder result = httpOperations.doPlaceOrder(id);
+            Log.d("1112","PASSING VALUE: QUOTE ID "+id);
             Log.d("1113", "RESULT "+result);
             return result;
         }
