@@ -30,6 +30,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -99,6 +102,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //first we intialized the FirebaseAuth object
+        mAuth = FirebaseAuth.getInstance();
+
         helper = new SqliteHelper(getApplicationContext(), "Fish2Marine", null, 5);
         sPreferences = getSharedPreferences("Fish2Marine", MODE_PRIVATE);
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -128,13 +134,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
-                Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                CustomToast.error(LoginActivity.this,""+error.getMessage());
+
+                // Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
                 // ...
             }
         });
-
-        //first we intialized the FirebaseAuth object
-        mAuth = FirebaseAuth.getInstance();
 
         //Then we need a GoogleSignInOptions object
         //And we need to build it as below
@@ -156,6 +161,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         InitIdView();
     }
+
     private void InitIdView(){
 
        login_gif=(ImageView)findViewById(R.id.login_gif);
@@ -219,7 +225,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
-
     }
     @Override
     public void onStart() {
@@ -246,13 +251,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //authenticating with firebase
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
+                Log.d("111111",task.getException().getMessage());
+                Log.d("111111",e.getMessage());
+
                 Toast.makeText(LoginActivity.this,"error"+ e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
-    private void handleFacebookAccessToken(AccessToken token) {
+   /* private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -272,23 +279,64 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 UserSocialLoginTask userSocialLoginTask = new UserSocialLoginTask(user.getEmail(),"",firstname,lastname,user.getUid(),"facebook");
                                 userSocialLoginTask.execute((Void) null);
                             } else {
-
                                 CustomToast.error(getApplicationContext(),"No Internet Connection.").show();
                             }
-
-                            Toast.makeText(LoginActivity.this, "User Signed In"+user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                            //  startActivity(new Intent(LoginActivity.this, GoogleLoginProfileActivity.class));
-                            // updateUI(user);
+                            Toast.makeText(LoginActivity.this, "User Signed In "+user.getDisplayName(), Toast.LENGTH_SHORT).show();
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Log.d(TAG, "signInWithCredential:failure", task.getException());
+                            CustomToast.error(LoginActivity.this,"Exception "+task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
                     }
                 });
     }
+*/
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        GraphRequest request = GraphRequest.newMeRequest(token,
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        Log.v("LoginActivity", response.toString());
+                        try {
+
+                            String fullname = object.getString("name");
+                            String[] nameparts = fullname.split("\\s+");
+                            String firstname = nameparts[0];
+                            String lastname = nameparts[1];
+
+                            if (mConfig.isOnline(LoginActivity.this)) {
+                                showProgress();
+
+                                UserSocialLoginTask userSocialLoginTask =
+                                        new UserSocialLoginTask(object.getString("email"),"",
+                                                firstname, lastname, object.getString("id"),"facebook");
+                                userSocialLoginTask.execute((Void) null);
+                                editor.putString(KEY_USERNAME, object.getString("email"));
+                                editor.apply();
+
+                            } else {
+                                CustomToast.error(getApplicationContext(),"No Internet Connection.").show();
+                            }
+
+                            Toast.makeText(LoginActivity.this, "User Signed In " +fullname, Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        LoginManager.getInstance().logOut();
+                    }
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+
+
+
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
@@ -312,8 +360,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String lastname = nameparts[1];
 
                             if (mConfig.isOnline(LoginActivity.this)) {
+
                                 UserSocialLoginTask userSocialLoginTask = new UserSocialLoginTask(user.getEmail(),"",firstname,lastname,user.getUid(),"google");
                                 userSocialLoginTask.execute((Void) null);
+                                editor.putString(KEY_USERNAME, user.getEmail());
+                                editor.apply();
+
                             } else {
 
                                 CustomToast.error(getApplicationContext(),"No Internet Connection.").show();
@@ -325,6 +377,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            CustomToast.error(LoginActivity.this,""+task.getException());
                             CustomToast.error(LoginActivity.this, "Authentication failed.").show();
 
                         }
@@ -691,5 +744,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onAnimationRepeat(Animation animation) {
 
     }
+
 }
 

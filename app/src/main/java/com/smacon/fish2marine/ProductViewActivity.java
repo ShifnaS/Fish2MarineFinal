@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,8 +30,10 @@ import com.smacon.f2mlibrary.Badge;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.f2mlibrary.Switcher.Switcher;
 import com.smacon.fish2marine.AdapterClass.AllProductsGridAdapter;
+import com.smacon.fish2marine.Fragment.HomeFragment;
 import com.smacon.fish2marine.HelperClass.ProductListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
+import com.smacon.fish2marine.Interface.RecycleviewInterface;
 import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
 
@@ -62,28 +65,35 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
     FrameLayout container;
     Dialog progressdialog;
     AVLoadingIndicatorView loading;
-
+    SharedPreferences sp;
     //ArrayList<ProductListItem> searchitem;
     ArrayList<ProductListItem> dataItem;
-
+    UpdateListner updateListner;
     String CustomerID = "";
     private Intent intent;
     private String mCategoryName,mCategoryID,mPage;
     ImageView mycart;
     Badge cartbadge;
     LinearLayout progress_view;
+    RecycleviewInterface recycleviewInterface;
+
 
     private static ProductViewActivity checkoutActivity;
-
+    String centerid="";
     public static ProductViewActivity getInstance(){
         return checkoutActivity;
     }
 
+    public static ProductViewActivity newInstance(){
+        return new ProductViewActivity();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_gridview);
-      //  container=findViewById(R.id.container);
+       // recycleviewInterface=(RecycleviewInterface)getApplicationContext();
+
+        //  container=findViewById(R.id.container);
       //  progress_view=findViewById(R.id.progress_view);
             //  addProgressView(findViewById(R.id.progress_view))
 
@@ -102,6 +112,21 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
         loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        //sp= PreferenceManager.getDefaultSharedPreferences(th
+        centerid=sPreferences.getString("DeliveryCenter_ID","");
+        if(centerid.equals("")){
+            centerid="0";
+        }
+
+        updateListner=new UpdateListner() {
+            @Override
+            public void onClick(int count) {
+                Toast.makeText(ProductViewActivity.this, "count "+count, Toast.LENGTH_SHORT).show();
+               // recycleviewInterface.userItemClick(count);
+               // InitIdView();
+            }
+        };
+
         InitIdView();
 
     }
@@ -246,8 +271,10 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
         protected StringBuilder doInBackground(Void... params) {
 
             HttpOperations httpOperations = new HttpOperations(getApplicationContext());
-            StringBuilder result = httpOperations.doProductList(mId);
-            Log.d("111111", "API_PRODUCTLIST " + result);
+            StringBuilder result = httpOperations.doProductList(mId,centerid);
+            Log.d("111111111", "PASSING_DATA " + centerid);
+
+            Log.d("111111111", "RESULT " + result);
             return result;
         }
 
@@ -304,7 +331,7 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
                                 }
                             }
                             CustomerID=SQLData_Item.get(0).get("admin_id");
-                            mAllProductAdapter = new AllProductsGridAdapter(ProductViewActivity.this, dataItem,CustomerID);
+                            mAllProductAdapter = new AllProductsGridAdapter(ProductViewActivity.this, dataItem,CustomerID,updateListner);
                             mrecyclerview.setAdapter(mAllProductAdapter);
                         }
                     }else {
@@ -345,6 +372,11 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
     public void onBackPressed() {
 
         super.onBackPressed();
+
+    }
+    public interface UpdateListner {
+        void onClick(int count);
+
 
     }
 }

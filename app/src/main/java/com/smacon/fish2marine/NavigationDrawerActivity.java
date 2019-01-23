@@ -117,7 +117,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     private static final int POS_ABOUT = 7;
     private static final int POS_LOGOUT = 8;
     private static final String KEY_REMEMBER = "remember";
-
+    private int subscreensOnTheStack=0;
 
     private String[] screenTitles;
     private Drawable[] screenIcons;
@@ -177,8 +177,18 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
         CustomerID=SQLData_Item_customer.get(0).get("admin_id");
         CustomerName=SQLData_Item_customer.get(0).get("admin_name");
 
-      /*  mIntent = getIntent();
-        mAction = mIntent.getExtras().getString("PAGE");*/
+        /*Intent mIntent = getIntent();
+        if(mIntent.hasExtra("PAGE"))
+        {
+            mAction = mIntent.getExtras().getString("PAGE");
+
+        }
+        if(mAction.equals("CART"))
+        {
+            Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
+            startActivity(i);
+            finish();
+        }*/
 
         SQLData_Item = helper.getCount();
         toolbar=(Toolbar) findViewById(R.id.toolbar);
@@ -233,7 +243,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 startActivity(intent);
                 overridePendingTransition(R.anim.bottom_up,
                         android.R.anim.fade_out);
-                finish();
+               // finish();
             }
         });
         fg_title.setText("Fish2Marine");
@@ -398,49 +408,49 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 slidingRootNav.closeMenu();
                 fg_title.setText("Fish2Marine");
                 Fragment dashboard = new HomeFragment();
-                showFragment(dashboard);
+                showFragment(dashboard,"HOMEFRAGMENT");
                 break;
             case POS_MYREWARDS:
                 slidingRootNav.closeMenu();
                 fg_title.setText("My Rewards");
                 Fragment rewards = new MyRewardsFragment();
-                showFragment(rewards);
+                showFragment(rewards,"MyRewards");
                 break;
             case POS_MYREFFERALS:
                 slidingRootNav.closeMenu();
                 fg_title.setText("My Referals");
                 Fragment referal = new MyReferalFragment();
-                showFragment(referal);
+                showFragment(referal,"MyRefereal");
                 break;
             case POS_MYADDRESS:
                 slidingRootNav.closeMenu();
                 fg_title.setText("My Address");
                 Fragment address = new MyAddressFragment();
-                showFragment(address);
+                showFragment(address,"MyAddress");
                 break;
             case POS_ORDERHISTORY:
                 slidingRootNav.closeMenu();
                 fg_title.setText("My Orders");
                 Fragment orders = new MyOrdersListFragment();
-                showFragment(orders);
+                showFragment(orders,"MyOrder");
                 break;
             case POS_MYPROFILE:
                 slidingRootNav.closeMenu();
                 fg_title.setText("My Profile");
                 Fragment profile = new MyProfileFragment();
-                showFragment(profile);
+                showFragment(profile,"MyProfile");
                 break;
             case POS_ABOUT:
                 slidingRootNav.closeMenu();
                 fg_title.setText("About Us");
                 Fragment aboutus = new AboutUsFragment();
-                showFragment(aboutus);
+                showFragment(aboutus,"AboutUs");
                 break;
             case POS_CONTACTUS:
                 slidingRootNav.closeMenu();
                 fg_title.setText("Contact Us");
                 Fragment contactus = new ContactUsFragment();
-                showFragment(contactus);
+                showFragment(contactus,"ContactUs");
                 break;
             case POS_LOGOUT:
                 logout();
@@ -481,15 +491,28 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
         finish();
     }
 
-    private void showFragment(Fragment fragment) {
+    private void showFragment(Fragment fragment,String tag) {
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.container, fragment);
-        fragmentTransaction.commitAllowingStateLoss();
+
+     /*   String backStateName = fragment.getClass().getName();
+
+        boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate (backStateName, 0);
+
+        if (!fragmentPopped) { //fragment not in back stack, create it.
+*/
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container, fragment, tag);
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.commitAllowingStateLoss();
+            subscreensOnTheStack++;
+     //   }
        /* getFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();*/
     }
+
+
 
     private DrawerItem createItemFor(int position) {
         return new SimpleItem(screenIcons[position], screenTitles[position])
@@ -536,57 +559,60 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     }
 
 
-
-    /* private void loadFragment(final Fragment fragment) {
-
-         Runnable mPendingRunnable = new Runnable() {
-             @Override
-             public void run() {
-
-                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-                         android.R.anim.fade_out);
-                 //fragmentTransaction.replace(R.id.frame_container, fragment);
-                 fragmentTransaction.commitAllowingStateLoss();
-             }
-         };
-     }*/
     public void updateCartCount(String count){
         cartbadge.setText(count);
     }
 
-    /*@Override
+    @Override
     public void onBackPressed() {
-
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-
-            FirebaseAuth.getInstance().signOut();
-            LoginManager.getInstance().logOut();
-            GoogleSignInClient mGoogleSignInClient;
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build();
-            mGoogleSignInClient = GoogleSignIn.getClient(getBaseContext(), gso);
-            mGoogleSignInClient.signOut().addOnCompleteListener(NavigationDrawerActivity.this,
-                    new OnCompleteListener<Void>() {  //signout Google
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            FirebaseAuth.getInstance().signOut(); //signout firebase
-                        }
-                    });
+        Fragment myFragment= getSupportFragmentManager().findFragmentByTag("HOMEFRAGMENT");
+        if (myFragment != null && myFragment.isVisible()) {
+            // add your code here
+          //  super.onBackPressed();
             finish();
-            Intent closepage = new Intent();
-            closepage.setAction(Intent.ACTION_MAIN);
-            closepage.addCategory(Intent.CATEGORY_HOME);
-            startActivity(closepage);
-
-
-        } else {
-            CustomToast.info(getApplicationContext(),"Press again to exit").show();
+           // Toast.makeText(mainActivity, "current tag", Toast.LENGTH_SHORT).show();
         }
-        mBackPressed = System.currentTimeMillis();
-    }*/
+        else
+        {
+            slidingRootNav.closeMenu();
+            fg_title.setText("Fish2Marine");
+            Fragment dashboard = new HomeFragment();
+            showFragment(dashboard,"HOMEFRAGMENT");
+        }
+    }
+
+    /*@Override
+        public void onBackPressed() {
+
+            if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+
+                FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
+                GoogleSignInClient mGoogleSignInClient;
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
+                mGoogleSignInClient = GoogleSignIn.getClient(getBaseContext(), gso);
+                mGoogleSignInClient.signOut().addOnCompleteListener(NavigationDrawerActivity.this,
+                        new OnCompleteListener<Void>() {  //signout Google
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                FirebaseAuth.getInstance().signOut(); //signout firebase
+                            }
+                        });
+                finish();
+                Intent closepage = new Intent();
+                closepage.setAction(Intent.ACTION_MAIN);
+                closepage.addCategory(Intent.CATEGORY_HOME);
+                startActivity(closepage);
+
+
+            } else {
+                CustomToast.info(getApplicationContext(),"Press again to exit").show();
+            }
+            mBackPressed = System.currentTimeMillis();
+        }*/
     private void InitGetLocation(String Lat,String Long,String Location){
         Config mConfig = new Config(getApplicationContext());
         if(mConfig.isOnline(getApplicationContext())){
@@ -598,22 +624,27 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     }
 
 
-    public boolean onKeyDown(int keyCode, KeyEvent event)
+  /* public boolean onKeyDown(int keyCode, KeyEvent event)
     {
 
       //  if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
-            {
-                this.moveTaskToBack(true);
-                return true;
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+        {
+            // this.moveTaskToBack(true);
+            //return true;
+            Fragment myFragment= getSupportFragmentManager().findFragmentByTag("HOMEFRAGMENT");
+            if (myFragment != null && myFragment.isVisible()) {
+                // add your code here
+                Toast.makeText(mainActivity, "current tag", Toast.LENGTH_SHORT).show();
             }
+        }
 
        // } else {
          //   CustomToast.info(getApplicationContext(),"Press again to exit").show();
        // }
       //  mBackPressed = System.currentTimeMillis();
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
     @Override
     public void userItemClick(int count) {
@@ -684,5 +715,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
             }
         }
     }
+
 
 }

@@ -318,10 +318,10 @@ public class HttpOperations {
         params.put("product_id", product_id);
         return sendRequest(params, APIS.API_PRODUCT_DESCRIPTION,"/"+product_id,"");
     }
-    public StringBuilder doProductList(final String category_id) {
+    public StringBuilder doProductList(final String category_id,String cid) {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("category_id", category_id);
-        return sendRequest(params, APIS.API_PRODUCT_LIST_BY_CATEGORY,"/"+category_id+"/page/1/del/23","");
+        return sendRequest(params, APIS.API_PRODUCT_LIST_BY_CATEGORY,"/"+category_id+"/page/1/del/"+cid,"");
     }
     public StringBuilder doLocation(final String latitude,final String longitude,String customer_id,String location) {
         HashMap<String, String> params = new HashMap<String, String>();

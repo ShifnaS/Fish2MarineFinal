@@ -31,6 +31,7 @@ import com.smacon.fish2marine.HelperClass.ProductListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.NavigationDrawerActivity;
 import com.smacon.fish2marine.ProductDescriptionActivity;
+import com.smacon.fish2marine.ProductViewActivity;
 import com.smacon.fish2marine.R;
 import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
@@ -62,12 +63,14 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
     AVLoadingIndicatorView indicator;
     ArrayList<ProductListItem> cuttype_dataItem;*/
     String Status;
+    ProductViewActivity.UpdateListner updateListner;
 
-
-    public AllProductsGridAdapter(Activity mContext, List<ProductListItem> items, String CustomerID) {
+    public AllProductsGridAdapter(Activity mContext, List<ProductListItem> items, String CustomerID, ProductViewActivity.UpdateListner updateListner) {
         this.mitems = items;
         this.mContext = mContext;
         this.Customer_ID=CustomerID;
+        this.updateListner=updateListner;
+
     }
 
     @Override
@@ -211,8 +214,9 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
                 }
                 else {
                     if(mitems.get(position).getcuttype_applicable().equals("1")){
-                        myViewHolder.layout.setVisibility(View.INVISIBLE);
                         myViewHolder.layout_cutype.setVisibility(View.VISIBLE);
+                        myViewHolder.layout.setVisibility(View.GONE);
+
                       /*  //CutypeDialog();
                         CutypeDialog(mListItem.get(position).getnewproduct_id(),holder.Quantity.getText().toString(),holder);
                         CutType(mListItem.get(position).getnewproduct_id(),holder.Quantity.getText().toString());
@@ -274,115 +278,6 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
         }
     }
 
-   /* private void CutypeDialog(final String ProductID, final String Quantity, final MyViewHolder holder){
-
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = mContext.getLayoutInflater();
-        GridLayoutManager mLayoutManager;
-        final View dialogView = inflater.inflate(R.layout.custom_cuttype_dialog, null);
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.setTitle("Choose a Cut type");
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-            }
-        });
-
-        final AlertDialog b = dialogBuilder.create();
-        b.show();
-        indicator = (AVLoadingIndicatorView) dialogView.findViewById(R.id.indicator);
-        mlistview = (ListView) dialogView.findViewById(R.id.mlistview);
-        mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,
-                                    int position, long arg3) {
-                mCuttypeValue=cuttype_dataItem.get(position).getcuttype_value();
-                AddToCart(Quantity,ProductID,mCuttypeValue,holder);
-                b.dismiss();
-                // Toast.makeText(mContext, "Clicked at Position"+mCuttypeValue, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }*/
-
-   /* private void CutType(String ID,String Qty){
-        Config mConfig = new Config(mContext);
-        if(mConfig.isOnline(mContext)){
-            LoadCutTypeInitiate mLoadCutTypeInitiate = new LoadCutTypeInitiate
-                    (ID,Qty);
-            mLoadCutTypeInitiate.execute((Void) null);
-        }else {
-            CustomToast.error(mContext,"No Internet Connection.").show();
-        }
-    }*/
-
-    /*public class LoadCutTypeInitiate extends AsyncTask<Void, StringBuilder, StringBuilder> {
-
-        private String mProductID,mQty;
-        LoadCutTypeInitiate(String Product_ID,String Qty) {
-            mProductID = Product_ID;
-            mQty=Qty;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            cuttype_dataItem = new ArrayList<>();
-            indicator.setVisibility(View.VISIBLE);
-
-        }
-
-        @Override
-        protected StringBuilder doInBackground(Void... params) {
-            HttpOperations httpOperations = new HttpOperations(mContext);
-            StringBuilder result = httpOperations.doCutTypesList(mProductID);
-            Log.d("111111", "API_CUTTYPE_RESPONSE " + result);
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(StringBuilder result) {
-            super.onPostExecute(result);
-            try {
-                JSONObject jsonObj = new JSONObject(result.toString());
-                if (jsonObj.has("status")) {
-                    if (jsonObj.getString("status").equals(String.valueOf(1))) {
-                        indicator.setVisibility(View.GONE);
-                        if(jsonObj.has("data")) {
-                            JSONObject jsonObj1 = jsonObj.getJSONObject("data");
-                            String ID=jsonObj1.getString("productId");
-                            Log.d("111111", "here0 " + ID);
-                            //item1.setAllproduct_id(jsonObj1.getString("productId"));
-                            if (jsonObj1.has("cutTypes")) {
-                                JSONArray feedArray1 = jsonObj1.getJSONArray("cutTypes");
-                                for (int i = 0; i < feedArray1.length(); i++) {
-                                    ProductListItem item1 = new ProductListItem();
-                                    JSONObject feedObj2 = (JSONObject) feedArray1.get(i);
-                                    Log.d("111111", "API_CUTTYPE_RESPONSE " + feedObj2.getString("label"));
-                                    item1.setcuttype_label(feedObj2.getString("label"));
-                                    item1.setcuttype_value(feedObj2.getString("value"));
-                                    item1.setcuttype_imageurl(feedObj2.getString("ImageUrl"));
-                                    cuttype_dataItem.add(item1);
-                                    Log.d("111111", "API_CUTTYPE_SIZE " + cuttype_dataItem.size());
-                                }
-                                CuttypesListAdapter mCutypeListAdapter = new CuttypesListAdapter(mContext, cuttype_dataItem,mProductID,mQty);
-                                mlistview.setAdapter(mCutypeListAdapter);
-
-                            }
-                        }
-                    }
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                CustomToast.info(mContext,"Please Try Again").show();
-            } catch (NullPointerException e) {
-                CustomToast.error(mContext,"No Internet Connection.").show();
-            } catch (Exception e) {
-                CustomToast.info(mContext,"Please Try Again").show();
-            }
-        }
-    }*/
-
     private void AddToCart(String Quantity,String ProductID,String Cuttype,MyViewHolder holder){
         Config mConfig = new Config(mContext);
         if(mConfig.isOnline(mContext)){
@@ -411,7 +306,7 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mholder.layout.setVisibility(View.INVISIBLE);
+            mholder.layout.setVisibility(View.GONE);
             mholder.layout_indicator.setVisibility(View.VISIBLE);
             helper.Delete_cartcount();
         }
@@ -422,7 +317,7 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
             HttpOperations httpOperations = new HttpOperations(mContext);
             Log.d("111111", "PASSING VALUE " + mCustomerID+" "+mProductID+" "+mCutype+" "+mQty);
             StringBuilder result = httpOperations.doAddToCart(mCustomerID, mProductID, mCutype,mQty);
-            Log.d("111111111",result.toString());
+            Log.d("111111111","RESULT VALUE "+result.toString());
             return result;
 
         }
@@ -431,6 +326,7 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
         protected void onPostExecute(StringBuilder result) {
             super.onPostExecute(result);
             try {
+                Log.d("111111111","Result// "+result.toString());
                 JSONObject jsonObj = new JSONObject(result.toString());
                 if (jsonObj.has("status")) {
                     if (jsonObj.getString("status").equals(String.valueOf(2))) {
@@ -438,8 +334,12 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
                         mholder.layout_indicator.setVisibility(View.GONE);
                         CustomToast.info(mContext,jsonObj.getString("message").toString()).show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
+                        Log.e("data/////////////","//////////////20"+jsonObj.toString());
+                        //  Toast.makeText(mContext, "hiiiii "+jsonObj.getJSONObject("data").toString(), Toast.LENGTH_SHORT).show();
+
                         List<HashMap<String, String>> fillMaps = new ArrayList<HashMap<String, String>>();
                         JSONObject jsonObj1 = jsonObj.getJSONObject("data");
+                        /// Toast.makeText(mContext, "cart id ****"+jsonObj1.getString("id").trim(), Toast.LENGTH_SHORT).show();
                         for (int i = 0; i < jsonObj1.length(); i++) {
                             HashMap<String, String> map;
                             map = new HashMap<String, String>();
@@ -453,9 +353,11 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
                         mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));
+                        //   Toast.makeText(mContext, "cart count in adapter "+jsonObj1.getInt("itemsCount"), Toast.LENGTH_SHORT).show();
+                        updateListner.onClick(jsonObj1.getInt("itemsCount"));
                         updatecartcount(mholder,Data_Item.get(0).get("cartcount"));
                         Log.d("111111111",sPreferences.getString("CartCount",""));
-                        Status="200";
+
                     }
                 }
             } catch (JSONException e) {

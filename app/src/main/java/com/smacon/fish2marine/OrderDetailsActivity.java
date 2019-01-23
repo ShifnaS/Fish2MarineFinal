@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.smacon.f2mlibrary.Badge;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
@@ -141,6 +142,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.opendrawer:
                 // mListener.OpenDrawer();
+                back();
                 break;
         }
     }
@@ -215,6 +217,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                             txt_order_deliverydate.setText(jsonObj2.getString("delivaryDate"));
                             txt_order_slot.setText(jsonObj2.getString("delivaryTime"));
                         }
+                        else
+                        {
+                            Toast.makeText(OrderDetailsActivity.this, "no delivery info", Toast.LENGTH_SHORT).show();
+                        }
                         Log.d("1111111","here");
 
                         if(jsonObj1.has("shippingAddress")){
@@ -250,5 +256,18 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
             }
         }
     }
-   
+    public void back(){
+        Intent intent = new Intent(getApplicationContext(),NavigationDrawerActivity.class);
+        intent.putExtra("PAGE","HOME");
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(),NavigationDrawerActivity.class);
+        intent.putExtra("PAGE","HOME");
+        startActivity(intent);
+        finish();
+    }
 }

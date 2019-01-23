@@ -1,12 +1,12 @@
-package com.smacon.fish2marine.CCAvenuePayment.utility;
-
-import android.util.Base64;
+package com.smacon.fish2marine.CCAvenuPay.utility;
 
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
+
+import android.util.Base64;
 
 
 public class RSAUtility {

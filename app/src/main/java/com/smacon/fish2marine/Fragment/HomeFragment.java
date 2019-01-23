@@ -241,26 +241,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
 
         }
 
-       /* addBottomDots(0);
-        final Handler handler = new Handler();
 
-        final Runnable update = new Runnable() {
-            public void run() {
-                if (page_position == slider_dataItem.size()) {
-                    page_position = 0;
-                } else {
-                    page_position = page_position + 1;
-                }
-                viewPager.setCurrentItem(page_position, true);
-            }
-        };
-
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(update);
-            }
-        }, 100, 5000);*/
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 4000);

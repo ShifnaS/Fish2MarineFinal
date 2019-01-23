@@ -31,15 +31,14 @@ public class SuccessActivity extends AppCompatActivity {
         continue_shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SuccessActivity.this,NavigationDrawerActivity.class);
-                intent.putExtra("PAGE","HOME");
-                startActivity(intent);
+                Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
+                startActivity(i);
                 finish();
             }
         });
         TextView orderno=(TextView)findViewById(R.id.orderno);
         intent = getIntent();
-        mOrderId=intent.getExtras().getString("PLACEORDER_ID");
+        mOrderId=intent.getExtras().getString("ORDER_NUMBER");
         orderno.setText(mOrderId);
 
         SharedPreferences.Editor editor = sPreferences.edit();

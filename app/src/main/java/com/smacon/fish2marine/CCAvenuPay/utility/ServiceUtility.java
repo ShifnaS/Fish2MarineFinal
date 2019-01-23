@@ -1,4 +1,4 @@
-package com.smacon.fish2marine.CCAvenuePayment.utility;
+package com.smacon.fish2marine.CCAvenuPay.utility;
 
 import java.io.IOException;
 import java.util.ArrayList;

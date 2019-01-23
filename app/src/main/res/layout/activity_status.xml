@@ -2,12 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="238dp"
-        android:layout_height="40dp"
-        android:layout_x="55dp"
-        android:layout_y="157dp" />
+        android:hint="PAYMENT FAILED"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="50dp"
+      />
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBackground"
+        android:background="@color/colorAccent"
+        android:text="Back"/>
 </LinearLayout>

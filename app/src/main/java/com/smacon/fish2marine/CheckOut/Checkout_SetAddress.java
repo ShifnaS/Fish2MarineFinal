@@ -634,6 +634,8 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
                 if (jsonObj0.has("status")) {
+                    address_list.setVisibility(View.VISIBLE);
+
                     if (jsonObj0.getString("status").equals(String.valueOf(1))) {
                         STEP="ADDRESS";
                         switcher.showContentView();
@@ -664,7 +666,14 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                           //  STEP="ADDRESS";
 
                         }
-                    }else {
+                    }
+                    else if(jsonObj0.getString("status").equals(String.valueOf(2)))
+                    {
+                        address_list.setVisibility(View.INVISIBLE);
+                        CustomToast.error(getApplicationContext(),jsonObj0.getString("message")).show();
+                    }
+                    else {
+                       // Toast.makeText(Checkout_SetAddress.this, "Address not Found", Toast.LENGTH_SHORT).show();
                         switcher.showEmptyView();
                     }
                 }
@@ -879,6 +888,8 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                         //mEmail.setText("");
                         // CustomToast.info(getApplicationContext(),"User already exist with this Email ID").show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
+
+                        address_list.setVisibility(View.VISIBLE);
                         refresh();
                         CustomToast.success(getApplicationContext(),"Address added succesfully").show();
                         mdialog.dismiss();
@@ -1209,6 +1220,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                     intent.putExtra("COUNTRY","India");
                     intent.putExtra("PHONE",txt_phone.getText().toString());
                     startActivity(intent);
+                    finish();
                     switcher.showContentView();
                 }
             } catch (JSONException e) {
@@ -1231,7 +1243,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         super.onBackPressed();
     }
     public void back(){
-        Intent intent = new Intent(Checkout_SetAddress.this,NavigationDrawerActivity.class);
+        Intent intent = new Intent(Checkout_SetAddress.this,MyCartActivity.class);
         intent.putExtra("PAGE","HOME");
         startActivity(intent);
         finish();

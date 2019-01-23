@@ -62,8 +62,9 @@
         <activity android:name=".CheckOut.Checkout_SetAddress"></activity>
         <activity android:name=".OrderSummaryActivity"></activity>
         <activity android:name=".SuccessActivity"></activity>
-        <activity android:name=".CCAvenuePayment.WebViewActivity"></activity>
-        <activity android:name=".CCAvenuePayment.StatusActivity"></activity>
+        <activity android:name=".CCAvenuPay.activity.WebViewActivity"></activity>
+        <activity android:name=".CCAvenuPay.activity.StatusActivity"></activity>
+
         <activity android:name=".OrderDetailsActivity"></activity>
         <activity android:name=".GoogleLoginProfileActivity"></activity>
         <activity android:name=".ForgotPasswordActivity"></activity>

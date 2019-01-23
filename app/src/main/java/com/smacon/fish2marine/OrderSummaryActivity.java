@@ -17,12 +17,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.f2mlibrary.Switcher.Switcher;
 import com.smacon.fish2marine.AdapterClass.PlaceOrderItemAdapter;
-import com.smacon.fish2marine.CCAvenuePayment.WebViewActivity;
+import com.smacon.fish2marine.CCAvenuPay.utility.AvenuesParams;
+import com.smacon.fish2marine.CCAvenuPay.activity.WebViewActivity;
 import com.smacon.fish2marine.Constants.OrdersConstants;
+import com.smacon.fish2marine.HelperClass.AddressListItem;
 import com.smacon.fish2marine.HelperClass.CartListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.Util.Config;
@@ -43,6 +46,8 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
     private Config mConfig;
     List<HashMap<String, String>> SQLData_Item ;
     String CustomerID = "",QuoteID;
+    String increment_id="";
+
     int RewardPoints;
     private Switcher switcher;
     private RecyclerView mrecyclerview;
@@ -200,24 +205,60 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
             int id=Integer.parseInt(mQuoteId);
             HttpOperations httpOperations = new HttpOperations(getApplicationContext());
             StringBuilder result = httpOperations.doPlaceOrder(id);
-            Log.d("1112","PASSING VALUE: QUOTE ID "+id);
-            Log.d("1113", "RESULT "+result);
+            Log.d("111111","PASSING VALUE: QUOTE ID "+id);
+            Log.d("111111", "RESULT "+result);
             return result;
         }
 
         @Override
         protected void onPostExecute(StringBuilder result) {
             super.onPostExecute(result);
-            Log.d("1114", "Result from web api "+result);
+            Log.d("111111", "Result from web api "+result);
             progressdialog.cancel();
                 if(result.toString().contains("message")){
                     switcher.showErrorView("Could not place order");
                 }
                 else {
-                    String OrderID = result.toString().replaceAll("\\W", "");
-                   // OrderID = OrderID.replaceAll("\\s","");
-                    Log.d("1115", "ORDER ID "+OrderID);
-                    InitDeliveryOptions(OrderID);
+                    try {
+                        String id="",cid="";
+                        JSONObject jsonObj0 = new JSONObject(result.toString());
+                       // JSONArray jo=new JSONArray(result.toString());
+                      //  JSONObject feedObj1;
+
+
+                        if (jsonObj0.has("data")) {
+                            JSONArray feedArray1 = jsonObj0.getJSONArray("data");
+                            Log.d("111111", "API jsonObj1" + feedArray1);
+                            for (int i = 0; i < feedArray1.length(); i++) {
+                               // JSONObject feedObj1=new JSONObject();
+                                JSONObject  feedObj1 = feedArray1.getJSONObject(i);
+                                id = feedObj1.getString("increment_id");
+                                cid=feedObj1.getString("order_id");
+                                Log.d("111111", "JSONONJECT " + feedObj1.toString());
+                               // id = jo.getString("increment_id");
+                                Log.d("111111", "ID  " + id);
+
+                                if (increment_id.equals("")) {
+                                    increment_id = id;
+                                } else {
+                                    increment_id = increment_id + "/" + id;
+                                }
+                                //  increment_id=id+","+increment_id;
+
+                            }
+                        }
+                      //  String OrderID = result.toString().replaceAll("\\W", "");
+                        // OrderID = OrderID.replaceAll("\\s","");
+                        Log.d("111111", "ORDER ID "+increment_id);
+                        Log.d("111111", "ORDER ID "+cid);
+                        InitDeliveryOptions(cid);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d("111111", "EXCEPTION "+e.getMessage());
+
+                    }
                 }
         }
     }
@@ -261,50 +302,58 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
             progressdialog.cancel();
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
+              //  Toast.makeText(OrderSummaryActivity.this, ""+increment_id, Toast.LENGTH_SHORT).show();
+
+                Log.d("111111111", "RESULT1 "+result);
+
                 if (jsonObj0.has("status")) {
-                    if (jsonObj0.getString("status").equals(String.valueOf(1))) {
+                    if (jsonObj0.getInt("status")==1) {
                        // switcher.showContentView();
                        // sub_layout.setVisibility(View.VISIBLE);
                         Log.d("111111", "here0 ");
                         JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                        Log.e("111111","DATA "+jsonObj1.toString());
                         if (jsonObj0.getString("method").equals("cashondelivery")){
                             Log.d("111111", "here1 ");
                             String orderid=jsonObj1.getString("orderid");
                             String ordernumber=jsonObj1.getString("order_number");
                             Intent intent = new Intent(OrderSummaryActivity.this,SuccessActivity.class);
                             intent.putExtra("PLACEORDER_ID",orderid);
-                            intent.putExtra("SUBTOTAL",ordernumber);
+                            intent.putExtra("ORDER_NUMBER",increment_id);
                             startActivity(intent);
+                            finish();
                         }else if (jsonObj0.getString("method").equals("ccavenuepay")){
 
 
                             Log.d("Access Code","/////////////////////////////////// "+jsonObj1.getString("access_code"));
-
                             Intent i = new Intent(OrderSummaryActivity.this,WebViewActivity.class);
-                            i.putExtra(OrdersConstants.ORDER_ID, jsonObj1.getString("orderid"));
-                            i.putExtra(OrdersConstants.ORDER_NUMBER, jsonObj1.getString("order_number"));
-                            i.putExtra(OrdersConstants.ACCESS_CODE,jsonObj1.getString("access_code"));
-                            i.putExtra(OrdersConstants.MERCHANT_ID,jsonObj1.getString("merchant_id"));
-                            i.putExtra(OrdersConstants.CURRENCY, jsonObj1.getString("currency"));
-                            i.putExtra(OrdersConstants.ORDER_AMOUNT, jsonObj1.getString("order_amount"));
-                            i.putExtra(OrdersConstants.RSA_URL, jsonObj1.getString("rsa_url"));
-                            i.putExtra(OrdersConstants.SUCCESS_URL, jsonObj1.getString("success_url"));
-                            i.putExtra(OrdersConstants.CANCEL_URL, jsonObj1.getString("cancel_url"));
-                            i.putExtra(OrdersConstants.BILLING_NAME,address_name);
-                            i.putExtra(OrdersConstants.BILLING_ZIP,pincode);
-                            i.putExtra(OrdersConstants.BILLING_CITY,city);
-                            i.putExtra(OrdersConstants.BILLING_STATE,state);
-                            i.putExtra(OrdersConstants.BILLING_COUNTRY,country);
-                            i.putExtra(OrdersConstants.BILLING_TEL,phone);
+                            i.putExtra(AvenuesParams.ORDER_ID, jsonObj1.getString("orderid"));
+                            i.putExtra(AvenuesParams.ORDER_NUMBER, increment_id);
+                            i.putExtra(AvenuesParams.ACCESS_CODE,jsonObj1.getString("access_code"));
+                            i.putExtra(AvenuesParams.MERCHANT_ID,jsonObj1.getString("merchant_id"));
+                            i.putExtra(AvenuesParams.CURRENCY, jsonObj1.getString("currency"));
+                            i.putExtra(AvenuesParams.AMOUNT, jsonObj1.getString("order_amount"));
+                            i.putExtra(AvenuesParams.RSA_KEY_URL, jsonObj1.getString("rsa_url"));
+                            i.putExtra(AvenuesParams.REDIRECT_URL, jsonObj1.getString("success_url"));
+                            i.putExtra(AvenuesParams.CANCEL_URL, jsonObj1.getString("cancel_url"));
+                            i.putExtra(AvenuesParams.BILLING_NAME,address_name);
+                            i.putExtra(AvenuesParams.BILLING_ADDRESS,address);
+                            i.putExtra(AvenuesParams.BILLING_ZIP,pincode);
+                            i.putExtra(AvenuesParams.BILLING_CITY,city);
+                            i.putExtra(AvenuesParams.BILLING_STATE,state);
+                            i.putExtra(AvenuesParams.BILLING_COUNTRY,country);
+                            i.putExtra(AvenuesParams.BILLING_TEL,phone);
                             startActivity(i);
+                            finish();
                         }else if (jsonObj0.getString("method").equals("banktransfer")){
                             String orderid=jsonObj1.getString("orderid");
                             String ordernumber=jsonObj1.getString("order_number");
                             Intent intent = new Intent(OrderSummaryActivity.this,SuccessActivity.class);
                             intent.putExtra("PLACEORDER_ID",orderid);
-                            intent.putExtra("SUBTOTAL",ordernumber);
+                            intent.putExtra("ORDER_NUMBER",increment_id);
                             startActivity(intent);
-                            Log.d("111111", "here3 ");
+                           // Log.d("111111", "here3 ");
+                            finish();
                         }
 
                     }else {
@@ -313,10 +362,15 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                Log.d("111111","ERRROR1 "+e.getMessage());
                 switcher.showErrorView("Please Try Again");
             } catch (NullPointerException e) {
+                Log.d("111111","ERRROR2 "+e.getMessage());
+
                 switcher.showErrorView("No Internet Connection");
             } catch (Exception e) {
+                Log.d("111111","ERRROR3 "+e.getMessage());
+
                 switcher.showErrorView("Please Try Again");
             }
         }

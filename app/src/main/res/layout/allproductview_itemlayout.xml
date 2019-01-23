@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
+
         android:id="@+id/cardview"
         style="@style/list_CardView"
         android:background="@color/white"
@@ -215,8 +216,7 @@
             </android.support.v7.widget.Toolbar>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -238,8 +238,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/btn_ok"
@@ -260,15 +259,10 @@
         <FrameLayout
             android:id="@+id/layout_indicator"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             android:background="#22000000"
             android:visibility="gone">
-            <!-- <ImageView
-                 android:id="@+id/img_loader_brands"
-                 android:layout_width="100dp"
-                 android:layout_height="100dp"
-                 android:visibility="invisible"
-                 android:layout_gravity="center"/>-->
+
             <com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView
                 android:layout_width="50dp"
                 android:layout_height="50dp"

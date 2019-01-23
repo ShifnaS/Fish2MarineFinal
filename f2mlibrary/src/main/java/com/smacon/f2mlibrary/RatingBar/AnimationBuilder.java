@@ -8,6 +8,7 @@ import android.animation.Animator;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.support.annotation.IntRange;
@@ -270,7 +271,7 @@ public class AnimationBuilder {
     public AnimationBuilder textColor(int... colors) {
         for (View view : views) {
             if (view instanceof TextView) {
-                ObjectAnimator objectAnimator = ObjectAnimator.ofInt(view, "textColor", colors);
+                @SuppressLint("ObjectAnimatorBinding") ObjectAnimator objectAnimator = ObjectAnimator.ofInt(view, "textColor", colors);
                 objectAnimator.setEvaluator(new ArgbEvaluator());
                 this.animatorList.add(objectAnimator);
             }

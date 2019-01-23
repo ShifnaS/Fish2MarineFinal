@@ -15,11 +15,35 @@
       },
       "oauth_client": [
         {
-          "client_id": "263538261063-k64121sakl9q4ac7hi88ef9luvpgdl6n.apps.googleusercontent.com",
+          "client_id": "263538261063-ciol130iuign5qe31ogq36l27pdbm2no.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smacon.fish2marine",
+            "certificate_hash": "85bcb74ac42cd57a9b79348b8e1377af09118eda"
+          }
+        },
+        {
+          "client_id": "263538261063-ofh3fdkqp7rgvaaavsn1c4u9ej1ic54p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.smacon.fish2marine",
             "certificate_hash": "0cb2ae2588bec68f28f089c54a292c5df310b4f2"
+          }
+        },
+        {
+          "client_id": "263538261063-12jidvv5sucvvudgugug0navura8rijq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smacon.fish2marine",
+            "certificate_hash": "561707c7412be17ad601d83ade536f32ba9ed9b4"
+          }
+        },
+        {
+          "client_id": "263538261063-ckhepdjavtvl04orovvvt8df810dtv43.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smacon.fish2marine",
+            "certificate_hash": "d45f0c63d0ea8cbb9d25cbac7f924513c6833c26"
           }
         },
         {

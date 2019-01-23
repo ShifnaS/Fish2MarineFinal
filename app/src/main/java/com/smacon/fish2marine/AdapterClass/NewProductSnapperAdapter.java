@@ -280,6 +280,8 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
                 else {
                     holder.layout.setVisibility(View.VISIBLE);
                     holder.layout_cutype.setVisibility(View.GONE);
+                   // Toast.makeText(mContext, "hiii", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(mContext, "quantity "+holder.Quantity.getText().toString(), Toast.LENGTH_SHORT).show();
                     AddToCart(holder.Quantity.getText().toString(),mListItem.get(position).getnewproduct_id(),holder.mCuttypeValue,holder);
                 }
             }
@@ -288,137 +290,39 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
         holder.Addtocart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("111111111","Cart centerID "+sPreferences.getString("DeliveryCenter_ID",""));
-                Log.d("111111111","cuttypeapplicable "+mListItem.get(position).getnewcuttype_applicable());
+                Toast.makeText(mContext, "hihihihi", Toast.LENGTH_SHORT).show();
+               // Log.d("111111111","Cart centerID "+sPreferences.getString("DeliveryCenter_ID",""));
+                //Log.d("111111111","cuttypeapplicable "+mListItem.get(position).getnewcuttype_applicable());
 
-                if(sPreferences.getString("DeliveryCenter_ID","").equals("")){
-                    CustomToast.error(v.getContext(), "Please Choose ur location"+sPreferences.getString("DeliveryCenter_ID","")).show();
-                }
-                else {
-                    if(mListItem.get(position).getnewcuttype_applicable().equals("1")){
-                        holder.layout.setVisibility(View.INVISIBLE);
-                        holder.layout_cutype.setVisibility(View.VISIBLE);
+                try
+                {
+                    if(sPreferences.getString("DeliveryCenter_ID","").equals("")){
+                        CustomToast.error(v.getContext(), "Please Choose ur location"+sPreferences.getString("DeliveryCenter_ID","")).show();
+                    }
+                    else {
+                        //   Toast.makeText(mContext, "hiii "+mListItem.get(position).getnewcuttype_applicable().equals("1"), Toast.LENGTH_SHORT).show();
+
+                        if(mListItem.get(position).getnewcuttype_applicable().equals("1")){
+                            holder.layout.setVisibility(View.INVISIBLE);
+                            holder.layout_cutype.setVisibility(View.VISIBLE);
                       /*  //CutypeDialog();
                         CutypeDialog(mListItem.get(position).getnewproduct_id(),holder.Quantity.getText().toString(),holder);
                         CutType(mListItem.get(position).getnewproduct_id(),holder.Quantity.getText().toString());
                     */
-                    }
-                    else {
-                        AddToCart(holder.Quantity.getText().toString(),mListItem.get(position).getnewproduct_id(),"",holder);
-                    }
-                }
-            }
-        });
-    }
-/*    private void CutypeDialog(final String ProductID, final String Quantity, final ViewHolder holder){
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = mContext.getLayoutInflater();
-        GridLayoutManager mLayoutManager;
-        final View dialogView = inflater.inflate(R.layout.custom_cuttype_dialog, null);
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.setTitle("Choose a Cut type");
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-            }
-        });
-        final AlertDialog b = dialogBuilder.create();
-        b.show();
-        indicator = (AVLoadingIndicatorView) dialogView.findViewById(R.id.indicator);
-        mlistview = (ListView) dialogView.findViewById(R.id.mlistview);
-        mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,
-                                    int position, long arg3) {
-                mCuttypeValue=cuttype_dataItem.get(position).getcuttype_value();
-                AddToCart(Quantity,ProductID,mCuttypeValue,holder);
-                b.dismiss();
-                //Toast.makeText(mContext, "Clicked at Position"+mCuttypeValue, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }*/
-
-   /* private void CutType(String ID,String Qty){
-
-        Config mConfig = new Config(mContext);
-        if(mConfig.isOnline(mContext)){
-            LoadCutTypeInitiate mLoadCutTypeInitiate = new LoadCutTypeInitiate
-                    (ID,Qty);
-            mLoadCutTypeInitiate.execute((Void) null);
-        }else {
-            CustomToast.error(mContext,"No Internet Connection.").show();
-        }
-    }*/
-
-    /*public class LoadCutTypeInitiate extends AsyncTask<Void, StringBuilder, StringBuilder> {
-
-        private String mProductID,mQty;
-        LoadCutTypeInitiate(String Product_ID,String Qty) {
-            mProductID = Product_ID;
-            mQty=Qty;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            cuttype_dataItem = new ArrayList<>();
-            indicator.setVisibility(View.VISIBLE);
-
-        }
-
-        @Override
-        protected StringBuilder doInBackground(Void... params) {
-
-            HttpOperations httpOperations = new HttpOperations(mContext);
-            StringBuilder result = httpOperations.doCutTypesList(mProductID);
-            Log.d("111111", "API_CUTTYPE_RESPONSE " + result);
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(StringBuilder result) {
-            super.onPostExecute(result);
-            try {
-                JSONObject jsonObj = new JSONObject(result.toString());
-                if (jsonObj.has("status")) {
-                    if (jsonObj.getString("status").equals(String.valueOf(1))) {
-                        indicator.setVisibility(View.GONE);
-                        if(jsonObj.has("data")) {
-                            JSONObject jsonObj1 = jsonObj.getJSONObject("data");
-                            String ID=jsonObj1.getString("productId");
-                            Log.d("111111", "here0 " + ID);
-                            //item1.setAllproduct_id(jsonObj1.getString("productId"));
-                            if (jsonObj1.has("cutTypes")) {
-                                JSONArray feedArray1 = jsonObj1.getJSONArray("cutTypes");
-                                for (int i = 0; i < feedArray1.length(); i++) {
-                                    ProductListItem item1 = new ProductListItem();
-                                    JSONObject feedObj2 = (JSONObject) feedArray1.get(i);
-                                    Log.d("111111", "API_CUTTYPE_RESPONSE " + feedObj2.getString("label"));
-                                    item1.setcuttype_label(feedObj2.getString("label"));
-                                    item1.setcuttype_value(feedObj2.getString("value"));
-                                    item1.setcuttype_imageurl(feedObj2.getString("ImageUrl"));
-                                    cuttype_dataItem.add(item1);
-                                    Log.d("111111", "API_CUTTYPE_SIZE " + cuttype_dataItem.size());
-                                }
-                                CuttypesListAdapter mCutypeListAdapter = new CuttypesListAdapter(mContext, cuttype_dataItem,mProductID,mQty);
-                                mlistview.setAdapter(mCutypeListAdapter);
-
-                            }
+                        }
+                        else {
+                            AddToCart(holder.Quantity.getText().toString(),mListItem.get(position).getnewproduct_id(),"",holder);
                         }
                     }
                 }
+                catch (Exception e)
+                {
+                    Log.d("11111111","Exception"+e.getMessage());
+                }
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-                CustomToast.info(mContext,"Please Try Again").show();
-            } catch (NullPointerException e) {
-                CustomToast.error(mContext,"No Internet Connection.").show();
-            } catch (Exception e) {
-                CustomToast.info(mContext,"Please Try Again").show();
             }
-        }
-    }*/
-
+        });
+    }
     private void AddToCart(String Quantity,String ProductID,String Cuttype,ViewHolder holder){
         Config mConfig = new Config(mContext);
         if(mConfig.isOnline(mContext)){
@@ -518,15 +422,7 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
     }
     private void updatecartcount(ViewHolder holder){
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("data_changed"));
-      //  NavigationDrawerActivity.getInstance().updateCartCount();
-       /* Intent intent = new Intent(mContext, ProductViewActivity.class);
-        Log.d("11111111shared",sPreferences.getString("CategoryName",""));
-        Log.d("11111111shared",sPreferences.getString("CategoryID",""));
-        intent.putExtra("ID",sPreferences.getString("CategoryID",""));
-        intent.putExtra("NAME",sPreferences.getString("CategoryName",""));
-        intent.putExtra("PAGE","SUBPAGE");
-       // mContext.getWindow().setExitTransition(null);
-        mContext.startActivity(intent);*/
+
         holder.layout.setVisibility(View.VISIBLE);
         holder.layout_indicator.setVisibility(View.GONE);
         CustomToast.success(mContext, "Item successfully added to cart").show();

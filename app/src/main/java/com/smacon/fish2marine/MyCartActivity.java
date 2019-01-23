@@ -143,6 +143,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_checkout:
                 Intent intent = new Intent(MyCartActivity.this,Checkout_SetAddress.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.applycoupon:
                 final NiftyDialogBuilder coupondialog=NiftyDialogBuilder.getInstance(this);
@@ -150,7 +151,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                         .withTitle("Apply Coupon")
                         .withTitleColor("#FFFFFF")
                         .withDividerColor("#11000000")
-                        .withDialogColor("#E53935")
+                        .withDialogColor("#FFFFFF")
                         .withIcon(getResources().getDrawable(R.drawable.ic_basket))
                         .isCancelableOnTouchOutside(true)
                         .withDuration(600)
@@ -186,7 +187,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                         .withTitle("Apply Rewards")
                         .withTitleColor("#FFFFFF")
                         .withDividerColor("#11000000")
-                        .withDialogColor("#E53935")
+                        .withDialogColor("#FFFFFF")
                         .withIcon(getResources().getDrawable(R.drawable.ic_basket))
                         .isCancelableOnTouchOutside(true)
                         .withDuration(600)
@@ -282,14 +283,22 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
             progressdialog.cancel();
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
-                if (jsonObj0.has("status")) {
-                    if (jsonObj0.getString("status").equals(String.valueOf(1))) {
+                Log.d("111111", "DATA1 "+jsonObj0.toString());
+
+                if (jsonObj0.has("success")) {
+                    if (jsonObj0.getInt("success")==1) {
                         switcher.showContentView();
                         sub_layout.setVisibility(View.VISIBLE);
-                        Log.d("111111", "here0 ");
-                        JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                       // JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                        CustomToast.info(MyCartActivity.this, ""+jsonObj0.getString("message"), Toast.LENGTH_SHORT).show();
+
+                        Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
+                        startActivity(i);
+
                     }else {
-                        switcher.showEmptyView();
+                        CustomToast.info(MyCartActivity.this, ""+jsonObj0.getString("message"), Toast.LENGTH_SHORT).show();
+
+                        // switcher.showEmptyView();
                     }
                 }
             } catch (JSONException e) {
@@ -337,14 +346,22 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
             progressdialog.cancel();
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
+                Log.d("111111", "DATA "+jsonObj0);
+
                 if (jsonObj0.has("status")) {
-                    if (jsonObj0.getString("status").equals(String.valueOf(1))) {
+                    if (jsonObj0.getInt("status")==1) {
                         switcher.showContentView();
                         sub_layout.setVisibility(View.VISIBLE);
-                        Log.d("111111", "here0 ");
-                        JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                        //JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                      //  String msg=jsonObj1
+                        Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
+                        startActivity(i);
                     }else {
-                        switcher.showEmptyView();
+                     //   Toast.makeText(MyCartActivity.this, "Invalid Coupon Code", Toast.LENGTH_SHORT).show();
+                       // switcher.showEmptyView();
+                        CustomToast.info(MyCartActivity.this, "Invalid Coupon Code", Toast.LENGTH_SHORT).show();
+
+                     //   CustomToast(MyCartActivity.this, "Invalid Coupon Code").show();
                     }
                 }
             } catch (JSONException e) {
