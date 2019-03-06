@@ -53,7 +53,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     private TextView error_label_retry, empty_label_retry, mTitle,
             txt_order_date,txt_order_item_count,txt_order_grand_total,txt_address_name,
             txt_order_deliverydate,txt_order_slot,txt_full_address,txt_order_number,
-            txt_order_status,txt_order_shipping,txt_order_payment,txt_thankyou;
+            txt_order_status,txt_order_shipping,txt_order_payment,txt_thankyou,txt_order_sub_total, txt_order_tax ,txt_order_discount;
     private ImageView opendrawer;
     FrameLayout maincontent,subcontent;
     ArrayList<ProductListItem> dataItem;
@@ -93,6 +93,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         mTitle.setText(mOrderId);
 
         txt_order_date = ((TextView) findViewById(R.id.txt_order_date));
+
+        txt_order_tax = ((TextView) findViewById(R.id.txt_order_tax));
+        txt_order_discount = ((TextView) findViewById(R.id.txt_order_discount));
+        txt_order_sub_total = ((TextView) findViewById(R.id.txt_order_sub_total));
+
         txt_order_item_count = ((TextView) findViewById(R.id.txt_order_item_count));
         txt_order_grand_total = ((TextView) findViewById(R.id.txt_order_grand_total));
         txt_address_name = ((TextView) findViewById(R.id.txt_address_name));
@@ -185,6 +190,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                             for (int i = 0; i < feedArray1.length(); i++) {
                                 ProductListItem item = new ProductListItem();
                                 JSONObject feedObj1 = (JSONObject) feedArray1.get(i);
+                              //  String subtotal=feedObj1.getString("subtotal");
+                                //String tax=feedObj1.getString("tax");
+                                //String grandtotal=feedObj1.getString("grand_total");
+                                //String discount=feedObj1.getString("discount");
                                 item.setAllproduct_name(feedObj1.getString("name"));
                                 item.setAllproduct_Othername(feedObj1.getString("sku"));
                                 item.setAllproduct_price(feedObj1.getString("price"));
@@ -199,18 +208,20 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                                         item.setAllproduct_id(feedObj2.getString("value"));
                                         dataItem.add(item);
                                     }
-
                                 }
                                 mOrderItemDetailsAdapter = new OrderItemDetailsAdapter(getApplicationContext(),dataItem);
                                 mrecyclerview.setAdapter(mOrderItemDetailsAdapter);
                             }
                         }
+                        txt_order_discount.setText("Rs."+jsonObj1.getString("discount")+"/-");
+                        txt_order_tax.setText("Rs."+jsonObj1.getString("tax")+"/-");
+                        txt_order_sub_total.setText("Rs."+jsonObj1.getString("subtotal")+"/-");
                         txt_order_status.setText(jsonObj1.getString("orderStatus"));
                         txt_order_date.setText(jsonObj1.getString("orderDate"));
                         txt_order_shipping.setText(jsonObj1.getString("shippingMethod"));
                         txt_order_payment.setText(jsonObj1.getString("paymentMethod"));
                         txt_order_item_count.setText(jsonObj1.getString("totalqty"));
-                        txt_order_grand_total.setText("Rs. "+jsonObj1.getString("grand_total"));
+                        txt_order_grand_total.setText("Rs."+jsonObj1.getString("grand_total")+"/-");
                         Log.d("1111111","here");
                         if(jsonObj1.has("delivaryInfo")){
                             JSONObject jsonObj2 = jsonObj1.getJSONObject("delivaryInfo");
@@ -222,14 +233,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                             Toast.makeText(OrderDetailsActivity.this, "no delivery info", Toast.LENGTH_SHORT).show();
                         }
                         Log.d("1111111","here");
-
                         if(jsonObj1.has("shippingAddress")){
                             JSONObject jsonObj2 = jsonObj1.getJSONObject("shippingAddress");
                             txt_address_name.setText(jsonObj2.getString("name"));
-                            /*jsonObj2.getString("city");
-                            jsonObj2.getString("region");
-                            jsonObj2.getString("postcode");
-                            jsonObj2.getString("phone");*/
                             Log.d("1111111","here1");
                             String street=jsonObj2.getString("street");
                             street=street.replaceAll("\"","")

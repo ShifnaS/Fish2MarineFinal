@@ -99,6 +99,10 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
 
         helper = new SqliteHelper(getApplicationContext(), "Fish2Marine", null, 5);
         sPreferences = getSharedPreferences("Fish2Marine", MODE_PRIVATE);
+
+
+
+
         mConfig = new Config(getApplicationContext());
         IntentFilter inF = new IntentFilter("data_changed");
         LocalBroadcastManager.getInstance(this).registerReceiver(dataChangeReceiver,inF);
@@ -121,7 +125,7 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
         updateListner=new UpdateListner() {
             @Override
             public void onClick(int count) {
-                Toast.makeText(ProductViewActivity.this, "count "+count, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ProductViewActivity.this, "count "+count, Toast.LENGTH_SHORT).show();
                // recycleviewInterface.userItemClick(count);
                // InitIdView();
             }
@@ -172,8 +176,17 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
 
         mycart=(ImageView) findViewById(R.id.mycart);
         cartbadge = (Badge)findViewById(R.id.cartbadge);
-        //cartbadge.setText(CartData_Item.get(0).get("cartcount"));
-        cartbadge.setText(sPreferences.getString("CartCount",""));
+        String id=sPreferences.getString("CartCount","");
+       // Toast.makeText(getApplicationContext(), "cartcount "+id, Toast.LENGTH_SHORT).show();
+        if(id.equals("0"))
+        {
+            cartbadge.clear();
+        }
+        else
+        {
+            cartbadge.setText(sPreferences.getString("CartCount",""));
+
+        }
         mycart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,8 +308,11 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
                             for (int i = 0; i < feedArray1.length(); i++) {
                                 ProductListItem item = new ProductListItem();
                                 JSONObject feedObj1 = (JSONObject) feedArray1.get(i);
+                                //item.setneworder_qty();
+                                item.setneworder_qty(feedObj1.getString("beforeCleaning"));
+                                item.setnewcleaned_qty(feedObj1.getString("afterCleaning"));
                                 item.setAllproduct_id(feedObj1.getString("productId"));
-                                item.setAllproduct_name(feedObj1.getString("name")+" / "+feedObj1.getString("cutTypeApplicable")+" / "+feedObj1.getString("productId"));
+                                item.setAllproduct_name(feedObj1.getString("name"));
                                 item.setAllproduct_Othername(feedObj1.getString("NameInMalayalam"));
                                 item.setAllproduct_price(feedObj1.getString("price"));
                                 item.setAllproduct_specialprice(feedObj1.getString("specialPrice"));
@@ -357,7 +373,18 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
         @Override
         public void onReceive(Context context, Intent intent) {
             // update your listview
-            cartbadge.setText(sPreferences.getString("CartCount",""));
+
+            String id=sPreferences.getString("CartCount","");
+           // Toast.makeText(getApplicationContext(), "cartcount1 "+id, Toast.LENGTH_SHORT).show();
+            if(id.equals("0"))
+            {
+                cartbadge.clear();
+            }
+            else
+            {
+                cartbadge.setText(sPreferences.getString("CartCount",""));
+
+            }
         }
     };
     private void back(){

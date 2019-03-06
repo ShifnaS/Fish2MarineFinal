@@ -85,7 +85,10 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
         Log.d("1111221", "Customer ID "+CustomerID);
-
+        final List<HashMap<String, String>> Data_Item;;
+        Data_Item = helper.getCount();
+        String cart_count=Data_Item.get(0).get("cartcount");
+        
         mTitle=(TextView)findViewById(R.id.mTitle);
         mTitle.setText("My Cart");
 
@@ -138,7 +141,13 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                 InitGetCartData();
                 break;
             case R.id.back:
-                onBackPressed();
+                Intent i =new Intent(getApplicationContext(),NavigationDrawerActivity.class);
+                i.putExtra("PAGE","HOME");
+
+                startActivity(i);
+                finish();
+               // onBackPressed();
+               // finish();
                 break;
             case R.id.btn_checkout:
                 Intent intent = new Intent(MyCartActivity.this,Checkout_SetAddress.class);
@@ -427,7 +436,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                                 JSONObject feedObj1 = (JSONObject) feedArray1.get(i);
                                 item.setProductId(feedObj1.getString("productId"));
                                 item.setProductImage(feedObj1.getString("imagepath"));
-                                item.setProductName(feedObj1.getString("productname")+"/"+feedObj1.getString("itemId"));
+                                item.setProductName(feedObj1.getString("productname"));
                                 Log.d("111111", "here3 "+feedObj1.getString("productname"));
                                 item.setOtherName(feedObj1.getString("nameInMalayalam"));
                                 item.setQuantity(feedObj1.getString("qty"));
@@ -504,10 +513,16 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
     }
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(MyCartActivity.this,NavigationDrawerActivity.class);
-        intent.putExtra("PAGE","HOME");
-        startActivity(intent);
+      //  super.onBackPressed();
+        Intent i =new Intent(getApplicationContext(),NavigationDrawerActivity.class);
+          i.putExtra("PAGE","HOME");
+
+        startActivity(i);
         finish();
+      //  Intent intent = new Intent(MyCartActivity.this,NavigationDrawerActivity.class);
+      //  intent.putExtra("PAGE","HOME");
+     //   startActivity(intent);
+     //   finish();
     }
     public interface CartUpdateListner {
         void onClick();

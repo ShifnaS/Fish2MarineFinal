@@ -89,6 +89,8 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         private ImageView edit,delete;
         private LinearLayout layout;
         private FrameLayout layout_indicator;
+        AVLoadingIndicatorView indicator;
+
 
         ViewHolder(final View itemView) {
             super(itemView);
@@ -105,6 +107,8 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
             this.delete = (ImageView) itemView.findViewById(R.id.delete);
             this.layout = (LinearLayout) itemView.findViewById(R.id.layout);
             this.layout_indicator = (FrameLayout) itemView.findViewById(R.id.layout_indicator);
+            indicator=(AVLoadingIndicatorView)itemView.findViewById(R.id.indicator);
+
         }
 
     }
@@ -141,7 +145,7 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
             }
         });
 
-        holder.txt_address_name.setText(item.getFirstname()+" "+item.getLastname()+"/"+item.getAddress_id());
+        holder.txt_address_name.setText(item.getFirstname());
         holder.txt_company.setText(item.getCompany());
         holder.txt_street.setText(item.getStreet1()+","+item.getStreet2());
         holder.txt_city.setText(item.getCity());
@@ -405,6 +409,7 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
 
         Config mConfig = new Config(mContext);
         if(mConfig.isOnline(mContext)){
+
             DeleteAddressInitiate mDeleteAddressInitiate = new DeleteAddressInitiate
                     (AddressID,holder);
             mDeleteAddressInitiate.execute((Void) null);
@@ -426,8 +431,9 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mholder.layout.setVisibility(View.INVISIBLE);
-            mholder.layout_indicator.setVisibility(View.VISIBLE);
+            mholder.indicator.setVisibility(View.VISIBLE);
+
+          //  mholder.layout.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -443,13 +449,14 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
 
         @Override
         protected void onPostExecute(StringBuilder result) {
+            mholder.indicator.setVisibility(View.GONE);
             super.onPostExecute(result);
             try {
                 JSONObject jsonObj = new JSONObject(result.toString());
                 if (jsonObj.has("status")) {
                     if (jsonObj.getString("status").equals(String.valueOf(2))) {
                         mholder.layout.setVisibility(View.VISIBLE);
-                        mholder.layout_indicator.setVisibility(View.GONE);
+
                         CustomToast.info(mContext,jsonObj.getString("message").toString()).show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
                          //Checkout_SetAddress.getInstance().refresh();
@@ -471,23 +478,5 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         }
     }
 
-    private void update(ViewHolder holder){
-       /* LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("data_changed"));
-        NavigationDrawerActivity.getInstance().updateCartCount();*/
 
-        holder.layout.setVisibility(View.VISIBLE);
-        holder.layout_indicator.setVisibility(View.GONE);
-        //CustomToast.success(mContext, "Address deleted position "+holder.getAdapterPosition() ).show();
-        mListItem.remove(holder.getAdapterPosition());
-        notifyDataSetChanged();
-        notifyItemRemoved(holder.getAdapterPosition());
-        notifyItemRangeChanged(holder.getAdapterPosition(), mListItem.size());
-        CustomToast.success(mContext, "Address deleted").show();
-    }
- /*   private void refresh(ViewHolder holder){
-       notifyItemChanged(holder.getAdapterPosition());
-       notifyDataSetChanged();
-       CustomToast.success(mContext, "Address deleted").show();
-    }
-*/
 }

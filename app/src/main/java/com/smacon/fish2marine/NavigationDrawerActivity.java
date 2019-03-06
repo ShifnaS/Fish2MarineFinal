@@ -93,6 +93,7 @@ import com.smacon.fish2marine.Util.HttpOperations;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -118,7 +119,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     private static final int POS_LOGOUT = 8;
     private static final String KEY_REMEMBER = "remember";
     private int subscreensOnTheStack=0;
-
+    private static final String PREF_NAME = "prefs";
+    private static final String KEY_USERNAME = "username";
+    private static final String KEY_PASS = "password";
     private String[] screenTitles;
     private Drawable[] screenIcons;
     LinearLayout layout_drawermenu;
@@ -135,7 +138,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     String CustomerID = "",CustomerName="";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    private static final String PREF_NAME = "prefs";
 
 
 
@@ -177,17 +179,45 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
         CustomerID=SQLData_Item_customer.get(0).get("admin_id");
         CustomerName=SQLData_Item_customer.get(0).get("admin_name");
 
+        String user=sharedPreferences.getString(KEY_USERNAME,"");
+        String pass=sharedPreferences.getString(KEY_PASS,"");
+       // Toast.makeText(mainActivity, "User "+user, Toast.LENGTH_SHORT).show();
+      ///  Toast.makeText(mainActivity, "Pass "+pass, Toast.LENGTH_SHORT).show();
+
+        Intent i=getIntent();
+        if(i.hasExtra("PAGE"))
+        {
+            String val=i.getStringExtra("PAGE");
+            if(val.equals("LOGIN"))
+            {
+
+            }
+            else if(val.equals("HOME"))
+            {
+
+            }
+            else
+            {
+            }
+
+        }
+        else
+        {
+            clearCart();
+
+        }
+
         /*Intent mIntent = getIntent();
-        if(mIntent.hasExtra("PAGE"))
+        if(mIntent.hasExtra("PAGE"))n
         {
             mAction = mIntent.getExtras().getString("PAGE");
 
-        }
+        }n
         if(mAction.equals("CART"))
         {
-            Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
+            Intent i=new Intent(getApplicationContext(),MyCartAcfkjksfjksjfkdfjksjfktivity.class);
             startActivity(i);
-            finish();
+            finish();skfjkfjkfjkdjfksjfsijkejfksdjfkfjksfjkdfjkjjkjf
         }*/
 
         SQLData_Item = helper.getCount();
@@ -243,7 +273,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 startActivity(intent);
                 overridePendingTransition(R.anim.bottom_up,
                         android.R.anim.fade_out);
-               // finish();
+                finish();
             }
         });
         fg_title.setText("Fish2Marine");
@@ -314,6 +344,18 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
 
     }
 
+
+
+    private void clearCart() {
+        if(mConfig.isOnline(getApplicationContext())){
+            UserLoginTask userLoginTask = new UserLoginTask(CustomerID);
+            userLoginTask.execute((Void) null);
+
+        }else {
+            CustomToast.error(getApplicationContext(),"No Internet Connection.").show();
+        }
+    }
+
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
@@ -335,8 +377,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
             Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById(placeId);
             placeResult.addOnCompleteListener(mUpdatePlaceDetailsCallback);
 
-            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
-                    Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
+                   // Toast.LENGTH_SHORT).show();
             Log.d("111111Place2", "Called getPlaceById to get Place details for " + placeId);
         }
     };
@@ -715,6 +757,90 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
             }
         }
     }
+
+    public class UserLoginTask extends AsyncTask<Void, String, String> {
+
+        JSONObject jsondata;
+        private String id;
+
+        UserLoginTask(String id) {
+            this.id = id;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mConfig.savePreferences(getApplicationContext(),"id",
+                    id.toString().trim());
+
+
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String Status = "";
+            HttpOperations httpOperations = new HttpOperations(getBaseContext());
+            StringBuilder result = httpOperations.clearCart(id);
+            Log.d("111111", "API_CLEAR_CART_RESPONSE " + result);
+            Log.d("111111", "PASIING_VALUE " + id);
+
+            try {
+
+                JSONObject jsonObj = new JSONObject(result.toString());
+                if (jsonObj.has("status")) {
+                    if (jsonObj.getInt("status")==0) {
+                        Status = "404";
+                    }else if (jsonObj.getInt("status")==1) {
+
+                       // SharedPreferences.Editor editor = sPreferences.edit();
+
+
+                        Status="200";
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Status = "400";
+            }catch (NullPointerException e) {
+                e.printStackTrace();
+                Status = "401";
+            }catch (Exception e) {
+                e.printStackTrace();
+                Status = "400";
+            }
+            return Status;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(result.equals("404")){
+                CustomToast.error(getApplicationContext(),"Invalid Data").show();
+               // buttonVisible();
+            }else if(result.equals("401")){
+               // buttonVisible();
+                CustomToast.error(getApplicationContext(),"No Internet Connection.").show();
+            }else if(result.equals("400")){
+              //  buttonVisible();
+                CustomToast.info(getApplicationContext(),"Please try again").show();
+            }else if(result.equals("200")){
+                SharedPreferences sPreferences =getSharedPreferences("Fish2Marine",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sPreferences.edit();
+                editor.remove("CartCount");
+                //editor.putString("CartCount","0");
+                editor.apply();
+                String id=sPreferences.getString("CartCount","");
+                cartbadge.clear();
+               // Toast.makeText(NavigationDrawerActivity.this, "Cart cleared ", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+
+
 
 
 }

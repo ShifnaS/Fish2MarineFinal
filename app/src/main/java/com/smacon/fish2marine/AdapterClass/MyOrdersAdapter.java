@@ -49,6 +49,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter {
 
         final AllListItem dataItem = mitems.get(position);
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
+        myViewHolder.txt_order_name.setText(dataItem.getCreated());
         myViewHolder.txt_order_id.setText("Order No: "+dataItem.getReward_id());
         myViewHolder.txt_order_date.setText("Date: "+dataItem.getComment());
         if(dataItem.getPoints().equals("Pending")){
@@ -98,13 +99,15 @@ public class MyOrdersAdapter extends RecyclerView.Adapter {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txt_order_id,txt_order_date,txt_order_status,txt_order_amount;
+        public TextView txt_order_id,txt_order_date,txt_order_status,txt_order_amount,txt_order_name;
         public CardView orderitem;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             //cardview = (CardView) itemView.findViewById(R.id.cardview);
+            txt_order_name = (TextView) itemView.findViewById(R.id.txt_order_name);
+
             txt_order_id = (TextView) itemView.findViewById(R.id.txt_order_id);
             txt_order_date = (TextView) itemView.findViewById(R.id.txt_order_date);
             txt_order_status = (TextView) itemView.findViewById(R.id.txt_order_status);

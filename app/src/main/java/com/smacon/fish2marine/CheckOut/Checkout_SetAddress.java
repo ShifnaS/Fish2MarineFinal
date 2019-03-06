@@ -198,7 +198,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                 back();
                 break;
             case R.id.next:
-                Toast.makeText(addressActivity, "Step "+STEP, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(addressActivity, "Step "+STEP, Toast.LENGTH_SHORT).show();
                 if(STEP=="SHIPPING_METHOD") {
                     lay_delivery_address.setVisibility(View.GONE);
                     lay_shipping_method.setVisibility(View.GONE);
@@ -209,7 +209,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                 }
                 else if(STEP=="PAYMENT_METHOD"){
                     if (!paymentmethod_code.equals("")){
-                        Toast.makeText(addressActivity," init payment method", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(addressActivity," init payment method", Toast.LENGTH_SHORT).show();
                         InitPaymentMode();
                     }
                     else {
@@ -262,7 +262,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                 if(ChildView != null && gestureDetector.onTouchEvent(motionEvent)) {
 
                     RecyclerViewItemPosition = Recyclerview.getChildAdapterPosition(ChildView);
-                    Toast.makeText(Checkout_SetAddress.this, dataItem.get(RecyclerViewItemPosition).getFirstname(), Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(Checkout_SetAddress.this, dataItem.get(RecyclerViewItemPosition).getFirstname(), Toast.LENGTH_SHORT).show();
                     txt_address_name.setText(dataItem.get(RecyclerViewItemPosition).getFirstname()+" "+
                             dataItem.get(RecyclerViewItemPosition).getLastname());
                     //item.setAddress_id(feedObj1.getString("id"));
@@ -379,7 +379,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                                                     //delivery_isavailable=is_available;
                                                     delivery_slot_id=slot_id;
                                                     delivery_slot_group=slot_group;
-                                                    CustomToast.info(getApplicationContext(),"Slot is: "+delivery_slot+" "+delivery_date).show();
+                                                   // CustomToast.info(getApplicationContext(),"Slot is: "+delivery_slot+" "+delivery_date).show();
                                                 }
                                             });
 
@@ -412,7 +412,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
     }
 
     private void InitShippingMethod(String address_id){
-        Toast.makeText(addressActivity, " "+address_id+"   "+sPreferences.getString("CartID",""), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(addressActivity, " "+address_id+"   "+sPreferences.getString("CartID",""), Toast.LENGTH_SHORT).show();
         Config mConfig = new Config(getApplicationContext());
         if(mConfig.isOnline(getApplicationContext())){
             LoadShippingMethodInitiate mLoadShippingMethodInitiate = new LoadShippingMethodInitiate(address_id,sPreferences.getString("CartID",""));
@@ -920,7 +920,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         +txt_city.getText().toString()+",\n"+txt_state_pin.getText().toString()+",\n"
         +"India"+",\n"+txt_phone.getText().toString();
 
-        CustomToast.info(getApplicationContext(),"data "+FullAddress).show();
+        //CustomToast.info(getApplicationContext(),"data "+FullAddress).show();
 
         String s3=txt_state_pin.getText().toString();
         String[] state_pin = s3.split("\\,"); // escape .
@@ -979,7 +979,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         map2.put("city",txt_city.getText().toString());
         map2.put("firstname", firstname);
         map2.put("lastname", lastname);
-        map2.put("saveInAddressBook", "1");
+        map2.put("saveInAddressBook", "0");
         billing_fillMaps2.add(0,map2);
 
         JSONArray billingjsonAraay = new JSONArray(billing_fillMaps2);
@@ -1053,7 +1053,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         laststring = laststring.replace("[{", "{").replace("}]","}")
                 .replace("=",":");
         Log.d("1111111","final String: "+laststring);
-        CustomToast.info(getApplicationContext(),"data "+laststring).show();
+        //CustomToast.info(getApplicationContext(),"data "+laststring).show();
 
         InitShippingInformation(laststring);
 
@@ -1117,7 +1117,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                             public void onClick(View v) {
                                 paymentmethod_code = paymentCode;
                                 paymentmethod_title=paymentTitle;
-                                CustomToast.info(getApplicationContext(),"Payment code is: "+paymentmethod_code+" "+paymentmethod_title).show();
+                              //  CustomToast.info(getApplicationContext(),"Payment code is: "+paymentmethod_code+" "+paymentmethod_title).show();
                             }
                         });
                         paymentradiogroup.addView(rdbtn);

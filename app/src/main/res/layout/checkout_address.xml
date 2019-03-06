@@ -334,7 +334,7 @@
                         android:textSize="18dp"
                         android:textStyle="bold"
                         android:textColor="@color/colorGrayDark"
-                        android:text="Choose Delivery Address" />
+                        android:text="Choose Delivery Time" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"

@@ -340,7 +340,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
                                     txt_product_stock.setText("In Stock: "+feedObj1.getString("inStock"));
                                     txt_product_stock.setTextColor(getResources().getColor(R.color.colorAccentsecond));
                                 }
-                                txt_product_price.setText(""+feedObj1.getString("price"));
+                                txt_product_price.setText(""+feedObj1.getString("price")+"/0.5kg");
                                 if (feedObj1.getString("specialPrice").equals("")||feedObj1.getString("specialPrice").equals("0")){
                                     layout_specialPrice.setVisibility(View.GONE);
                                 }

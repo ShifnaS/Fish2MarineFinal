@@ -65,6 +65,7 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
     String Status;
     ProductViewActivity.UpdateListner updateListner;
 
+
     public AllProductsGridAdapter(Activity mContext, List<ProductListItem> items, String CustomerID, ProductViewActivity.UpdateListner updateListner) {
         this.mitems = items;
         this.mContext = mContext;
@@ -94,6 +95,9 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
         final ProductListItem dataItem = mitems.get(position);
         final MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
         myViewHolder.txt_product_name.setText(dataItem.getAllproduct_name());
+
+        myViewHolder.OrderQty=mitems.get(position).getneworder_qty();
+        myViewHolder.AfterQty=mitems.get(position).getnewcleaned_qty();
 
         myViewHolder.group.removeAllViews();
         LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
@@ -168,17 +172,68 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 int number = Integer.parseInt(myViewHolder.txt_quantity.getText().toString()) + 1;
                 myViewHolder.txt_quantity.setText(String.valueOf(number));
+                Double orderqty=Double.parseDouble(myViewHolder.OrderQty)*Double.parseDouble(myViewHolder.txt_quantity.getText().toString());
+
+                if(orderqty>=1000){
+                    Double value=orderqty/1000;
+                    myViewHolder.txt_ordered_qty.setText("Order Qty: "+value+"kg");
+                }
+                else {
+                    myViewHolder.txt_ordered_qty.setText("Order Qty: "+orderqty+"gm");
+                }
+
+                Double afterqty=Double.parseDouble(myViewHolder.AfterQty)*Double.parseDouble(myViewHolder.txt_quantity.getText().toString());
+                //  if(afterqty<=500){
+                //     holder.txt_cleaned_qty.setText("After Cleaning: "+mListItem.get(position).getnewcleaned_qty()+"gm");
+                //  }
+                if(afterqty>=1000){
+                    Double value=afterqty/1000;
+                    myViewHolder.txt_cleaned_qty.setText("After Cleaning: "+value+"kg");
+                }
+                else {
+                    myViewHolder.txt_cleaned_qty.setText("After Cleaning: "+afterqty+"gm");
+                }
+
+
+
             }
         });
 
         myViewHolder.img_minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Integer.parseInt(myViewHolder.txt_quantity.getText().toString()) >= 1  ){
+                if (Integer.parseInt(myViewHolder.txt_quantity.getText().toString()) >= 2  ){
                     int number = Integer.parseInt(myViewHolder.txt_quantity.getText().toString()) - 1;
                     myViewHolder.txt_quantity.setText(String.valueOf(number));
 
                 }
+
+              /*  if (Integer.parseInt(holder.Quantity.getText().toString()) >= 2) {
+                    int number = Integer.parseInt(holder.Quantity.getText().toString()) - 1;
+                    holder.Quantity.setText(String.valueOf(number));
+                }*/
+                Double orderqty=Double.parseDouble(myViewHolder.OrderQty)*Double.parseDouble(myViewHolder.txt_quantity.getText().toString());
+                if(orderqty>=1000){
+                    Double value=orderqty/1000;
+                    myViewHolder.txt_ordered_qty.setText("Order Qty: "+value+"kg");
+                }
+                else {
+                    myViewHolder.txt_ordered_qty.setText("Order Qty: "+orderqty+"gm");
+                }
+
+                Double afterqty=Double.parseDouble(myViewHolder.AfterQty)*Double.parseDouble(myViewHolder.txt_quantity.getText().toString());
+                //  if(afterqty<=500){
+                //     holder.txt_cleaned_qty.setText("After Cleaning: "+mListItem.get(position).getnewcleaned_qty()+"gm");
+                //  }
+                if(afterqty>=1000){
+                    Double value=afterqty/1000;
+                    myViewHolder.txt_cleaned_qty.setText("After Cleaning: "+value+"kg");
+                }
+                else {
+                    myViewHolder.txt_cleaned_qty.setText("After Cleaning: "+afterqty+"gm");
+                }
+
+
 
             }
         });
@@ -252,6 +307,8 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
         TextView btn_ok;
         LinearLayout layout_cutype;
         String mCuttypeValue = "";
+        String OrderQty,AfterQty;
+
 
         private MyViewHolder(View itemView) {
             super(itemView);

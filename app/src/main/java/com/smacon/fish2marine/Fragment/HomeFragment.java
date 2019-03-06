@@ -167,7 +167,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
             @Override
             public void onClick(View v) {
 
-               /* final Dialog dialog;
+               /*final Dialog dialog;
                 dialog=new Dialog(getActivity());
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -475,7 +475,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                     ProductListItem item = new ProductListItem();
                                     JSONObject feedObj = (JSONObject) feedArray.get(i);
                                     item.setnewproduct_image(feedObj.getString("imagepath"));
-                                    item.setnewproduct_name(feedObj.getString("name")+" / "+feedObj.getString("cutTypeApplicable"));
+                                    item.setnewproduct_name(feedObj.getString("name"));
                                     item.setnewproduct_Othername(feedObj.getString("NameInMalayalam"));
                                     item.setnewproduct_id(feedObj.getString("productId"));
                                     item.setnewproduct_price(feedObj.getString("price"));
@@ -517,7 +517,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                     ProductListItem item = new ProductListItem();
                                     JSONObject feedObj = (JSONObject) feedArray.get(i);
                                     item.setfeaturedproduct_image(feedObj.getString("imagepath"));
-                                    item.setfeaturedproduct_name(feedObj.getString("name")+" / "+feedObj.getString("cutTypeApplicable"));
+                                    item.setfeaturedproduct_name(feedObj.getString("name"));
                                     item.setfeaturedproduct_Othername(feedObj.getString("NameInMalayalam"));
                                     item.setfeaturedproduct_id(feedObj.getString("productId"));
                                     item.setfeaturedproduct_price(feedObj.getString("price"));
@@ -561,7 +561,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                     ProductListItem item = new ProductListItem();
                                     JSONObject feedObj = (JSONObject) feedArray.get(i);
                                     item.setbestsellerproduct_image(feedObj.getString("imagepath"));
-                                    item.setbestsellerproduct_name(feedObj.getString("name")+" / "+feedObj.getString("cutTypeApplicable"));
+                                    item.setbestsellerproduct_name(feedObj.getString("name"));
                                     item.setbestsellerproduct_Othername(feedObj.getString("NameInMalayalam"));
                                     item.setbestsellerproduct_id(feedObj.getString("productId"));
                                     item.setbestsellerproduct_price(feedObj.getString("price"));

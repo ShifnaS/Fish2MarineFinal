@@ -73,8 +73,8 @@ public class WebViewActivity extends AppCompatActivity {
         access_code=mainIntent.getStringExtra(AvenuesParams.ACCESS_CODE);
         email=sharedPreferences.getString(KEY_USERNAME,"");
         //get rsa key method
-        Toast.makeText(this, "Access_Code "+mainIntent.getStringExtra(AvenuesParams.ACCESS_CODE), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Order_number "+mainIntent.getStringExtra(AvenuesParams.ORDER_NUMBER), Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(this, "Access_Code "+mainIntent.getStringExtra(AvenuesParams.ACCESS_CODE), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Order_number "+mainIntent.getStringExtra(AvenuesParams.ORDER_NUMBER), Toast.LENGTH_SHORT).show();
 
         Log.e("11111","ACCESS_CODE "+mainIntent.getStringExtra(AvenuesParams.ACCESS_CODE));
         Log.e("11111","ORDER_NUMBER "+mainIntent.getStringExtra(AvenuesParams.ORDER_NUMBER));
@@ -142,7 +142,7 @@ public class WebViewActivity extends AppCompatActivity {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(webview, url);
-                    Toast.makeText(WebViewActivity.this, "URL "+url+" WEBVIEW "+view.getUrl() , Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(WebViewActivity.this, "URL "+url+" WEBVIEW "+view.getUrl() , Toast.LENGTH_SHORT).show();
                     if(url.indexOf("r_en/payment/Index/success")!=-1) {
                         Log.d("URL", "11111 " + webview.getUrl());
                         Intent i = new Intent(WebViewActivity.this, SuccessActivity.class);
@@ -167,7 +167,7 @@ public class WebViewActivity extends AppCompatActivity {
                     }
 
                     else if(url.indexOf("/ccavResponseHandler.jsp")!=-1){
-                        Toast.makeText(WebViewActivity.this, "here2", Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(WebViewActivity.this, "here2", Toast.LENGTH_SHORT).show();
                         webview.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
                     }
 
@@ -221,7 +221,7 @@ public class WebViewActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(WebViewActivity.this,response,Toast.LENGTH_LONG).show();
+                       // Toast.makeText(WebViewActivity.this,response,Toast.LENGTH_LONG).show();
                         LoadingDialog.cancelLoading();
 
                         if (response != null && !response.equals("")) {

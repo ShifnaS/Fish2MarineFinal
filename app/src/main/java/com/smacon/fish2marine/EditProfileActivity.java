@@ -56,6 +56,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private LinearLayout lay_change_password;
     Dialog dialog;
     AVLoadingIndicatorView loading;
+    String fname , lname , email, phone ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,10 +196,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void processSaveChanges(){
 
-        String fname = Utilities.getTrimText(edt_fname_profile);
-        String lname = Utilities.getTrimText(edt_lname_profile);
-        String email = Utilities.getTrimText(edt_email_profile);
-        String phone = Utilities.getTrimText(edt_mobile_profile);
+         fname = Utilities.getTrimText(edt_fname_profile);
+         lname = Utilities.getTrimText(edt_lname_profile);
+         email = Utilities.getTrimText(edt_email_profile);
+         phone = Utilities.getTrimText(edt_mobile_profile);
         String cur_pass = Utilities.getTrimText(edt_current_password);
         String new_pass = Utilities.getTrimText(edt_new_password);
         String new_confirm_pass = Utilities.getTrimText(edt_new_confirm_password);
@@ -398,11 +399,16 @@ public class EditProfileActivity extends AppCompatActivity {
     public void back2(){
         //  chk_change_password.setChecked(false);
 
-        // Intent intent = new Intent(getApplicationContext(),EditProfileActivity.class);
-        Intent intent = getIntent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
+        Intent intent = new Intent(getApplicationContext(),EditProfileActivity.class);
+        intent.putExtra("FIRSTNAME",fname);
+        intent.putExtra("LASTNAME",lname);
+        intent.putExtra("EMAIL",email);
+        intent.putExtra("MOBILE",phone);
+        intent.putExtra("CHECKED","FALSE");
         startActivity(intent);
+    //    finish();mcustomerid,mfirstname, mlastname,
+        //                    memail,mmobile,mreset,moldpass,mnewpassfname , lname , email, phone
+
         // intent.putExtra("PROFILE","");
         //   startActivity(intent);
         // NavigationDrawerActivity.getInstance().onItemSelected(5);

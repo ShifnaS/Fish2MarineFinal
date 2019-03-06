@@ -254,7 +254,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("111111",task.getException().getMessage());
                 Log.d("111111",e.getMessage());
 
-                Toast.makeText(LoginActivity.this,"error"+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -377,7 +377,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            CustomToast.error(LoginActivity.this,""+task.getException());
+                         //   CustomToast.error(LoginActivity.this,""+task.getException());
                             CustomToast.error(LoginActivity.this, "Authentication failed.").show();
 
                         }
@@ -497,6 +497,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             fillMaps.add(map);
 
                         }
+                        editor.putString("user_idd",  jsonObj1.getString("customerId").trim());
+                        editor.apply();
                         helper.Insert_admin_details(fillMaps);
                         final List<HashMap<String, String>> Data_Item;
                         Data_Item = helper.getadmindetails();
@@ -613,6 +615,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             fillMaps.add(map);
 
                         }
+                        editor.putString("user_idd",  jsonObj1.getString("customerId").trim());
+                        editor.apply();
                         helper.Insert_admin_details(fillMaps);
                         final List<HashMap<String, String>> Data_Item;
                         Data_Item = helper.getadmindetails();
@@ -745,5 +749,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
 

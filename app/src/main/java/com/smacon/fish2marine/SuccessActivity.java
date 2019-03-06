@@ -31,7 +31,14 @@ public class SuccessActivity extends AppCompatActivity {
         continue_shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
+
+                SharedPreferences.Editor editor = sPreferences.edit();
+                editor.remove("CartCount");
+                editor.apply();
+
+                Intent i=new Intent(getApplicationContext(),NavigationDrawerActivity.class);
+                i.putExtra("PAGE","HOME");
+
                 startActivity(i);
                 finish();
             }
@@ -41,8 +48,5 @@ public class SuccessActivity extends AppCompatActivity {
         mOrderId=intent.getExtras().getString("ORDER_NUMBER");
         orderno.setText(mOrderId);
 
-        SharedPreferences.Editor editor = sPreferences.edit();
-        editor.remove("CartCount");
-        editor.apply();
     }
 }

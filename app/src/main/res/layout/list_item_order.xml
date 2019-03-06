@@ -24,12 +24,24 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
                 <TextView
-                    android:id="@+id/txt_order_id"
+                    android:id="@+id/txt_order_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/colorGrayDark"
                     android:textSize="@dimen/normal_text_size"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="Ordername"
+                    android:textStyle="bold"
+                    android:padding="5dp"/>
+                <TextView
+                    android:id="@+id/txt_order_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorGrayDark"
+                    android:textSize="15sp"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="456666666666666"

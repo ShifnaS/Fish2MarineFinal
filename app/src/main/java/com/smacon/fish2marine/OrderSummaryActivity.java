@@ -421,7 +421,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
                                 JSONObject feedObj1 = (JSONObject) feedArray1.get(i);
                                 item.setProductId(feedObj1.getString("productId"));
                                 item.setProductImage(feedObj1.getString("imagepath"));
-                                item.setProductName(feedObj1.getString("productname")+"/"+feedObj1.getString("itemId"));
+                                item.setProductName(feedObj1.getString("productname"));
                                 Log.d("111111", "here3 "+feedObj1.getString("productname"));
                                 item.setOtherName(feedObj1.getString("nameInMalayalam"));
                                 item.setQuantity(feedObj1.getString("qty"));

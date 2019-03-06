@@ -290,7 +290,7 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
         holder.Addtocart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "hihihihi", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mContext, "hihihihi", Toast.LENGTH_SHORT).show();
                // Log.d("111111111","Cart centerID "+sPreferences.getString("DeliveryCenter_ID",""));
                 //Log.d("111111111","cuttypeapplicable "+mListItem.get(position).getnewcuttype_applicable());
 

@@ -73,6 +73,7 @@ public class HttpOperations {
         API_UPDATECART("V1/updatecart", "POST"),
         API_USERLOCATION("V1/userlocation", "POST"),
         API_LOGIN("V1/login", "POST"),
+        API_CLEARCART("V1/clearcart", "POST"),
         API_SOCIAL_LOGIN("V1/sociallogin", "POST"),
         API_DASHBOARD("V1/dashboard", "GET");
 
@@ -356,9 +357,16 @@ public class HttpOperations {
         params.put("pass", password);
         return sendRequest(params, APIS.API_LOGIN, "","");
     }
-    // Registration
-    public StringBuilder doUserRegistration(final String firstname, final String lastname, final String mobile,final String email,final String password) {
+    //Login
+    public StringBuilder clearCart(final String id) {
         HashMap<String, String> params = new HashMap<String, String>();
+        params.put("id", id);
+        return sendRequest(params, APIS.API_CLEARCART, "","");
+    }
+    // Registration
+    public StringBuilder doUserRegistration(int subchecked,final String firstname, final String lastname, final String mobile,final String email,final String password) {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("subchecked",""+subchecked);
         params.put("firstname", firstname);
         params.put("lastname", lastname);
         params.put("mobile", mobile);
