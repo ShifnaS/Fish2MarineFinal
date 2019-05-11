@@ -128,25 +128,25 @@ public class WebViewActivity extends AppCompatActivity {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(webview, url);
-                //    Toast.makeText(WebViewActivity.this, "URL "+url+" WEBVIEW "+view.getUrl() , Toast.LENGTH_SHORT).show();
-                    Log.e("111111","Web URL "+url);
-                      if(url.indexOf("http://www.fish2marine.com/payment/index/cancel")!=-1)
+                    Log.d("111111", "URL " + webview.getUrl());
+
+                    //    Toast.makeText(WebViewActivity.this, "URL "+url+" WEBVIEW "+view.getUrl() , Toast.LENGTH_SHORT).show();
+                    if(url.indexOf("payment/Index/success")!=-1) {
+                        Log.d("URL", "11111 " + webview.getUrl());
+                        Intent i = new Intent(WebViewActivity.this, SuccessActivity.class);
+                        i.putExtra("ORDER_NUMBER", order_num);
+                        //  i.putExtra("FROM_CHECKOUT", false);
+                        startActivity(i);
+                        finish();
+                    }
+                    else if(url.indexOf("payment/Index/cancel")!=-1)
                     {
                         Intent intent = new Intent(getApplicationContext(),StatusActivity.class);
                         intent.putExtra("transStatus", "Payment Cancelled");
                         startActivity(intent);
                         finish();
                     }
-                      else if(url.indexOf("https://www.fish2marine.com/payment/index")!=-1) {
-                        Log.d("URL", "11111 " + webview.getUrl());
-                        Intent i = new Intent(WebViewActivity.this, SuccessActivity.class);
-                        i.putExtra("ORDER_NUMBER", order_num);
-                      //  i.putExtra("FROM_CHECKOUT", false);
-                        startActivity(i);
-                        finish();
-                    }
-
-                    else if(url.indexOf("https://www.fish2marine.com/payment/index/failed")!=-1)
+                    else if(url.indexOf("payment/Index/failed")!=-1)
                     {
                         Intent intent = new Intent(getApplicationContext(),StatusActivity.class);
                         intent.putExtra("transStatus", "Payment Failed");
@@ -155,7 +155,7 @@ public class WebViewActivity extends AppCompatActivity {
                     }
 
                     else if(url.indexOf("/ccavResponseHandler.jsp")!=-1){
-                     //   Toast.makeText(WebViewActivity.this, "here2", Toast.LENGTH_SHORT).show();
+                           Toast.makeText(WebViewActivity.this, "here2", Toast.LENGTH_SHORT).show();
                         webview.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
                     }
 

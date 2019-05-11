@@ -295,12 +295,25 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ViewHolder
                         final List<HashMap<String, String>> Data_Item;
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
-                        mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));
+                        if(Data_Item.get(0).get("cartcount").equals("0"))
+                        {
+                            SharedPreferences.Editor editor = sPreferences.edit();
+                            editor.remove("CartCount");
+                            editor.apply();
 
-                        Intent i =new Intent( mContext, MyCartActivity.class);
-                        mContext.startActivity(i);
+                        }
+                        else
+                        {
+                            mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));
+
+                        }
+
+
                         updatecartcount(mholder);
                         Log.d("111111111",sPreferences.getString("CartCount",""));
+                        Intent i =new Intent( mContext, MyCartActivity.class);
+                        mContext.startActivity(i);
+
 
                     }
                 }

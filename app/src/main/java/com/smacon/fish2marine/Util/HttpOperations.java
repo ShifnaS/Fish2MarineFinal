@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 public class HttpOperations {
 
-   // public final String SERVER_URL = "http://dev.fish2marine.com/rest/";
+   //public final String SERVER_URL = "http://dev.fish2marine.com/rest/";
      public final String SERVER_URL = "https://www.fish2marine.com/rest/";
 
 

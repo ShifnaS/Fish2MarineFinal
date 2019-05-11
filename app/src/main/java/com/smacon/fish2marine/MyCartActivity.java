@@ -51,7 +51,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
     int RewardPoints;
     private Switcher switcher;
     private RecyclerView mrecyclerview;
-    private TextView mTitle,error_label_retry, empty_label_retry,carttotal,applyrewards,applycoupon,itemcount,subtotal,shipping,tax,grandtotal;
+    private TextView mTitle,discount, error_label_retry, empty_label_retry,carttotal,applyrewards,applycoupon,itemcount,subtotal,shipping,tax,grandtotal;
     ArrayList<CartListItem> dataItem;
     ImageView back;
     Button btn_checkout;
@@ -72,7 +72,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
        /* cartUpdateListner=new CartUpdateListner() {
             @Override
             public void onClick() {
@@ -85,8 +85,11 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
         Log.d("1111221", "Customer ID "+CustomerID);
-
-        mTitle=(TextView)findViewById(R.id.mTitle);
+        final List<HashMap<String, String>> Data_Item;
+        Data_Item = helper.getCount();
+       // String cart_count=Data_Item.get(0).get("cartcount");
+        
+        mTitle= findViewById(R.id.mTitle);
         mTitle.setText("My Cart");
 
         switcher = new Switcher.Builder(getApplicationContext())
@@ -96,29 +99,29 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                 .setEmptyLabel((TextView) findViewById(R.id.empty_label))
                 .addEmptyView( findViewById(R.id.empty_view))
                 .build();
-        sub_layout=((LinearLayout)findViewById(R.id.sub_layout));
-        main_layout=((LinearLayout)findViewById(R.id.main_layout));
-        mrecyclerview = ((RecyclerView) findViewById(R.id.mrecyclerview));
+        sub_layout= findViewById(R.id.sub_layout);
+        main_layout= findViewById(R.id.main_layout);
+        mrecyclerview = findViewById(R.id.mrecyclerview);
         mrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        discount=findViewById(R.id.discount);
+        carttotal = findViewById(R.id.CartTotal);
+        applycoupon = findViewById(R.id.applycoupon);
+        applyrewards = findViewById(R.id.applyrewards);
+        btn_checkout= findViewById(R.id.btn_checkout);
+        itemcount = findViewById(R.id.itemcount);
+        subtotal = findViewById(R.id.subtotal);
+        shipping = findViewById(R.id.shipping);
+        tax = findViewById(R.id.tax);
+        grandtotal = findViewById(R.id.grandtotal);
 
-        carttotal = ((TextView)  findViewById(R.id.CartTotal));
-        applycoupon = ((TextView) findViewById(R.id.applycoupon));
-        applyrewards = ((TextView) findViewById(R.id.applyrewards));
-        btn_checkout=((Button) findViewById(R.id.btn_checkout));
-        itemcount = ((TextView)  findViewById(R.id.itemcount));
-        subtotal = ((TextView) findViewById(R.id.subtotal));
-        shipping = ((TextView)  findViewById(R.id.shipping));
-        tax = ((TextView) findViewById(R.id.tax));
-        grandtotal = ((TextView) findViewById(R.id.grandtotal));
-
-        error_label_retry = ((TextView)  findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView) findViewById(R.id.empty_label_retry));
+        error_label_retry = findViewById(R.id.error_label_retry);
+        empty_label_retry = findViewById(R.id.empty_label_retry);
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
         btn_checkout.setOnClickListener(this);
         applycoupon.setOnClickListener(this);
         applyrewards.setOnClickListener(this);
-        back=(ImageView) findViewById(R.id.back);
+        back= findViewById(R.id.back);
         back.setOnClickListener(this);
 
         dataItem = new ArrayList<>();
@@ -138,11 +141,18 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                 InitGetCartData();
                 break;
             case R.id.back:
-                onBackPressed();
+                Intent i =new Intent(getApplicationContext(),NavigationDrawerActivity.class);
+                i.putExtra("PAGE","HOME");
+
+                startActivity(i);
+                finish();
+               // onBackPressed();
+               // finish();
                 break;
             case R.id.btn_checkout:
                 Intent intent = new Intent(MyCartActivity.this,Checkout_SetAddress.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.applycoupon:
                 final NiftyDialogBuilder coupondialog=NiftyDialogBuilder.getInstance(this);
@@ -161,7 +171,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                         .setButton1Click(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final EditText discountcoupon=(EditText)coupondialog.findViewById(R.id.discountcoupon);
+                                final EditText discountcoupon= coupondialog.findViewById(R.id.discountcoupon);
                                 if(discountcoupon.getText().toString().equals("")){
                                     //comment.setError("Comment should not be blank");
                                     CustomToast.error(v.getContext(), "Coupon should not be blank", Toast.LENGTH_SHORT).show();
@@ -197,7 +207,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                         .setButton1Click(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final EditText rewards=(EditText)rewarddialog.findViewById(R.id.rewardpoints);
+                                final EditText rewards= rewarddialog.findViewById(R.id.rewardpoints);
 
                                 if(rewards.getText().toString().equals("")){
                                     //comment.setError("Comment should not be blank");
@@ -282,16 +292,22 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
             progressdialog.cancel();
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
-                if (jsonObj0.has("status")) {
-                    if (jsonObj0.getString("status").equals(String.valueOf(1))) {
+                Log.d("111111", "DATA1 "+jsonObj0.toString());
+
+                if (jsonObj0.has("success")) {
+                    if (jsonObj0.getInt("success")==1) {
                         switcher.showContentView();
                         sub_layout.setVisibility(View.VISIBLE);
-                        Log.d("111111", "here0 ");
-                        JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
-                        Intent i =new Intent(getApplicationContext(),MyCartActivity.class);
+                       // JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                        CustomToast.info(MyCartActivity.this, ""+jsonObj0.getString("message"), Toast.LENGTH_SHORT).show();
+
+                        Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
                         startActivity(i);
+
                     }else {
-                        switcher.showEmptyView();
+                        CustomToast.info(MyCartActivity.this, ""+jsonObj0.getString("message"), Toast.LENGTH_SHORT).show();
+
+                        // switcher.showEmptyView();
                     }
                 }
             } catch (JSONException e) {
@@ -339,16 +355,22 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
             progressdialog.cancel();
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
+                Log.d("111111", "DATA "+jsonObj0);
+
                 if (jsonObj0.has("status")) {
-                    if (jsonObj0.getString("status").equals(String.valueOf(1))) {
+                    if (jsonObj0.getInt("status")==1) {
                         switcher.showContentView();
                         sub_layout.setVisibility(View.VISIBLE);
-                        Log.d("111111", "here0 ");
-                        JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                        //JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                      //  String msg=jsonObj1
                         Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
                         startActivity(i);
                     }else {
-                        switcher.showEmptyView();
+                     //   Toast.makeText(MyCartActivity.this, "Invalid Coupon Code", Toast.LENGTH_SHORT).show();
+                       // switcher.showEmptyView();
+                        CustomToast.info(MyCartActivity.this, "Invalid Coupon Code", Toast.LENGTH_SHORT).show();
+
+                     //   CustomToast(MyCartActivity.this, "Invalid Coupon Code").show();
                     }
                 }
             } catch (JSONException e) {
@@ -414,7 +436,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                                 JSONObject feedObj1 = (JSONObject) feedArray1.get(i);
                                 item.setProductId(feedObj1.getString("productId"));
                                 item.setProductImage(feedObj1.getString("imagepath"));
-                                item.setProductName(feedObj1.getString("productname")+"/"+feedObj1.getString("itemId"));
+                                item.setProductName(feedObj1.getString("productname"));
                                 Log.d("111111", "here3 "+feedObj1.getString("productname"));
                                 item.setOtherName(feedObj1.getString("nameInMalayalam"));
                                 item.setQuantity(feedObj1.getString("qty"));
@@ -440,6 +462,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                             itemcount.setText(jsonObj2.getString("itemsCount"));
                             shipping.setText(jsonObj2.getString("shipping"));
                             tax.setText(jsonObj2.getString("tax"));
+                            discount.setText(jsonObj2.getString("discount"));
                             grandtotal.setText(jsonObj2.getString("grandTotal"));
                             RewardPoints=jsonObj2.getInt("rewardbalancepoints");
                             if(jsonObj2.has("slots")){
@@ -491,10 +514,16 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
     }
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(MyCartActivity.this,NavigationDrawerActivity.class);
-        intent.putExtra("PAGE","HOME");
-        startActivity(intent);
+      //  super.onBackPressed();
+        Intent i =new Intent(getApplicationContext(),NavigationDrawerActivity.class);
+          i.putExtra("PAGE","HOME");
+
+        startActivity(i);
         finish();
+      //  Intent intent = new Intent(MyCartActivity.this,NavigationDrawerActivity.class);
+      //  intent.putExtra("PAGE","HOME");
+     //   startActivity(intent);
+     //   finish();
     }
     public interface CartUpdateListner {
         void onClick();

@@ -1,5 +1,4 @@
 package com.smacon.fish2marine;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -72,7 +71,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
     ArrayList<ProductListItem> dataItem,spinnerdataItem;
     private Intent intent;
     FloatingActionButton share;
-
+    Badge cartbadge;
     HomeViewPagerAdapter mviewPagerAdapter;
     ViewPager viewPager;
     LinearLayout sliderDotspanel;
@@ -102,6 +101,8 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         progressdialog.setCanceledOnTouchOutside(false);
         loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
         icon_cart = ((ImageView) findViewById(R.id.icon));
+        cartbadge = findViewById(R.id.cartbadge);
+        cartbadge.setText(sPreferences.getString("CartCount",""));
         icon_cart.setOnClickListener(this);
         InitIdView();
     }
@@ -281,7 +282,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         }
     }
     private void shareTextUrl() {
-        Intent share = new Intent(Intent.ACTION_SEND);
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         share.putExtra(Intent.EXTRA_SUBJECT, "Fish2Marine");
@@ -340,7 +341,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
                                     txt_product_stock.setText("In Stock: "+feedObj1.getString("inStock"));
                                     txt_product_stock.setTextColor(getResources().getColor(R.color.colorAccentsecond));
                                 }
-                                txt_product_price.setText(""+feedObj1.getString("price"));
+                                txt_product_price.setText(""+feedObj1.getString("price")+"/0.5kg");
                                 if (feedObj1.getString("specialPrice").equals("")||feedObj1.getString("specialPrice").equals("0")){
                                     layout_specialPrice.setVisibility(View.GONE);
                                 }
@@ -545,16 +546,10 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         }
     }
     private void updatecartcount(String cartcount){
+        cartbadge.setText(cartcount);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent("data_changed"));
         NavigationDrawerActivity.getInstance().updateCartCount(cartcount);
-       /* Intent intent = new Intent(mContext, ProductViewActivity.class);
-        Log.d("11111111shared",sPreferences.getString("CategoryName",""));
-        Log.d("11111111shared",sPreferences.getString("CategoryID",""));
-        intent.putExtra("ID",sPreferences.getString("CategoryID",""));
-        intent.putExtra("NAME",sPreferences.getString("CategoryName",""));
-        intent.putExtra("PAGE","SUBPAGE");
-       // mContext.getWindow().setExitTransition(null);
-        mContext.startActivity(intent);*/
+//        icon_cart.set
         CustomToast.success(getApplicationContext(), "Item successfully added to cart").show();
     }
 

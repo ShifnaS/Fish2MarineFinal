@@ -296,13 +296,13 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
                 onBackPressed();
                 break;
             case R.id.addtocart:
-                UpdateCart(Quantity.getText().toString(), mItemID, mSpinnerItem);
+                    UpdateCart(Quantity.getText().toString(), mItemID, mSpinnerItem);
                 break;
 
         }
     }
     private void shareTextUrl() {
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         share.putExtra(Intent.EXTRA_SUBJECT, "Fish2Marine");
@@ -319,7 +319,7 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // switcher.showProgressView();
+           // switcher.showProgressView();
             progressdialog.show();
             spinnerdataItem=new ArrayList<>();
 
@@ -497,7 +497,7 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
         protected void onPreExecute() {
             super.onPreExecute();
             helper.Delete_cartcount();
-            //   switcher.showProgressView();
+         //   switcher.showProgressView();
             progressdialog.show();
 
         }
