@@ -1,12 +1,13 @@
 package com.smacon.fish2marine.CCAvenuPay.utility;
 
+import android.util.Base64;
+
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
-
-import android.util.Base64;
 
 
 public class RSAUtility {
@@ -15,7 +16,7 @@ public class RSAUtility {
 			PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Base64.decode(key, Base64.DEFAULT)));
 		    Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 		    cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-		    return Base64.encodeToString(cipher.doFinal(plainText.getBytes("UTF-8")),Base64.DEFAULT);
+		    return Base64.encodeToString(cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8)),Base64.DEFAULT);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

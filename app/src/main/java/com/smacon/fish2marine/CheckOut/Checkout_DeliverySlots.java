@@ -58,7 +58,7 @@ public class Checkout_DeliverySlots extends AppCompatActivity implements View.On
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
         Log.d("1111221", "Customer ID "+CustomerID);
-        mrecyclerviewDate = ((RecyclerView) findViewById(R.id.mrecyclerview));
+        mrecyclerviewDate = findViewById(R.id.mrecyclerview);
         mrecyclerviewDate.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         dataItem = new ArrayList<>();
         InitGetSlotData();

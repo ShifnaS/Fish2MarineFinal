@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
@@ -33,12 +32,8 @@ import com.smacon.f2mlibrary.CustomToast;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.f2mlibrary.Switcher.Switcher;
 import com.smacon.fish2marine.AdapterClass.MyReferralsAdapter;
-import com.smacon.fish2marine.AdapterClass.MyRewardsAdapter;
 import com.smacon.fish2marine.HelperClass.AllListItem;
-import com.smacon.fish2marine.HelperClass.MessageConstants;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
-import com.smacon.fish2marine.HelperClass.Utilities;
-import com.smacon.fish2marine.MyCartActivity;
 import com.smacon.fish2marine.R;
 import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
@@ -89,7 +84,7 @@ public class MyReferalFragment extends Fragment implements View.OnClickListener{
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
         InitIdView(rootView);
         return rootView;
     }
@@ -102,17 +97,17 @@ public class MyReferalFragment extends Fragment implements View.OnClickListener{
                 .setEmptyLabel((TextView) rootView.findViewById(R.id.empty_label))
                 .addEmptyView(rootView.findViewById(R.id.empty_view))
                 .build();
-        container=(FrameLayout)rootView.findViewById(R.id.container);
-        sub_layout=((LinearLayout)rootView.findViewById(R.id.sub_layout));
-        mrecyclerview = ((RecyclerView)rootView.findViewById(R.id.mrecyclerview));
+        container= rootView.findViewById(R.id.container);
+        sub_layout= rootView.findViewById(R.id.sub_layout);
+        mrecyclerview = rootView.findViewById(R.id.mrecyclerview);
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
-        referral_link=((TextView) rootView.findViewById(R.id.referral_link));
-        listcardview=((CardView) rootView.findViewById(R.id.listcardview));
-        error_label_retry = ((TextView) rootView.findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)rootView.findViewById(R.id.empty_label_retry));
-        invite=(FloatingActionButton)rootView.findViewById(R.id.invite);
-        txt_share = ((TextView)rootView.findViewById(R.id.txt_share));
+        referral_link= rootView.findViewById(R.id.referral_link);
+        listcardview= rootView.findViewById(R.id.listcardview);
+        error_label_retry = rootView.findViewById(R.id.error_label_retry);
+        empty_label_retry = rootView.findViewById(R.id.empty_label_retry);
+        invite= rootView.findViewById(R.id.invite);
+        txt_share = rootView.findViewById(R.id.txt_share);
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
         txt_share.setOnClickListener(this);
@@ -164,11 +159,11 @@ public class MyReferalFragment extends Fragment implements View.OnClickListener{
                 View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottomsheet_invitefriends, null);
                 mBottomSheetDialog.setContentView(sheetView);
                 mBottomSheetDialog.show();
-                final CustomEditText name = (CustomEditText) sheetView.findViewById(R.id.name);
-                final CustomEditText email = (CustomEditText) sheetView.findViewById(R.id.email);
-                final EditText message = (EditText) sheetView.findViewById(R.id.message);
-                indicator=(AVLoadingIndicatorView)sheetView.findViewById(R.id.indicator);
-                send = (Button) sheetView.findViewById(R.id.send);
+                final CustomEditText name = sheetView.findViewById(R.id.name);
+                final CustomEditText email = sheetView.findViewById(R.id.email);
+                final EditText message = sheetView.findViewById(R.id.message);
+                indicator= sheetView.findViewById(R.id.indicator);
+                send = sheetView.findViewById(R.id.send);
 
                 send.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -263,7 +258,7 @@ public class MyReferalFragment extends Fragment implements View.OnClickListener{
                         ft.replace(R.id.container, newFragment).commit();
                     }else {
 
-                        CustomToast.error(getActivity(),jsonObj.getString("message").toString()).show();
+                        CustomToast.error(getActivity(), jsonObj.getString("message")).show();
                         mBottomSheetDialog.dismiss();
                     }
                 }
@@ -317,7 +312,7 @@ public class MyReferalFragment extends Fragment implements View.OnClickListener{
                         //Log.d("1111221", "API_DASHBOARD_RESPONSE jsonObj1"+jsonObj1);
                         if(jsonObj1.has("referral_link")) {
                             txt_share.setVisibility(View.VISIBLE);
-                            referral_link.setText("Your Referral Link: "+jsonObj1.getString("referral_link").toString());
+                            referral_link.setText("Your Referral Link: "+ jsonObj1.getString("referral_link"));
                         }
                         if (jsonObj1.has("referral_items")) {
                             listcardview.setVisibility(View.VISIBLE);

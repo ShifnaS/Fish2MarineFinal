@@ -1,17 +1,14 @@
 package com.smacon.fish2marine;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -102,7 +99,7 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
         InitIdView();
     }
     private void InitIdView(){
@@ -118,41 +115,41 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
         CustomerID=SQLData_Item.get(0).get("admin_id");
         Log.d("1111221", "Customer ID "+CustomerID);
 
-        mTitle = ((TextView) findViewById(R.id.mTitle));
+        mTitle = findViewById(R.id.mTitle);
         mTitle.setText(mProductName);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         // ((AppCompatActivity) getApplicationContext()).setSupportActionBar(toolbar);
 
-        opendrawer = ((ImageView) findViewById(R.id.opendrawer));
-        maincontent = ((FrameLayout)findViewById(R.id.main_content));
-        subcontent=((FrameLayout)findViewById(R.id.sub_layout));
+        opendrawer = findViewById(R.id.opendrawer);
+        maincontent = findViewById(R.id.main_content);
+        subcontent= findViewById(R.id.sub_layout);
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        sliderDotspanel = (LinearLayout) findViewById(R.id.SliderDots);
+        viewPager = findViewById(R.id.viewPager);
+        sliderDotspanel = findViewById(R.id.SliderDots);
 
-        txt_product_name = ((TextView) findViewById(R.id.txt_product_name));
-        choose = ((TextView) findViewById(R.id.choose));
-        txt_product_code = ((TextView) findViewById(R.id.txt_product_code));
-        txt_product_stock = ((TextView) findViewById(R.id.txt_product_stock));
-        txt_product_price = ((TextView) findViewById(R.id.txt_product_price));
-        layout_specialPrice=(LinearLayout)findViewById(R.id.layout_specialPrice);
-        txt_product_special_price = ((TextView) findViewById(R.id.txt_product_special_price));
-        txt_ordered_qty= ((TextView) findViewById(R.id.txt_ordered_qty));
-        txt_cleaned_qty= ((TextView) findViewById(R.id.txt_cleaned_qty));
-        txt_product_description= ((TextView) findViewById(R.id.txt_product_description));
-        txt_sold_by=((TextView) findViewById(R.id.txt_sold_by));
-        addtocart=(Button)findViewById(R.id.addtocart);
-        Plus = (ImageView) findViewById(R.id.img_plus);
-        Minus = (ImageView) findViewById(R.id.img_minus);
-        Quantity = (TextView) findViewById(R.id.txt_quantity);
-        share=(FloatingActionButton)findViewById(R.id.share);
+        txt_product_name = findViewById(R.id.txt_product_name);
+        choose = findViewById(R.id.choose);
+        txt_product_code = findViewById(R.id.txt_product_code);
+        txt_product_stock = findViewById(R.id.txt_product_stock);
+        txt_product_price = findViewById(R.id.txt_product_price);
+        layout_specialPrice= findViewById(R.id.layout_specialPrice);
+        txt_product_special_price = findViewById(R.id.txt_product_special_price);
+        txt_ordered_qty= findViewById(R.id.txt_ordered_qty);
+        txt_cleaned_qty= findViewById(R.id.txt_cleaned_qty);
+        txt_product_description= findViewById(R.id.txt_product_description);
+        txt_sold_by= findViewById(R.id.txt_sold_by);
+        addtocart= findViewById(R.id.addtocart);
+        Plus = findViewById(R.id.img_plus);
+        Minus = findViewById(R.id.img_minus);
+        Quantity = findViewById(R.id.txt_quantity);
+        share= findViewById(R.id.share);
 
-        layout_spinner=(LinearLayout)findViewById(R.id.layout_spinner);
-        spinner = (Spinner)findViewById(R.id.spinner);
+        layout_spinner= findViewById(R.id.layout_spinner);
+        spinner = findViewById(R.id.spinner);
 
-        error_label_retry = ((TextView) findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)findViewById(R.id.empty_label_retry));
+        error_label_retry = findViewById(R.id.error_label_retry);
+        empty_label_retry = findViewById(R.id.empty_label_retry);
 
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
@@ -299,7 +296,7 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
                 onBackPressed();
                 break;
             case R.id.addtocart:
-                    UpdateCart(Quantity.getText().toString(), mItemID, mSpinnerItem);
+                UpdateCart(Quantity.getText().toString(), mItemID, mSpinnerItem);
                 break;
 
         }
@@ -322,7 +319,7 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-           // switcher.showProgressView();
+            // switcher.showProgressView();
             progressdialog.show();
             spinnerdataItem=new ArrayList<>();
 
@@ -395,7 +392,7 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
                                     viewPager.setAdapter(mviewPagerAdapter);
                                     initviewpager();
                                 }
-                                CuttypeApplicable=feedObj1.getString("cutTypeApplicable").toString();
+                                CuttypeApplicable= feedObj1.getString("cutTypeApplicable");
                                 if(feedObj1.getString("cutTypeApplicable").equals("2")){
                                     layout_spinner.setVisibility(View.GONE);
                                     choose.setVisibility(View.GONE);
@@ -500,7 +497,7 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
         protected void onPreExecute() {
             super.onPreExecute();
             helper.Delete_cartcount();
-         //   switcher.showProgressView();
+            //   switcher.showProgressView();
             progressdialog.show();
 
         }
@@ -526,7 +523,7 @@ public class UpdateProductActivity extends AppCompatActivity implements View.OnC
                     if (jsonObj.getString("status").equals(String.valueOf(2))) {
                         switcher.showContentView();
                         Log.d("11111111","here0");
-                        CustomToast.info(getApplicationContext(),jsonObj.getString("message").toString()).show();
+                        CustomToast.info(getApplicationContext(), jsonObj.getString("message")).show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
                         CustomToast.success(getApplicationContext(),"Updated").show();
                         onBackPressed();

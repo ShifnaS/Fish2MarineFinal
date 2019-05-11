@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,13 +23,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.smacon.f2mlibrary.Badge;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.f2mlibrary.Switcher.Switcher;
 import com.smacon.fish2marine.AdapterClass.AllProductsGridAdapter;
-import com.smacon.fish2marine.Fragment.HomeFragment;
 import com.smacon.fish2marine.HelperClass.ProductListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.Interface.RecycleviewInterface;
@@ -91,11 +88,6 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_gridview);
-       // recycleviewInterface=(RecycleviewInterface)getApplicationContext();
-
-        //  container=findViewById(R.id.container);
-      //  progress_view=findViewById(R.id.progress_view);
-            //  addProgressView(findViewById(R.id.progress_view))
 
         helper = new SqliteHelper(getApplicationContext(), "Fish2Marine", null, 5);
         sPreferences = getSharedPreferences("Fish2Marine", MODE_PRIVATE);
@@ -106,16 +98,13 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
         mConfig = new Config(getApplicationContext());
         IntentFilter inF = new IntentFilter("data_changed");
         LocalBroadcastManager.getInstance(this).registerReceiver(dataChangeReceiver,inF);
-      //  Toast.makeText(getApplicationContext(), "hiiiiii", Toast.LENGTH_SHORT).show();
         View inflatedView = getLayoutInflater().inflate(R.layout.view_progress, null);
-       // progress_view =  inflatedView.findViewById(R.id.progress_view);
-       // progress_view.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         progressdialog = new Dialog(ProductViewActivity.this);
         progressdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
         //sp= PreferenceManager.getDefaultSharedPreferences(th
         centerid=sPreferences.getString("DeliveryCenter_ID","");
         if(centerid.equals("")){
@@ -125,9 +114,7 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
         updateListner=new UpdateListner() {
             @Override
             public void onClick(int count) {
-               // Toast.makeText(ProductViewActivity.this, "count "+count, Toast.LENGTH_SHORT).show();
-               // recycleviewInterface.userItemClick(count);
-               // InitIdView();
+
             }
         };
 
@@ -154,28 +141,28 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
         CartData_Item=helper.getCount();
 
         intent = getIntent();
-        if (intent.getExtras().getString("PAGE").toString().equals("FROM_HOME")) {
+        if (intent.getExtras().getString("PAGE").equals("FROM_HOME")) {
             mConfig.savePreferences(getApplicationContext(),"CategoryName", intent.getExtras().getString("NAME"));
             mConfig.savePreferences(getApplicationContext(),"CategoryID", intent.getExtras().getString("ID"));
             mCategoryName = intent.getExtras().getString("NAME");
             mCategoryID = intent.getExtras().getString("ID");
-        }else if (intent.getExtras().getString("PAGE").toString().equals("FROM_CUTTYPE")) {
+        }else if (intent.getExtras().getString("PAGE").equals("FROM_CUTTYPE")) {
             mCategoryName = intent.getExtras().getString("NAME");
             mCategoryID = intent.getExtras().getString("ID");
         }
-        else if (intent.getExtras().getString("PAGE").toString().equals("SUBPAGE")) {
+        else if (intent.getExtras().getString("PAGE").equals("SUBPAGE")) {
             mCategoryName = intent.getExtras().getString("NAME");
             mCategoryID = intent.getExtras().getString("ID");
         }
 
-        mTitle = ((TextView) findViewById(R.id.mTitle));
+        mTitle = findViewById(R.id.mTitle);
         mTitle.setText(mCategoryName);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
        // ((AppCompatActivity) getApplicationContext()).setSupportActionBar(toolbar);
 
-        mycart=(ImageView) findViewById(R.id.mycart);
-        cartbadge = (Badge)findViewById(R.id.cartbadge);
+        mycart= findViewById(R.id.mycart);
+        cartbadge = findViewById(R.id.cartbadge);
         String id=sPreferences.getString("CartCount","");
        // Toast.makeText(getApplicationContext(), "cartcount "+id, Toast.LENGTH_SHORT).show();
         if(id.equals("0"))
@@ -198,10 +185,10 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        opendrawer = ((ImageView) findViewById(R.id.opendrawer));
-        mrecyclerview = ((RecyclerView)findViewById(R.id.mrecyclerview));
-        error_label_retry = ((TextView) findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)findViewById(R.id.empty_label_retry));
+        opendrawer = findViewById(R.id.opendrawer);
+        mrecyclerview = findViewById(R.id.mrecyclerview);
+        error_label_retry = findViewById(R.id.error_label_retry);
+        empty_label_retry = findViewById(R.id.empty_label_retry);
 
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
@@ -217,11 +204,6 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
 
     private void initRecyclerView() {
         mrecyclerview.setHasFixedSize(true);
-
-        /*float scalefactor = getResources().getDisplayMetrics().density * 100;
-        int width = getWindowManager().getDefaultDisplay().getWidth();
-        int columns = (int) ((float)width / (float) scalefactor);
-        mrecyclerview.setNumColumns(columns);*/
 
         if (isTablet(getApplicationContext())) {
             mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
@@ -273,11 +255,7 @@ public class ProductViewActivity extends AppCompatActivity implements View.OnCli
         protected void onPreExecute() {
             super.onPreExecute();
             progressdialog.show();
-           // switcher.showProgressView();
-            //AVLoadingIndicatorView loadingIndicatorView=findViewById(R.id.indicator);
-          //  loadingIndicatorView.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-            // Toast.makeText(ProductViewActivity.this, "hellooooo", Toast.LENGTH_SHORT).show();
         }
 
         @Override

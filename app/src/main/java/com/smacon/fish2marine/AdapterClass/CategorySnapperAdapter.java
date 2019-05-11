@@ -2,8 +2,6 @@ package com.smacon.fish2marine.AdapterClass;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,8 +42,8 @@ public class CategorySnapperAdapter extends RecyclerView.Adapter<CategorySnapper
         private ImageView ProductImage;
         ViewHolder(final View itemView) {
             super(itemView);
-            this.ProductName = (TextView) itemView.findViewById(R.id.CategoryName);
-            this.ProductImage=(ImageView)itemView.findViewById(R.id.CategoryIcon);
+            this.ProductName = itemView.findViewById(R.id.CategoryName);
+            this.ProductImage= itemView.findViewById(R.id.CategoryIcon);
         }
     }
 
@@ -67,8 +65,10 @@ public class CategorySnapperAdapter extends RecyclerView.Adapter<CategorySnapper
 
         } else {
             try {
-                Picasso.with(mContext)
-                        .load(mListItem.get(position).getcategory_path().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(mListItem.get(position).getcategory_path()
+                                .replace("https", "http")
+                                .replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(holder.ProductImage);

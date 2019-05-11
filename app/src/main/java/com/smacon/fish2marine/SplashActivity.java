@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -29,7 +26,7 @@ public class SplashActivity extends Activity implements Animation.AnimationListe
         animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.animation_fade_in);
         animFadeIn.setAnimationListener(this);
-        logo = (ImageView) findViewById(R.id.logo);
+        logo = findViewById(R.id.logo);
         logo.startAnimation(animFadeIn);
     }
     @Override

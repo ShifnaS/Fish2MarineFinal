@@ -20,6 +20,10 @@
             android:layout_height="130dp"
             android:layout_gravity="center"
             android:scaleType="fitXY"
+            android:scaleY="1"
+            android:scaleX="1"
+            android:adjustViewBounds="true"
+
             android:src="@drawable/dummy" />
         <LinearLayout
 
@@ -168,7 +172,7 @@
         android:visibility="gone"
         android:id="@+id/layout_cutype"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
         android:background="@drawable/commentbox_border"
@@ -240,7 +244,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
+            <Button
                 android:id="@+id/btn_ok"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

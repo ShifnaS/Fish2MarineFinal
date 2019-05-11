@@ -1,16 +1,11 @@
 package com.smacon.fish2marine;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,20 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.smacon.f2mlibrary.Badge;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.f2mlibrary.Switcher.Switcher;
-import com.smacon.fish2marine.AdapterClass.HomeViewPagerAdapter;
 import com.smacon.fish2marine.AdapterClass.OrderItemDetailsAdapter;
-import com.smacon.fish2marine.AdapterClass.SpinnerAdapter;
 import com.smacon.fish2marine.HelperClass.ProductListItem;
 import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
@@ -55,7 +44,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
             txt_order_deliverydate,txt_order_slot,txt_full_address,txt_order_number,
             txt_order_status,txt_order_shipping,txt_order_payment,txt_thankyou,txt_order_sub_total, txt_order_tax ,txt_order_discount;
     private ImageView opendrawer;
-    FrameLayout maincontent,subcontent;
+    LinearLayout maincontent,subcontent;
     ArrayList<ProductListItem> dataItem;
     private Intent intent;
     RecyclerView mrecyclerview;
@@ -65,7 +54,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_details);
+        setContentView(R.layout.order_details);
         intent = getIntent();
         mOrderId=intent.getExtras().getString("ORDER_ID");
         progressdialog = new Dialog(OrderDetailsActivity.this);
@@ -73,7 +62,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
         InitIdView();
     }
     private void InitIdView(){
@@ -85,35 +74,35 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                 .addEmptyView(findViewById(R.id.empty_view))
                 .build();
 
-        opendrawer = ((ImageView) findViewById(R.id.opendrawer));
-        maincontent = ((FrameLayout)findViewById(R.id.main_content));
-        subcontent=((FrameLayout)findViewById(R.id.sub_layout));
+        opendrawer = findViewById(R.id.opendrawer);
+        maincontent = findViewById(R.id.main_content);
+        subcontent= findViewById(R.id.sub_layout);
 
-        mTitle = ((TextView) findViewById(R.id.mTitle));
-        mTitle.setText(mOrderId);
+        mTitle = findViewById(R.id.mTitle);
+        mTitle.setText("ORDER No #"+mOrderId);
 
-        txt_order_date = ((TextView) findViewById(R.id.txt_order_date));
+        txt_order_date = findViewById(R.id.txt_order_date);
 
-        txt_order_tax = ((TextView) findViewById(R.id.txt_order_tax));
-        txt_order_discount = ((TextView) findViewById(R.id.txt_order_discount));
-        txt_order_sub_total = ((TextView) findViewById(R.id.txt_order_sub_total));
+      //  txt_order_tax = ((TextView) findViewById(R.id.txt_order_tax));
+      //  txt_order_discount = ((TextView) findViewById(R.id.txt_order_discount));
+        txt_order_sub_total = findViewById(R.id.txt_order_sub_total);
 
-        txt_order_item_count = ((TextView) findViewById(R.id.txt_order_item_count));
-        txt_order_grand_total = ((TextView) findViewById(R.id.txt_order_grand_total));
-        txt_address_name = ((TextView) findViewById(R.id.txt_address_name));
-        txt_full_address = ((TextView) findViewById(R.id.txt_full_address));
-        txt_order_number= ((TextView) findViewById(R.id.txt_order_number));
-        txt_order_number.setText(mOrderId);
-        txt_order_status= ((TextView) findViewById(R.id.txt_order_status));
-        txt_order_shipping= ((TextView) findViewById(R.id.txt_order_shipping));
-        txt_order_payment=((TextView) findViewById(R.id.txt_order_payment));
-        txt_order_deliverydate= ((TextView) findViewById(R.id.txt_order_deliverydate));
-        txt_order_slot=((TextView) findViewById(R.id.txt_order_slot));
-        txt_thankyou=(TextView)findViewById(R.id.txt_thankyou);
-        mrecyclerview = ((RecyclerView)findViewById(R.id.mrecyclerview));
+      //  txt_order_item_count = ((TextView) findViewById(R.id.txt_order_item_count));
+        txt_order_grand_total = findViewById(R.id.txt_order_grand_total);
+        txt_address_name = findViewById(R.id.txt_address_name);
+        txt_full_address = findViewById(R.id.txt_full_address);
+        txt_order_number= findViewById(R.id.txt_order_number);
+        txt_order_number.setText("ORDER # "+mOrderId);
+        txt_order_status= findViewById(R.id.txt_order_status);
+        txt_order_shipping= findViewById(R.id.txt_order_shipping);
+        txt_order_payment= findViewById(R.id.txt_order_payment);
+        txt_order_deliverydate= findViewById(R.id.txt_order_deliverydate);
+        txt_order_slot= findViewById(R.id.txt_order_slot);
+        txt_thankyou= findViewById(R.id.txt_thankyou);
+        mrecyclerview = findViewById(R.id.mrecyclerview);
         
-        error_label_retry = ((TextView) findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)findViewById(R.id.empty_label_retry));
+        error_label_retry = findViewById(R.id.error_label_retry);
+        empty_label_retry = findViewById(R.id.empty_label_retry);
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
         opendrawer.setOnClickListener(this);
@@ -125,6 +114,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void InitGetData(){
+
         Config mConfig = new Config(getApplicationContext());
         if(mConfig.isOnline(getApplicationContext())){
             LoadOrderDetailsInitiate mLoadOrderDetailsInitiate = new LoadOrderDetailsInitiate(mOrderId);
@@ -213,16 +203,20 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                                 mrecyclerview.setAdapter(mOrderItemDetailsAdapter);
                             }
                         }
-                        txt_order_discount.setText("Rs."+jsonObj1.getString("discount")+"/-");
-                        txt_order_tax.setText("Rs."+jsonObj1.getString("tax")+"/-");
-                        txt_order_sub_total.setText("Rs."+jsonObj1.getString("subtotal")+"/-");
+
+                        //txt_order_discount.setText("Rs."+jsonObj1.getString("discount")+"/-");
+                       // txt_order_tax.setText("Rs."+jsonObj1.getString("tax")+"/-");
+                        txt_order_sub_total.setText("\u20B9 "+jsonObj1.getString("subtotal"));
                         txt_order_status.setText(jsonObj1.getString("orderStatus"));
                         txt_order_date.setText(jsonObj1.getString("orderDate"));
                         txt_order_shipping.setText(jsonObj1.getString("shippingMethod"));
                         txt_order_payment.setText(jsonObj1.getString("paymentMethod"));
-                        txt_order_item_count.setText(jsonObj1.getString("totalqty"));
-                        txt_order_grand_total.setText("Rs."+jsonObj1.getString("grand_total")+"/-");
-                        Log.d("1111111","here");
+                     //   txt_order_item_count.setText(jsonObj1.getString("totalqty"));
+                        txt_order_grand_total.setText("\u20B9 "+jsonObj1.getString("grand_total"));
+
+
+                        Log.d("1111111","here10");
+
                         if(jsonObj1.has("delivaryInfo")){
                             JSONObject jsonObj2 = jsonObj1.getJSONObject("delivaryInfo");
                             txt_order_deliverydate.setText(jsonObj2.getString("delivaryDate"));
@@ -256,6 +250,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                 e.printStackTrace();
                 switcher.showErrorView("Please Try Again");
             } catch (NullPointerException e) {
+                Log.e("1111111","ERROR "+e);
                 switcher.showErrorView("No Internet Connection");
             } catch (Exception e) {
                 switcher.showErrorView("Please Try Again");

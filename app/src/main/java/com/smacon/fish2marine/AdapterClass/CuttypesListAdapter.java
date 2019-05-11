@@ -45,9 +45,9 @@ public class CuttypesListAdapter extends BaseAdapter {
         ProductListItem item = listitem.get(position);
         View v = LayoutInflater.from(mcontext).inflate(R.layout.cuttype_item, null);
 
-        TextView txt_cuttypeName = (TextView) v.findViewById(R.id.txt_cuttypeName);
-        ImageView img_cuttypeImage=(ImageView) v.findViewById(R.id.img_cuttypeImage);
-        RadioGroup radiogroup = (RadioGroup) v.findViewById(R.id.radiogroup);
+        TextView txt_cuttypeName = v.findViewById(R.id.txt_cuttypeName);
+        ImageView img_cuttypeImage= v.findViewById(R.id.img_cuttypeImage);
+        RadioGroup radiogroup = v.findViewById(R.id.radiogroup);
 
         LiquidRadioButton rb=new LiquidRadioButton(mcontext); // dynamically creating RadioButton and adding to RadioGroup.
         rb.setText(item.getCuttype_label());
@@ -61,8 +61,9 @@ public class CuttypesListAdapter extends BaseAdapter {
 
         } else {
             try {
-                Picasso.with(mcontext)
-                        .load(listitem.get(position).getcuttype_imageurl().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(listitem.get(position).getcuttype_imageurl()
+                                .replace("https", "http").replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(img_cuttypeImage);

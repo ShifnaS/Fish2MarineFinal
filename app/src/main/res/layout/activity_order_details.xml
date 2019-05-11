@@ -52,14 +52,14 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"/>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         android:background="#ffffff">
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/sub_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -527,6 +527,6 @@
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
                 </LinearLayout>
             </ScrollView>
-        </FrameLayout>
-    </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>

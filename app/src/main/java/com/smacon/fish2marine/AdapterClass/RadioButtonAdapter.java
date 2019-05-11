@@ -43,8 +43,8 @@ public class RadioButtonAdapter extends BaseAdapter {
         ProductListItem item = listitem.get(position);
         View v = LayoutInflater.from(mcontext).inflate(R.layout.cuttype_item, null);
 
-        TextView txt_cuttypeName = (TextView) v.findViewById(R.id.txt_cuttypeName);
-        ImageView img_cuttypeImage=(ImageView) v.findViewById(R.id.img_cuttypeImage);
+        TextView txt_cuttypeName = v.findViewById(R.id.txt_cuttypeName);
+        ImageView img_cuttypeImage= v.findViewById(R.id.img_cuttypeImage);
         txt_cuttypeName.setText(item.getCuttype_label());
         if(item.getcuttype_imageurl().equals("")||item.getcuttype_imageurl().equals("false")){
 
@@ -52,8 +52,10 @@ public class RadioButtonAdapter extends BaseAdapter {
 
         } else {
             try {
-                Picasso.with(mcontext)
-                        .load(listitem.get(position).getcuttype_imageurl().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(listitem.get(position).getcuttype_imageurl()
+                                .replace("https", "http")
+                                .replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(img_cuttypeImage);

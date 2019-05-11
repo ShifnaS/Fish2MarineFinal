@@ -71,7 +71,7 @@ public class MyOrdersListFragment extends Fragment implements View.OnClickListen
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
 
         InitIdView(rootView);
         return rootView;
@@ -86,11 +86,11 @@ public class MyOrdersListFragment extends Fragment implements View.OnClickListen
                 .addEmptyView(rootView.findViewById(R.id.empty_view))
                 .build();
 
-        mrecyclerview = ((RecyclerView)rootView.findViewById(R.id.mrecyclerview));
+        mrecyclerview = rootView.findViewById(R.id.mrecyclerview);
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
-        error_label_retry = ((TextView) rootView.findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)rootView.findViewById(R.id.empty_label_retry));
+        error_label_retry = rootView.findViewById(R.id.error_label_retry);
+        empty_label_retry = rootView.findViewById(R.id.empty_label_retry);
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
 

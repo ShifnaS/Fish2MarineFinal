@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smacon.fish2marine.HelperClass.AllListItem;
@@ -69,10 +68,10 @@ public class MyRewardsAdapter extends RecyclerView.Adapter {
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            cardview = (CardView) itemView.findViewById(R.id.cardview);
-            title = (TextView) itemView.findViewById(R.id.title);
-            points = (TextView) itemView.findViewById(R.id.points);
-            expiry = (TextView) itemView.findViewById(R.id.expiry);
+            cardview = itemView.findViewById(R.id.cardview);
+            title = itemView.findViewById(R.id.title);
+            points = itemView.findViewById(R.id.points);
+            expiry = itemView.findViewById(R.id.expiry);
 
         }
     }

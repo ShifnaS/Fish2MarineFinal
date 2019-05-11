@@ -8,16 +8,13 @@ import android.content.Context;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
@@ -27,13 +24,12 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class HttpOperations {
 
-    public final String SERVER_URL = "http://dev.fish2marine.com/rest/";
+   // public final String SERVER_URL = "http://dev.fish2marine.com/rest/";
+     public final String SERVER_URL = "https://www.fish2marine.com/rest/";
 
 
     public Context ctx;
@@ -80,7 +76,7 @@ public class HttpOperations {
         private final String api_name;
         private final String method;
 
-        private APIS(final String text, String method) {
+        APIS(final String text, String method) {
             this.api_name = text;
             this.method = method;
         }

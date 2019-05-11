@@ -10,15 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.smacon.f2mlibrary.CustomEditText;
 import com.smacon.f2mlibrary.CustomToast;
-import com.smacon.f2mlibrary.Edittext.MaterialEditText;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.fish2marine.HelperClass.Utilities;
 import com.smacon.fish2marine.Util.Config;
@@ -44,15 +40,15 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     private void InitIdView(){
 
-        email_mobile = (CustomEditText)findViewById(R.id.email_mobile);
-        submit = (TextView) findViewById(R.id.submit);
-        close = (ImageView) findViewById(R.id.close);
+        email_mobile = findViewById(R.id.email_mobile);
+        submit = findViewById(R.id.submit);
+        close = findViewById(R.id.close);
         dialog = new Dialog(ForgotPasswordActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_progress);
         dialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) dialog.findViewById(R.id.loading);
+        loading = dialog.findViewById(R.id.loading);
         submit.setOnClickListener(this);
         close.setOnClickListener(this);
     }

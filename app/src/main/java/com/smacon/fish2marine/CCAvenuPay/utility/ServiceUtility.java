@@ -61,14 +61,14 @@ public class ServiceUtility{
 		return keyPair.size() > 0 ? keyPair : null;
 	}
 	
-	public static ArrayList tokenizeToArrayList(String msg, String delim) throws Exception{
+	public static ArrayList tokenizeToArrayList(String msg, String delim) {
 		ArrayList respList = new ArrayList();
 		String varName = null;
 		String varVal = null;
 		int index = msg.indexOf(delim);
 		varName = msg.substring(0,index);
 		if((index+1)!=msg.length())
-			varVal = msg.substring(index+1,msg.length());
+			varVal = msg.substring(index+1);
 		respList.add(varName);
 		respList.add(varVal);
 		return respList.size() > 0 ? respList : null;

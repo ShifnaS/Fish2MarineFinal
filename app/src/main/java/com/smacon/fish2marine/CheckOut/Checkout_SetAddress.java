@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -36,14 +35,12 @@ import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.f2mlibrary.Switcher.Switcher;
 import com.smacon.fish2marine.AdapterClass.CheckoutAddressListAdapter;
 import com.smacon.fish2marine.AdapterClass.ShippingMethodListAdapter;
-import com.smacon.fish2marine.EditProfileActivity;
 import com.smacon.fish2marine.HelperClass.AddressListItem;
 import com.smacon.fish2marine.HelperClass.CartListItem;
 import com.smacon.fish2marine.HelperClass.MessageConstants;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.HelperClass.Utilities;
 import com.smacon.fish2marine.MyCartActivity;
-import com.smacon.fish2marine.NavigationDrawerActivity;
 import com.smacon.fish2marine.OrderSummaryActivity;
 import com.smacon.fish2marine.R;
 import com.smacon.fish2marine.Util.Config;
@@ -113,7 +110,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
         InitIdView();
     }
     private void InitIdView(){
@@ -129,33 +126,33 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                 .build();
         tf = Typeface.createFromAsset(getResources().getAssets(),"rounded_font.otf");
 
-        sub_layout=((LinearLayout)findViewById(R.id.sub_layout));
-        main_layout=((LinearLayout)findViewById(R.id.main_layout));
-        LinearLayoutMain=((LinearLayout)findViewById(R.id.LinearLayoutMain));
-        lay_delivery_address=((LinearLayout)findViewById(R.id.lay_delivery_address));
-        lay_shipping_method=((LinearLayout)findViewById(R.id.lay_shipping_method));
-        lay_delivery_slots=((LinearLayout)findViewById(R.id.lay_delivery_slots));
-        lay_payment_method=((LinearLayout)findViewById(R.id.lay_payment_method));
+        sub_layout= findViewById(R.id.sub_layout);
+        main_layout= findViewById(R.id.main_layout);
+        LinearLayoutMain= findViewById(R.id.LinearLayoutMain);
+        lay_delivery_address= findViewById(R.id.lay_delivery_address);
+        lay_shipping_method= findViewById(R.id.lay_shipping_method);
+        lay_delivery_slots= findViewById(R.id.lay_delivery_slots);
+        lay_payment_method= findViewById(R.id.lay_payment_method);
 
-        shippingListView = (ListView) findViewById(R.id.shippingListView);
-        txt_new_address = (CustomTextView) findViewById(R.id.txt_new_address);
-        txt_address_name = (CustomTextView) findViewById(R.id.txt_address_name);
-        txt_company = (CustomTextView) findViewById(R.id.txt_company);
-        txt_street = (CustomTextView) findViewById(R.id.txt_street);
-        txt_city = (CustomTextView) findViewById(R.id.txt_city);
-        txt_state_pin = (CustomTextView) findViewById(R.id.txt_state_pin);
-        txt_country = (CustomTextView) findViewById(R.id.txt_country);
-        txt_phone = (CustomTextView) findViewById(R.id.txt_phone);
-        address_list=(ImageView)findViewById(R.id.address_list);
-        back=(ImageView)findViewById(R.id.back);
-        next=(Button)findViewById(R.id.next);
-        shipping_indicator=(FrameLayout)findViewById(R.id.shipping_indicator);
-        deliveryslot_indicator=(FrameLayout)findViewById(R.id.deliveryslot_indicator);
-        payment_indicator=(FrameLayout)findViewById(R.id.payment_indicator);
-        error_label_retry = ((TextView)findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)findViewById(R.id.empty_label_retry));
-        radiogroup = (RadioGroup) findViewById(R.id.radiogroup);
-        paymentradiogroup = (RadioGroup) findViewById(R.id.paymentradiogroup);
+        shippingListView = findViewById(R.id.shippingListView);
+        txt_new_address = findViewById(R.id.txt_new_address);
+        txt_address_name = findViewById(R.id.txt_address_name);
+        txt_company = findViewById(R.id.txt_company);
+        txt_street = findViewById(R.id.txt_street);
+        txt_city = findViewById(R.id.txt_city);
+        txt_state_pin = findViewById(R.id.txt_state_pin);
+        txt_country = findViewById(R.id.txt_country);
+        txt_phone = findViewById(R.id.txt_phone);
+        address_list= findViewById(R.id.address_list);
+        back= findViewById(R.id.back);
+        next= findViewById(R.id.next);
+        shipping_indicator= findViewById(R.id.shipping_indicator);
+        deliveryslot_indicator= findViewById(R.id.deliveryslot_indicator);
+        payment_indicator= findViewById(R.id.payment_indicator);
+        error_label_retry = findViewById(R.id.error_label_retry);
+        empty_label_retry = findViewById(R.id.empty_label_retry);
+        radiogroup = findViewById(R.id.radiogroup);
+        paymentradiogroup = findViewById(R.id.paymentradiogroup);
         shippingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -243,10 +240,10 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_addresslist);
-        mrecyclerview = (RecyclerView) dialog.findViewById(R.id.mrecyclerview);
+        mrecyclerview = dialog.findViewById(R.id.mrecyclerview);
         mrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         Utilities.setDialogParamsWrapContent(this,dialog);
-        indicator = (AVLoadingIndicatorView) dialog.findViewById(R.id.indicator);
+        indicator = dialog.findViewById(R.id.indicator);
         dialog.show();
         mrecyclerview.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             GestureDetector gestureDetector = new GestureDetector(Checkout_SetAddress.this, new GestureDetector.SimpleOnGestureListener() {
@@ -358,18 +355,19 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                                             JSONObject feedObj1 = (JSONObject) feedArray2.get(i);
                                             final String slot = feedObj1.getString("slot");
                                             final String is_available = feedObj1.getString("is_available");
-                                            Log.d("111111", "is_available " + is_available);
                                             final String slot_id = feedObj1.getString("slot_id");
                                             final String slot_group = feedObj1.getString("slot_group");
 
                                             LiquidRadioButton rdbtn = (LiquidRadioButton) getLayoutInflater().inflate(R.layout.template_radiobutton, null);
                                             rdbtn.setText(slot);
-                                            if (feedObj1.getString("is_available").toString().equals(1)){
+                                            if (feedObj1.getInt("is_available")==1){
+                                                Log.d("111111", "is_available " + is_available);
                                                 rdbtn.setTextColor(getResources().getColor(R.color.colorGrayDark));
                                             }
-                                            else if(feedObj1.getString("is_available").toString().equals(0)) {
+                                            else if(feedObj1.getInt("is_available")==0) {
                                                 rdbtn.setTextColor(getResources().getColor(R.color.red));
                                                 rdbtn.setClickable(false);
+                                                rdbtn.setEnabled(false);
                                             }
                                             rdbtn.setOnClickListener(new View.OnClickListener() {
                                                 @Override
@@ -699,21 +697,21 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_add_address);
         // setDialogInputLayoutTF(dialog);
-        final CustomEditText edt_fname_add = (CustomEditText) dialog.findViewById(R.id.edt_fname_add);
-        final CustomEditText edt_lname_add = (CustomEditText) dialog.findViewById(R.id.edt_lname_add);
-        final CustomEditText edt_company_add = (CustomEditText) dialog.findViewById(R.id.edt_company_add);
-        final CustomEditText edt_phone_add = (CustomEditText) dialog.findViewById(R.id.edt_phone_add);
-        final CustomEditText edt_add1_add = (CustomEditText) dialog.findViewById(R.id.edt_add1_add);
-        final CustomEditText edt_add2_add = (CustomEditText) dialog.findViewById(R.id.edt_add2_add);
-        final CustomEditText edt_city_add = (CustomEditText) dialog.findViewById(R.id.edt_city_add);
-        final CustomEditText edt_state_add = (CustomEditText) dialog.findViewById(R.id.edt_state_add);
-        final CustomEditText edt_zip_add = (CustomEditText) dialog.findViewById(R.id.edt_zip_add);
-        final CustomEditText edt_country_add = (CustomEditText) dialog.findViewById(R.id.edt_country_add);
-        indicator=(AVLoadingIndicatorView)dialog.findViewById(R.id.indicator);
+        final CustomEditText edt_fname_add = dialog.findViewById(R.id.edt_fname_add);
+        final CustomEditText edt_lname_add = dialog.findViewById(R.id.edt_lname_add);
+        final CustomEditText edt_company_add = dialog.findViewById(R.id.edt_company_add);
+        final CustomEditText edt_phone_add = dialog.findViewById(R.id.edt_phone_add);
+        final CustomEditText edt_add1_add = dialog.findViewById(R.id.edt_add1_add);
+        final CustomEditText edt_add2_add = dialog.findViewById(R.id.edt_add2_add);
+        final CustomEditText edt_city_add = dialog.findViewById(R.id.edt_city_add);
+        final CustomEditText edt_state_add = dialog.findViewById(R.id.edt_state_add);
+        final CustomEditText edt_zip_add = dialog.findViewById(R.id.edt_zip_add);
+        final CustomEditText edt_country_add = dialog.findViewById(R.id.edt_country_add);
+        indicator= dialog.findViewById(R.id.indicator);
 
-        final CustomCheckBox chk_default_shipping = (CustomCheckBox) dialog.findViewById(R.id.chk_default_shipping);
+        final CustomCheckBox chk_default_shipping = dialog.findViewById(R.id.chk_default_shipping);
 
-        btn_add = (Button) dialog.findViewById(R.id.btn_add);
+        btn_add = dialog.findViewById(R.id.btn_add);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -741,6 +739,8 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                             if (add1.length() > 0){
 
                                 edt_add1_add.setError(null);
+
+
                                 if (city.length() > 0){
 
                                     edt_city_add.setError(null);
@@ -776,13 +776,14 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                                     edt_city_add.setError(MessageConstants.FILL_THIS_FIELD);
                                     edt_city_add.requestFocus();
                                 }
-                            }
+                                }
+
+
                             else {
 
                                 edt_add1_add.setError(MessageConstants.FILL_THIS_FIELD);
                                 edt_add1_add.requestFocus();
-                            }
-                        }
+                            }                        }
                         else {
 
                             edt_phone_add.setError(MessageConstants.INVALID_PHONE);
@@ -929,12 +930,26 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
 
         String s1=txt_street.getText().toString();
         String[] streetparts = s1.split("\\,"); // escape .
-        String street1 = streetparts[0];
-        String street2 = streetparts[1];
-
+      //  Toast.makeText(addressActivity, "Street length "+streetparts.length, Toast.LENGTH_SHORT).show();
         List<String> street = new ArrayList<>();
-        street.add(street1);
-        if (street2.length() > 0) street.add(street2);
+        if(streetparts.length==2)
+        {
+            String street1 = streetparts[0];
+            String street2 = streetparts[1];
+
+            street.add(street1);
+            street.add(street2);
+        }
+        else
+        {
+            String street1 = streetparts[0];
+            street.add(street1);
+           // street.add(" ");
+        }
+
+
+
+       // if (street2.length() > 0)
         JSONArray streetjsonAraay = new JSONArray(street);
         Log.d("1111111","Street String: "+streetjsonAraay);
 
@@ -963,7 +978,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
         String a1 = shippingjsonAraay.toString();
         a1 = a1.replace("[{", "{").replace("}]","}")
                 .replace(":\"[",":[").replace("]\",","],")
-                .replace("\\\"","\"");   ;
+                .replace("\\\"","\"");
         Log.d("1111111", "Shipping: "+a1);
 
 
@@ -1127,12 +1142,12 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                 if(jsonObj0.has("totals")){
                     JSONObject jsonObj1 = jsonObj0.getJSONObject("totals");
                     Log.d("11111111","here1");
-                    SubTotal=jsonObj1.getString("subtotal").toString().trim();
-                    Shipping=jsonObj1.getString("shipping_amount").toString().trim();
-                    Tax=jsonObj1.getString("tax_amount").toString().trim();
-                    Discount=jsonObj1.getString("discount_amount").toString().trim();
-                    GrandTotal=jsonObj1.getString("grand_total").toString().trim();
-                    ItemCount=jsonObj1.getString("items_qty").toString().trim();
+                    SubTotal= jsonObj1.getString("subtotal").trim();
+                    Shipping= jsonObj1.getString("shipping_amount").trim();
+                    Tax= jsonObj1.getString("tax_amount").trim();
+                    Discount= jsonObj1.getString("discount_amount").trim();
+                    GrandTotal= jsonObj1.getString("grand_total").trim();
+                    ItemCount= jsonObj1.getString("items_qty").trim();
                     Log.d("11111111","here1");
                 }
 
@@ -1199,6 +1214,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                     getAllValues();
                     Intent intent = new Intent(Checkout_SetAddress.this,OrderSummaryActivity.class);
                     intent.putExtra("PLACEORDER_ID",id);
+                    intent.putExtra("paymentTitle",paymentmethod_title);
                     intent.putExtra("SUBTOTAL",SubTotal);
                     intent.putExtra("SHIPPING",Shipping);
                     intent.putExtra("TAX",Tax);

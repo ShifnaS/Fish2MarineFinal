@@ -58,16 +58,16 @@ public class CutTypesActivity extends AppCompatActivity implements View.OnClickL
                 .setEmptyLabel((TextView) findViewById(R.id.empty_label))
                 .addEmptyView(findViewById(R.id.empty_view))
                 .build();
-        close = (ImageView) findViewById(R.id.close);
+        close = findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Close_view();
             }
         });
-        error_label_retry = ((TextView) findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)findViewById(R.id.empty_label_retry));
-        mrecyclerview = ((RecyclerView)findViewById(R.id.mrecyclerview));
+        error_label_retry = findViewById(R.id.error_label_retry);
+        empty_label_retry = findViewById(R.id.empty_label_retry);
+        mrecyclerview = findViewById(R.id.mrecyclerview);
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
         dataItem = new ArrayList<>();

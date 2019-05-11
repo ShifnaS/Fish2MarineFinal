@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -181,15 +182,23 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="bottom"
                 android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/signup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
                     android:gravity="bottom|center"
                     android:textColor="@color/colorPrimaryDark"
                     android:text="Not yet registered? Sign Up"/>
+                <TextView
+                    android:id="@+id/version"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom|center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="Version : 1.0"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

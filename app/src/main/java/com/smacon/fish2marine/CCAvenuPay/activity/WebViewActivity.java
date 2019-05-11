@@ -1,27 +1,13 @@
 package com.smacon.fish2marine.CCAvenuPay.activity;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -41,14 +27,14 @@ import com.smacon.fish2marine.CCAvenuPay.utility.Constants;
 import com.smacon.fish2marine.CCAvenuPay.utility.LoadingDialog;
 import com.smacon.fish2marine.CCAvenuPay.utility.RSAUtility;
 import com.smacon.fish2marine.CCAvenuPay.utility.ServiceUtility;
-import com.smacon.fish2marine.Constants.OrdersConstants;
 import com.smacon.fish2marine.MyCartActivity;
 import com.smacon.fish2marine.R;
 import com.smacon.fish2marine.SuccessActivity;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.json.JSONObject;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class WebViewActivity extends AppCompatActivity {
@@ -96,7 +82,7 @@ public class WebViewActivity extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             if (!ServiceUtility.chkNull(vResponse).equals("")
                     && ServiceUtility.chkNull(vResponse).toString().indexOf("ERROR") == -1) {
-                StringBuffer vEncVal = new StringBuffer("");
+                StringBuffer vEncVal = new StringBuffer();
                 vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.AMOUNT, mainIntent.getStringExtra(AvenuesParams.AMOUNT)));
                 vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.CURRENCY, mainIntent.getStringExtra(AvenuesParams.CURRENCY)));
                 encVal = RSAUtility.encrypt(vEncVal.substring(0, vEncVal.length() - 1), vResponse);  //encrypt amount and currency
@@ -135,7 +121,7 @@ public class WebViewActivity extends AppCompatActivity {
                 }
             }
 
-            final WebView webview = (WebView) findViewById(R.id.webview);
+            final WebView webview = findViewById(R.id.webview);
             webview.getSettings().setJavaScriptEnabled(true);
             webview.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
             webview.setWebViewClient(new WebViewClient(){
@@ -143,7 +129,15 @@ public class WebViewActivity extends AppCompatActivity {
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(webview, url);
                 //    Toast.makeText(WebViewActivity.this, "URL "+url+" WEBVIEW "+view.getUrl() , Toast.LENGTH_SHORT).show();
-                    if(url.indexOf("r_en/payment/Index/success")!=-1) {
+                    Log.e("111111","Web URL "+url);
+                      if(url.indexOf("http://www.fish2marine.com/payment/index/cancel")!=-1)
+                    {
+                        Intent intent = new Intent(getApplicationContext(),StatusActivity.class);
+                        intent.putExtra("transStatus", "Payment Cancelled");
+                        startActivity(intent);
+                        finish();
+                    }
+                      else if(url.indexOf("https://www.fish2marine.com/payment/index")!=-1) {
                         Log.d("URL", "11111 " + webview.getUrl());
                         Intent i = new Intent(WebViewActivity.this, SuccessActivity.class);
                         i.putExtra("ORDER_NUMBER", order_num);
@@ -151,14 +145,8 @@ public class WebViewActivity extends AppCompatActivity {
                         startActivity(i);
                         finish();
                     }
-                    else if(url.indexOf("https://dev.fish2marine.com/payment/index/cancel")!=-1)
-                    {
-                        Intent intent = new Intent(getApplicationContext(),StatusActivity.class);
-                        intent.putExtra("transStatus", "Payment Cancelled");
-                        startActivity(intent);
-                        finish();
-                    }
-                    else if(url.indexOf("r_en/payment/Index/failed")!=-1)
+
+                    else if(url.indexOf("https://www.fish2marine.com/payment/index/failed")!=-1)
                     {
                         Intent intent = new Intent(getApplicationContext(),StatusActivity.class);
                         intent.putExtra("transStatus", "Payment Failed");

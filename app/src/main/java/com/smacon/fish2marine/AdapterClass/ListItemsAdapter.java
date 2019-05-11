@@ -1,11 +1,7 @@
 package com.smacon.fish2marine.AdapterClass;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smacon.f2mlibrary.SwipeLayout.BaseSwipeAdapter;
-import com.smacon.f2mlibrary.SwipeLayout.SwipeLayout;
 import com.smacon.fish2marine.HelperClass.CartListItem;
 import com.smacon.fish2marine.LoginActivity;
 import com.smacon.fish2marine.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
 /**
  * Created by Kris on 12/9/2016.
@@ -78,22 +71,22 @@ public class ListItemsAdapter extends BaseSwipeAdapter {
 
         holder=new ViewHolder();
 
-        holder.ProductImage = (ImageView) v.findViewById(R.id.img_product);
-        holder.ProductName = (TextView) v.findViewById(R.id.txt_product_name);
-        holder.OtherName = (TextView) v.findViewById(R.id.txt_product_othername);
-        holder.ProductPrice = (TextView) v.findViewById(R.id.txt_product_price);
-        holder.CutType = (TextView) v.findViewById(R.id.txt_cuttype);
-        holder.txt_ordered_qty = (TextView) v.findViewById(R.id.txt_ordered_qty);
-        holder.txt_cleaned_qty = (TextView) v.findViewById(R.id.txt_cleaned_qty);
-        holder.layout_soldby = (LinearLayout) v.findViewById(R.id.layout_soldby);
-        holder.SoldBy = (TextView) v.findViewById(R.id.txt_soldby);
-        holder.NetQty = (TextView) v.findViewById(R.id.txt_netqty);
-        holder.Quantity = (TextView) v.findViewById(R.id.txt_quantity);
-        holder.SubTotal = (TextView) v.findViewById(R.id.txt_subtotal);
-        holder.More = (FrameLayout) v.findViewById(R.id.more);
-        swipecall = (LinearLayout) v.findViewById(R.id.swipecall);
-        swipemail= (LinearLayout) v.findViewById(R.id.swipemail);
-        swipeview = (LinearLayout) v.findViewById(R.id.swipeview);
+        holder.ProductImage = v.findViewById(R.id.img_product);
+        holder.ProductName = v.findViewById(R.id.txt_product_name);
+        holder.OtherName = v.findViewById(R.id.txt_product_othername);
+        holder.ProductPrice = v.findViewById(R.id.txt_product_price);
+        holder.CutType = v.findViewById(R.id.txt_cuttype);
+        holder.txt_ordered_qty = v.findViewById(R.id.txt_ordered_qty);
+        holder.txt_cleaned_qty = v.findViewById(R.id.txt_cleaned_qty);
+        holder.layout_soldby = v.findViewById(R.id.layout_soldby);
+        holder.SoldBy = v.findViewById(R.id.txt_soldby);
+        holder.NetQty = v.findViewById(R.id.txt_netqty);
+        holder.Quantity = v.findViewById(R.id.txt_quantity);
+        holder.SubTotal = v.findViewById(R.id.txt_subtotal);
+        holder.More = v.findViewById(R.id.more);
+        swipecall = v.findViewById(R.id.swipecall);
+        swipemail= v.findViewById(R.id.swipemail);
+        swipeview = v.findViewById(R.id.swipeview);
 
         v.setTag(holder);
        // ((SwipeLayout) (holder.More.getChildAt(position - holder.More.getFirstVisiblePosition()))).open(true);
@@ -101,8 +94,9 @@ public class ListItemsAdapter extends BaseSwipeAdapter {
 
         if(!item.getProductImage().equals("")||item.getProductImage().equals("none")){
             try {
-                Picasso.with(mContext)
-                        .load(mListItem.get(position).getProductImage().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(mListItem.get(position).getProductImage()
+                                .replace("https", "http").replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(holder.ProductImage);

@@ -143,7 +143,7 @@
                 app:hintAnimationEnabled="true"
                 android:layout_marginTop="5dp"
                 android:textColorHint="@color/colorPrimary"
-                android:hint="Address Line 2">
+                android:hint="Address Line 2 *">
 
                 <com.smacon.f2mlibrary.CustomEditText
                     android:id="@+id/edt_add2_add"

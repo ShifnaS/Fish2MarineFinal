@@ -23,11 +23,11 @@ public class SuccessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordersuccess);
         sPreferences = getSharedPreferences("Fish2Marine", MODE_PRIVATE);
-        ImageView img_loader_brands = (ImageView) findViewById(R.id.img_loader_brands);
+        ImageView img_loader_brands = findViewById(R.id.img_loader_brands);
         Glide.with(this)
                 .load(R.drawable.sucess)
                 .into(img_loader_brands);
-        TextView continue_shopping=(TextView)findViewById(R.id.continue_shopping);
+        TextView continue_shopping= findViewById(R.id.continue_shopping);
         continue_shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,7 +43,7 @@ public class SuccessActivity extends AppCompatActivity {
                 finish();
             }
         });
-        TextView orderno=(TextView)findViewById(R.id.orderno);
+        TextView orderno= findViewById(R.id.orderno);
         intent = getIntent();
         mOrderId=intent.getExtras().getString("ORDER_NUMBER");
         orderno.setText(mOrderId);

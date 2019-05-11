@@ -75,8 +75,9 @@ public class CutTypesAdapter extends RecyclerView.Adapter {
             myViewHolder.img_cuttypeImage.setImageResource(R.drawable.ic_dummy);
         } else {
             try {
-                Picasso.with(mContext)
-                        .load(mitems.get(position).getcuttype_imageurl().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(mitems.get(position).getcuttype_imageurl()
+                                .replace("https", "http").replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(myViewHolder.img_cuttypeImage);
@@ -111,9 +112,9 @@ public class CutTypesAdapter extends RecyclerView.Adapter {
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            img_cuttypeImage = (ImageView) itemView.findViewById(R.id.img_cuttypeImage);
-            cardview = (CardView) itemView.findViewById(R.id.cardview);
-            txt_cuttypeName = (TextView) itemView.findViewById(R.id.txt_cuttypeName);
+            img_cuttypeImage = itemView.findViewById(R.id.img_cuttypeImage);
+            cardview = itemView.findViewById(R.id.cardview);
+            txt_cuttypeName = itemView.findViewById(R.id.txt_cuttypeName);
 
         }
     }

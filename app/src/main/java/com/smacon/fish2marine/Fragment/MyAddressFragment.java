@@ -84,7 +84,7 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener{
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
         InitIdView(rootView);
 
         addressUpdateListner=new AddressUpdateListner() {
@@ -109,11 +109,11 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener{
                 .addEmptyView( rootview.findViewById(R.id.empty_view))
                 .build();
         tf = Typeface.createFromAsset(getResources().getAssets(),"rounded_font.otf");
-        mrecyclerview = ((RecyclerView) rootview.findViewById(R.id.mrecyclerview));
+        mrecyclerview = rootview.findViewById(R.id.mrecyclerview);
         mrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        fab_add_address = (FloatingActionButton) rootview.findViewById(R.id.fab_add_address);
-        error_label_retry = ((TextView)  rootview.findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView) rootview.findViewById(R.id.empty_label_retry));
+        fab_add_address = rootview.findViewById(R.id.fab_add_address);
+        error_label_retry = rootview.findViewById(R.id.error_label_retry);
+        empty_label_retry = rootview.findViewById(R.id.empty_label_retry);
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
         fab_add_address.setOnClickListener(this);
@@ -239,21 +239,21 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener{
 
        // setDialogInputLayoutTF(dialog);
 
-        final CustomEditText edt_fname_add = (CustomEditText) dialog.findViewById(R.id.edt_fname_add);
-        final CustomEditText edt_lname_add = (CustomEditText) dialog.findViewById(R.id.edt_lname_add);
-        final CustomEditText edt_company_add = (CustomEditText) dialog.findViewById(R.id.edt_company_add);
-        final CustomEditText edt_phone_add = (CustomEditText) dialog.findViewById(R.id.edt_phone_add);
-        final CustomEditText edt_add1_add = (CustomEditText) dialog.findViewById(R.id.edt_add1_add);
-        final CustomEditText edt_add2_add = (CustomEditText) dialog.findViewById(R.id.edt_add2_add);
-        final CustomEditText edt_city_add = (CustomEditText) dialog.findViewById(R.id.edt_city_add);
-        final CustomEditText edt_state_add = (CustomEditText) dialog.findViewById(R.id.edt_state_add);
-        final CustomEditText edt_zip_add = (CustomEditText) dialog.findViewById(R.id.edt_zip_add);
-        final CustomEditText edt_country_add = (CustomEditText) dialog.findViewById(R.id.edt_country_add);
-        indicator=(AVLoadingIndicatorView)dialog.findViewById(R.id.indicator);
+        final CustomEditText edt_fname_add = dialog.findViewById(R.id.edt_fname_add);
+        final CustomEditText edt_lname_add = dialog.findViewById(R.id.edt_lname_add);
+        final CustomEditText edt_company_add = dialog.findViewById(R.id.edt_company_add);
+        final CustomEditText edt_phone_add = dialog.findViewById(R.id.edt_phone_add);
+        final CustomEditText edt_add1_add = dialog.findViewById(R.id.edt_add1_add);
+        final CustomEditText edt_add2_add = dialog.findViewById(R.id.edt_add2_add);
+        final CustomEditText edt_city_add = dialog.findViewById(R.id.edt_city_add);
+        final CustomEditText edt_state_add = dialog.findViewById(R.id.edt_state_add);
+        final CustomEditText edt_zip_add = dialog.findViewById(R.id.edt_zip_add);
+        final CustomEditText edt_country_add = dialog.findViewById(R.id.edt_country_add);
+        indicator= dialog.findViewById(R.id.indicator);
 
-        final CustomCheckBox chk_default_shipping = (CustomCheckBox) dialog.findViewById(R.id.chk_default_shipping);
+        final CustomCheckBox chk_default_shipping = dialog.findViewById(R.id.chk_default_shipping);
 
-        btn_add = (Button) dialog.findViewById(R.id.btn_add);
+        btn_add = dialog.findViewById(R.id.btn_add);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,6 +281,7 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener{
                             if (add1.length() > 0){
 
                                 edt_add1_add.setError(null);
+
                                 if (city.length() > 0){
 
                                     edt_city_add.setError(null);
@@ -316,7 +317,8 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener{
                                     edt_city_add.setError(MessageConstants.FILL_THIS_FIELD);
                                     edt_city_add.requestFocus();
                                 }
-                            }
+                                }
+
                             else {
 
                                 edt_add1_add.setError(MessageConstants.FILL_THIS_FIELD);

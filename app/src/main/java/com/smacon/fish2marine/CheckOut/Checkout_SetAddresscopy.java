@@ -111,23 +111,23 @@ public class Checkout_SetAddresscopy extends AppCompatActivity implements View.O
                 .addEmptyView(findViewById(R.id.empty_view))
                 .build();
         tf = Typeface.createFromAsset(getResources().getAssets(),"rounded_font.otf");
-        sub_layout=((LinearLayout)findViewById(R.id.sub_layout));
-        main_layout=((LinearLayout)findViewById(R.id.main_layout));
-        shippingListView = (ListView) findViewById(R.id.shippingListView);
-        txt_new_address = (CustomTextView) findViewById(R.id.txt_new_address);
-        txt_address_name = (CustomTextView) findViewById(R.id.txt_address_name);
-        txt_company = (CustomTextView) findViewById(R.id.txt_company);
-        txt_street = (CustomTextView) findViewById(R.id.txt_street);
-        txt_city = (CustomTextView) findViewById(R.id.txt_city);
-        txt_state_pin = (CustomTextView) findViewById(R.id.txt_state_pin);
-        txt_country = (CustomTextView) findViewById(R.id.txt_country);
-        txt_phone = (CustomTextView) findViewById(R.id.txt_phone);
-        address_list=(ImageView)findViewById(R.id.address_list);
-        next=(Button)findViewById(R.id.next);
-        shipping_indicator=(FrameLayout)findViewById(R.id.shipping_indicator);
-        error_label_retry = ((TextView)findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)findViewById(R.id.empty_label_retry));
-        radiogroup = (RadioGroup) findViewById(R.id.radiogroup);
+        sub_layout= findViewById(R.id.sub_layout);
+        main_layout= findViewById(R.id.main_layout);
+        shippingListView = findViewById(R.id.shippingListView);
+        txt_new_address = findViewById(R.id.txt_new_address);
+        txt_address_name = findViewById(R.id.txt_address_name);
+        txt_company = findViewById(R.id.txt_company);
+        txt_street = findViewById(R.id.txt_street);
+        txt_city = findViewById(R.id.txt_city);
+        txt_state_pin = findViewById(R.id.txt_state_pin);
+        txt_country = findViewById(R.id.txt_country);
+        txt_phone = findViewById(R.id.txt_phone);
+        address_list= findViewById(R.id.address_list);
+        next= findViewById(R.id.next);
+        shipping_indicator= findViewById(R.id.shipping_indicator);
+        error_label_retry = findViewById(R.id.error_label_retry);
+        empty_label_retry = findViewById(R.id.empty_label_retry);
+        radiogroup = findViewById(R.id.radiogroup);
         shippingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -179,10 +179,10 @@ public class Checkout_SetAddresscopy extends AppCompatActivity implements View.O
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_addresslist);
-        mrecyclerview = (RecyclerView) dialog.findViewById(R.id.mrecyclerview);
+        mrecyclerview = dialog.findViewById(R.id.mrecyclerview);
         mrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         Utilities.setDialogParamsWrapContent(this,dialog);
-        indicator = (AVLoadingIndicatorView) dialog.findViewById(R.id.indicator);
+        indicator = dialog.findViewById(R.id.indicator);
         dialog.show();
         mrecyclerview.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             GestureDetector gestureDetector = new GestureDetector(Checkout_SetAddresscopy.this, new GestureDetector.SimpleOnGestureListener() {
@@ -594,21 +594,21 @@ public class Checkout_SetAddresscopy extends AppCompatActivity implements View.O
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_add_address);
         // setDialogInputLayoutTF(dialog);
-        final CustomEditText edt_fname_add = (CustomEditText) dialog.findViewById(R.id.edt_fname_add);
-        final CustomEditText edt_lname_add = (CustomEditText) dialog.findViewById(R.id.edt_lname_add);
-        final CustomEditText edt_company_add = (CustomEditText) dialog.findViewById(R.id.edt_company_add);
-        final CustomEditText edt_phone_add = (CustomEditText) dialog.findViewById(R.id.edt_phone_add);
-        final CustomEditText edt_add1_add = (CustomEditText) dialog.findViewById(R.id.edt_add1_add);
-        final CustomEditText edt_add2_add = (CustomEditText) dialog.findViewById(R.id.edt_add2_add);
-        final CustomEditText edt_city_add = (CustomEditText) dialog.findViewById(R.id.edt_city_add);
-        final CustomEditText edt_state_add = (CustomEditText) dialog.findViewById(R.id.edt_state_add);
-        final CustomEditText edt_zip_add = (CustomEditText) dialog.findViewById(R.id.edt_zip_add);
-        final CustomEditText edt_country_add = (CustomEditText) dialog.findViewById(R.id.edt_country_add);
-        indicator=(AVLoadingIndicatorView)dialog.findViewById(R.id.indicator);
+        final CustomEditText edt_fname_add = dialog.findViewById(R.id.edt_fname_add);
+        final CustomEditText edt_lname_add = dialog.findViewById(R.id.edt_lname_add);
+        final CustomEditText edt_company_add = dialog.findViewById(R.id.edt_company_add);
+        final CustomEditText edt_phone_add = dialog.findViewById(R.id.edt_phone_add);
+        final CustomEditText edt_add1_add = dialog.findViewById(R.id.edt_add1_add);
+        final CustomEditText edt_add2_add = dialog.findViewById(R.id.edt_add2_add);
+        final CustomEditText edt_city_add = dialog.findViewById(R.id.edt_city_add);
+        final CustomEditText edt_state_add = dialog.findViewById(R.id.edt_state_add);
+        final CustomEditText edt_zip_add = dialog.findViewById(R.id.edt_zip_add);
+        final CustomEditText edt_country_add = dialog.findViewById(R.id.edt_country_add);
+        indicator= dialog.findViewById(R.id.indicator);
 
-        final CustomCheckBox chk_default_shipping = (CustomCheckBox) dialog.findViewById(R.id.chk_default_shipping);
+        final CustomCheckBox chk_default_shipping = dialog.findViewById(R.id.chk_default_shipping);
 
-        btn_add = (Button) dialog.findViewById(R.id.btn_add);
+        btn_add = dialog.findViewById(R.id.btn_add);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

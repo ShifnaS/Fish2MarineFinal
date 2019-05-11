@@ -1,20 +1,17 @@
 package com.smacon.fish2marine.AdapterClass;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,7 +19,6 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.smacon.f2mlibrary.Button.LiquidRadioButton.LiquidRadioButton;
 import com.smacon.f2mlibrary.CustomToast;
@@ -31,14 +27,12 @@ import com.smacon.fish2marine.Fragment.HomeFragment;
 import com.smacon.fish2marine.HelperClass.ProductListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.Interface.RecycleviewInterface;
-import com.smacon.fish2marine.NavigationDrawerActivity;
 import com.smacon.fish2marine.ProductDescriptionActivity;
 import com.smacon.fish2marine.R;
 import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -101,31 +95,31 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
         AVLoadingIndicatorView indicator;
         RadioGroup group;
         ImageView close;
-        TextView btn_ok;
+        Button btn_ok;
         LinearLayout layout_cutype;
         String mCuttypeValue = "";
         String OrderQty,AfterQty;
 
         ViewHolder(final View itemView) {
             super(itemView);
-            this.layout = (LinearLayout) itemView.findViewById(R.id.layout);
-            this.layout_cutype = (LinearLayout) itemView.findViewById(R.id.layout_cutype);
-            this.close = (ImageView) itemView.findViewById(R.id.close);
-            this.btn_ok = (TextView) itemView.findViewById(R.id.btn_ok);
-            this.layout_indicator = (FrameLayout) itemView.findViewById(R.id.layout_indicator);
-            this.indicator = (AVLoadingIndicatorView) itemView.findViewById(R.id.indicator);
-            this.ProductName = (TextView) itemView.findViewById(R.id.txt_product_name);
-            this.ProductPrice = (TextView) itemView.findViewById(R.id.txt_product_price);
-            this.OtherName = (TextView) itemView.findViewById(R.id.txt_product_othername);
-            this.SpecialPrice = (TextView) itemView.findViewById(R.id.txt_product_specialprice);
-            this.txt_ordered_qty = (TextView) itemView.findViewById(R.id.txt_ordered_qty);
-            this.txt_cleaned_qty = (TextView) itemView.findViewById(R.id.txt_cleaned_qty);
-            this.ProductImage = (ImageView) itemView.findViewById(R.id.img_product);
-            this.Plus = (ImageView) itemView.findViewById(R.id.img_plus);
-            this.Minus = (ImageView) itemView.findViewById(R.id.img_minus);
-            this.Quantity = (TextView) itemView.findViewById(R.id.txt_quantity);
-            this.Addtocart = (LinearLayout) itemView.findViewById(R.id.btn_addtocart);
-            this.group=(RadioGroup)itemView.findViewById(R.id.radiogroup);
+            this.layout = itemView.findViewById(R.id.layout);
+            this.layout_cutype = itemView.findViewById(R.id.layout_cutype);
+            this.close = itemView.findViewById(R.id.close);
+            this.btn_ok = itemView.findViewById(R.id.btn_ok);
+            this.layout_indicator = itemView.findViewById(R.id.layout_indicator);
+            this.indicator = itemView.findViewById(R.id.indicator);
+            this.ProductName = itemView.findViewById(R.id.txt_product_name);
+            this.ProductPrice = itemView.findViewById(R.id.txt_product_price);
+            this.OtherName = itemView.findViewById(R.id.txt_product_othername);
+            this.SpecialPrice = itemView.findViewById(R.id.txt_product_specialprice);
+            this.txt_ordered_qty = itemView.findViewById(R.id.txt_ordered_qty);
+            this.txt_cleaned_qty = itemView.findViewById(R.id.txt_cleaned_qty);
+            this.ProductImage = itemView.findViewById(R.id.img_product);
+            this.Plus = itemView.findViewById(R.id.img_plus);
+            this.Minus = itemView.findViewById(R.id.img_minus);
+            this.Quantity = itemView.findViewById(R.id.txt_quantity);
+            this.Addtocart = itemView.findViewById(R.id.btn_addtocart);
+            this.group= itemView.findViewById(R.id.radiogroup);
         }
     }
     @Override
@@ -142,7 +136,7 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
         holder.txt_cleaned_qty.setText("After Cleaning: "+holder.AfterQty+"gm");
 
         holder.group.removeAllViews();
-        LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
+        LayoutInflater inflater = mContext.getLayoutInflater();
         if (mListItem.get(position).getnewcuttype_applicable().equals("1")) {
            // Log.d("111111111","here"+ mListItem.get(position).getCuttype_valuelist().size());
             for (int i = 0; i < mListItem.get(position).getCuttype_valuelist().size(); i++) {
@@ -179,9 +173,13 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
 
 
         if(!item.getnewproduct_image().equals("")){
+
+
+
             try {
-                Picasso.with(mContext)
-                        .load(mListItem.get(position).getnewproduct_image().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(mListItem.get(position).getnewproduct_image().replace("https",
+                                "http").replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(holder.ProductImage);
@@ -379,7 +377,7 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
                     if (jsonObj.getString("status").equals(String.valueOf(2))) {
                         mholder.layout.setVisibility(View.VISIBLE);
                         mholder.layout_indicator.setVisibility(View.GONE);
-                        CustomToast.info(mContext,jsonObj.getString("message").toString()).show();
+                        CustomToast.info(mContext, jsonObj.getString("message")).show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
                         Log.e("data/////////////","//////////////20"+jsonObj.toString());
                       //  Toast.makeText(mContext, "hiiiii "+jsonObj.getJSONObject("data").toString(), Toast.LENGTH_SHORT).show();
@@ -396,7 +394,7 @@ public class NewProductSnapperAdapter extends RecyclerView.Adapter<NewProductSna
                         mConfig.savePreferences(mContext,"CartID",jsonObj1.getString("id").trim());
                         Log.d("111111111",sPreferences.getString("CartID",""));
                         helper.Insert_Count(fillMaps);
-                        final List<HashMap<String, String>> Data_Item;;
+                        final List<HashMap<String, String>> Data_Item;
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
                         mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));

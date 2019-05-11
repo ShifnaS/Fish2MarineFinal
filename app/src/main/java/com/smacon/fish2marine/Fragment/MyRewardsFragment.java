@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +24,6 @@ import com.smacon.f2mlibrary.Switcher.Switcher;
 import com.smacon.fish2marine.AdapterClass.MyRewardsAdapter;
 import com.smacon.fish2marine.HelperClass.AllListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
-import com.smacon.fish2marine.MyCartActivity;
 import com.smacon.fish2marine.R;
 import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
@@ -71,7 +69,7 @@ public class MyRewardsFragment extends Fragment implements View.OnClickListener{
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
         InitIdView(rootView);
         return rootView;
     }
@@ -84,13 +82,13 @@ public class MyRewardsFragment extends Fragment implements View.OnClickListener{
                 .setEmptyLabel((TextView) rootView.findViewById(R.id.empty_label))
                 .addEmptyView(rootView.findViewById(R.id.empty_view))
                 .build();
-        sub_layout=((LinearLayout)rootView.findViewById(R.id.sub_layout));
-        mrecyclerview = ((RecyclerView)rootView.findViewById(R.id.mrecyclerview));
+        sub_layout= rootView.findViewById(R.id.sub_layout);
+        mrecyclerview = rootView.findViewById(R.id.mrecyclerview);
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
-        totalpoints=((TextView) rootView.findViewById(R.id.totalpoints));
-        error_label_retry = ((TextView) rootView.findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)rootView.findViewById(R.id.empty_label_retry));
+        totalpoints= rootView.findViewById(R.id.totalpoints);
+        error_label_retry = rootView.findViewById(R.id.error_label_retry);
+        empty_label_retry = rootView.findViewById(R.id.empty_label_retry);
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
 
@@ -174,7 +172,7 @@ public class MyRewardsFragment extends Fragment implements View.OnClickListener{
                         JSONObject jsonObj1 = jsonObj.getJSONObject("data");
                         //Log.d("1111221", "API_DASHBOARD_RESPONSE jsonObj1"+jsonObj1);
                         if(jsonObj1.has("balancepoints")) {
-                            totalpoints.setText(jsonObj1.getString("balancepoints").toString());
+                            totalpoints.setText(jsonObj1.getString("balancepoints"));
                         }
                         if (jsonObj1.has("items")) {
                             JSONArray feedArray1 = jsonObj1.getJSONArray("items");

@@ -1,16 +1,11 @@
 package com.smacon.fish2marine.AdapterClass;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,32 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.smacon.f2mlibrary.CustomToast;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
-import com.smacon.f2mlibrary.SwipableLayout.SwipeLayout;
-import com.smacon.f2mlibrary.SwipeLayout.SwipeRevealLayout;
-import com.smacon.f2mlibrary.SwipeLayout.ViewBinderHelper;
 import com.smacon.fish2marine.HelperClass.CartListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
-import com.smacon.fish2marine.LoginActivity;
 import com.smacon.fish2marine.MyCartActivity;
-import com.smacon.fish2marine.NavigationDrawerActivity;
-import com.smacon.fish2marine.ProductDescriptionActivity;
 import com.smacon.fish2marine.R;
 import com.smacon.fish2marine.UpdateProductActivity;
 import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -103,25 +88,25 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ViewHolder
         ViewHolder(final View itemView) {
             super(itemView);
 
-            this.ProductImage = (ImageView) itemView.findViewById(R.id.img_product);
-            this.ProductName = (TextView) itemView.findViewById(R.id.txt_product_name);
-            this.OtherName = (TextView) itemView.findViewById(R.id.txt_product_othername);
-            this.ProductPrice = (TextView) itemView.findViewById(R.id.txt_product_price);
-            this.CutType = (TextView) itemView.findViewById(R.id.txt_cuttype);
-            this.txt_ordered_qty = (TextView) itemView.findViewById(R.id.txt_ordered_qty);
-            this.txt_cleaned_qty = (TextView) itemView.findViewById(R.id.txt_cleaned_qty);
-            this.layout_soldby = (LinearLayout) itemView.findViewById(R.id.layout_soldby);
-            this.SoldBy = (TextView) itemView.findViewById(R.id.txt_soldby);
-            this.NetQty = (TextView) itemView.findViewById(R.id.txt_netqty);
-            this.Quantity = (TextView) itemView.findViewById(R.id.txt_quantity);
-            this.SubTotal = (TextView) itemView.findViewById(R.id.txt_subtotal);
-            this.More = (FrameLayout) itemView.findViewById(R.id.more);
-            this.visible_layout = (FrameLayout) itemView.findViewById(R.id.visible);
+            this.ProductImage = itemView.findViewById(R.id.img_product);
+            this.ProductName = itemView.findViewById(R.id.txt_product_name);
+            this.OtherName = itemView.findViewById(R.id.txt_product_othername);
+            this.ProductPrice = itemView.findViewById(R.id.txt_product_price);
+            this.CutType = itemView.findViewById(R.id.txt_cuttype);
+            this.txt_ordered_qty = itemView.findViewById(R.id.txt_ordered_qty);
+            this.txt_cleaned_qty = itemView.findViewById(R.id.txt_cleaned_qty);
+            this.layout_soldby = itemView.findViewById(R.id.layout_soldby);
+            this.SoldBy = itemView.findViewById(R.id.txt_soldby);
+            this.NetQty = itemView.findViewById(R.id.txt_netqty);
+            this.Quantity = itemView.findViewById(R.id.txt_quantity);
+            this.SubTotal = itemView.findViewById(R.id.txt_subtotal);
+            this.More = itemView.findViewById(R.id.more);
+            this.visible_layout = itemView.findViewById(R.id.visible);
             //this.view = (LinearLayout) itemView.findViewById(R.id.view);
-            this.edit = (LinearLayout) itemView.findViewById(R.id.edit);
-            this.delete = (LinearLayout) itemView.findViewById(R.id.delete);
-            this.layout = (LinearLayout) itemView.findViewById(R.id.layout);
-            this.layout_indicator = (FrameLayout) itemView.findViewById(R.id.layout_indicator);
+            this.edit = itemView.findViewById(R.id.edit);
+            this.delete = itemView.findViewById(R.id.delete);
+            this.layout = itemView.findViewById(R.id.layout);
+            this.layout_indicator = itemView.findViewById(R.id.layout_indicator);
         }
 
     }
@@ -187,8 +172,10 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ViewHolder
 
         if(!item.getProductImage().equals("")||item.getProductImage().equals("none")){
             try {
-                Picasso.with(mContext)
-                        .load(mListItem.get(position).getProductImage().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(mListItem.get(position).getProductImage()
+                                .replace("https", "http")
+                                .replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(holder.ProductImage);
@@ -294,7 +281,7 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ViewHolder
                     if (jsonObj.getString("status").equals(String.valueOf(2))) {
                         mholder.layout.setVisibility(View.VISIBLE);
                         mholder.layout_indicator.setVisibility(View.GONE);
-                        CustomToast.info(mContext,jsonObj.getString("message").toString()).show();
+                        CustomToast.info(mContext, jsonObj.getString("message")).show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
                         List<HashMap<String, String>> fillMaps = new ArrayList<HashMap<String, String>>();
                         JSONObject jsonObj1 = jsonObj.getJSONObject("data");
@@ -305,7 +292,7 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ViewHolder
                             fillMaps.add(map);
                         }
                         helper.Insert_Count(fillMaps);
-                        final List<HashMap<String, String>> Data_Item;;
+                        final List<HashMap<String, String>> Data_Item;
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
                         mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));

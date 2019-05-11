@@ -91,24 +91,24 @@ public class HotProductAdapter extends RecyclerView.Adapter<HotProductAdapter.Vi
 
         ViewHolder(final View itemView) {
             super(itemView);
-            this.layout = (LinearLayout) itemView.findViewById(R.id.layout);
-            this.layout_cutype = (LinearLayout) itemView.findViewById(R.id.layout_cutype);
-            this.close = (ImageView) itemView.findViewById(R.id.close);
-            this.btn_ok = (TextView) itemView.findViewById(R.id.btn_ok);
-            this.layout_indicator = (FrameLayout) itemView.findViewById(R.id.layout_indicator);
-            this.indicator = (AVLoadingIndicatorView) itemView.findViewById(R.id.indicator);
-            this.ProductName = (TextView) itemView.findViewById(R.id.txt_product_name);
-            this.ProductPrice = (TextView) itemView.findViewById(R.id.txt_product_price);
-            this.OtherName = (TextView) itemView.findViewById(R.id.txt_product_othername);
-            this.SpecialPrice = (TextView) itemView.findViewById(R.id.txt_product_specialprice);
-            this.ProductImage = (ImageView) itemView.findViewById(R.id.img_product);
-            this.txt_ordered_qty = (TextView) itemView.findViewById(R.id.txt_ordered_qty);
-            this.txt_cleaned_qty = (TextView) itemView.findViewById(R.id.txt_cleaned_qty);
-            this.Plus = (ImageView) itemView.findViewById(R.id.img_plus);
-            this.Minus = (ImageView) itemView.findViewById(R.id.img_minus);
-            this.Quantity = (TextView) itemView.findViewById(R.id.txt_quantity);
-            this.Addtocart = (LinearLayout) itemView.findViewById(R.id.btn_addtocart);
-            this.group=(RadioGroup)itemView.findViewById(R.id.radiogroup);
+            this.layout = itemView.findViewById(R.id.layout);
+            this.layout_cutype = itemView.findViewById(R.id.layout_cutype);
+            this.close = itemView.findViewById(R.id.close);
+            this.btn_ok = itemView.findViewById(R.id.btn_ok);
+            this.layout_indicator = itemView.findViewById(R.id.layout_indicator);
+            this.indicator = itemView.findViewById(R.id.indicator);
+            this.ProductName = itemView.findViewById(R.id.txt_product_name);
+            this.ProductPrice = itemView.findViewById(R.id.txt_product_price);
+            this.OtherName = itemView.findViewById(R.id.txt_product_othername);
+            this.SpecialPrice = itemView.findViewById(R.id.txt_product_specialprice);
+            this.ProductImage = itemView.findViewById(R.id.img_product);
+            this.txt_ordered_qty = itemView.findViewById(R.id.txt_ordered_qty);
+            this.txt_cleaned_qty = itemView.findViewById(R.id.txt_cleaned_qty);
+            this.Plus = itemView.findViewById(R.id.img_plus);
+            this.Minus = itemView.findViewById(R.id.img_minus);
+            this.Quantity = itemView.findViewById(R.id.txt_quantity);
+            this.Addtocart = itemView.findViewById(R.id.btn_addtocart);
+            this.group= itemView.findViewById(R.id.radiogroup);
 
         }
     }
@@ -122,7 +122,7 @@ public class HotProductAdapter extends RecyclerView.Adapter<HotProductAdapter.Vi
       //  Log.d("11111111","hiii"+mListItem.get(position).getbestCuttype_valuelist());
 
         holder.group.removeAllViews();
-        LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
+        LayoutInflater inflater = mContext.getLayoutInflater();
         if (mListItem.get(position).getbestcuttype_applicable().equals("1")) {
             for (int i = 0; i < mListItem.get(position).getbestCuttype_valuelist().size(); i++) {
                 Log.d("11111111","hiiibest"+mListItem.get(position).getbestCuttype_valuelist().get(i));
@@ -160,8 +160,10 @@ public class HotProductAdapter extends RecyclerView.Adapter<HotProductAdapter.Vi
 
         if(!item.getbestsellerproduct_image().equals("")){
             try {
-                Picasso.with(mContext)
-                        .load(mListItem.get(position).getbestsellerproduct_image().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(mListItem.get(position).getbestsellerproduct_image()
+                                .replace("https", "http")
+                                .replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(holder.ProductImage);
@@ -406,7 +408,7 @@ public class HotProductAdapter extends RecyclerView.Adapter<HotProductAdapter.Vi
                     if (jsonObj.getString("status").equals(String.valueOf(2))) {
                         mholder.layout.setVisibility(View.VISIBLE);
                         mholder.layout_indicator.setVisibility(View.GONE);
-                        CustomToast.info(mContext,jsonObj.getString("message").toString()).show();
+                        CustomToast.info(mContext, jsonObj.getString("message")).show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
                         List<HashMap<String, String>> fillMaps = new ArrayList<HashMap<String, String>>();
                         JSONObject jsonObj1 = jsonObj.getJSONObject("data");
@@ -419,7 +421,7 @@ public class HotProductAdapter extends RecyclerView.Adapter<HotProductAdapter.Vi
                         mConfig.savePreferences(mContext,"CartID",jsonObj1.getString("id").trim());
                         Log.d("111111111",sPreferences.getString("CartID",""));
                         helper.Insert_Count(fillMaps);
-                        final List<HashMap<String, String>> Data_Item;;
+                        final List<HashMap<String, String>> Data_Item;
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
                         mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));

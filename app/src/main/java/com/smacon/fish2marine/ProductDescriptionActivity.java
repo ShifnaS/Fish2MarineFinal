@@ -281,7 +281,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         }
     }
     private void shareTextUrl() {
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         share.putExtra(Intent.EXTRA_SUBJECT, "Fish2Marine");
@@ -340,7 +340,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
                                     txt_product_stock.setText("In Stock: "+feedObj1.getString("inStock"));
                                     txt_product_stock.setTextColor(getResources().getColor(R.color.colorAccentsecond));
                                 }
-                                txt_product_price.setText(""+feedObj1.getString("price")+"/0.5kg");
+                                txt_product_price.setText(""+feedObj1.getString("price"));
                                 if (feedObj1.getString("specialPrice").equals("")||feedObj1.getString("specialPrice").equals("0")){
                                     layout_specialPrice.setVisibility(View.GONE);
                                 }

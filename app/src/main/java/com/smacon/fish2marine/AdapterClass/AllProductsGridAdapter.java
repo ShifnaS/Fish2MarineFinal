@@ -1,28 +1,22 @@
 package com.smacon.fish2marine.AdapterClass;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.smacon.f2mlibrary.Button.LiquidRadioButton.LiquidRadioButton;
 import com.smacon.f2mlibrary.CustomToast;
@@ -37,7 +31,6 @@ import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -100,7 +93,7 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
         myViewHolder.AfterQty=mitems.get(position).getnewcleaned_qty();
 
         myViewHolder.group.removeAllViews();
-        LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
+        LayoutInflater inflater = mContext.getLayoutInflater();
         if (mitems.get(position).getcuttype_applicable().equals("1")) {
             Log.d("111111111","size "+ mitems.get(position).getallCuttype_valuelist().size());
             for (int i = 0; i < mitems.get(position).getallCuttype_valuelist().size(); i++) {
@@ -145,8 +138,10 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
 
         } else {
             try {
-                Picasso.with(mContext)
-                        .load(mitems.get(position).getAllproduct_image().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(mitems.get(position).getAllproduct_image()
+                                .replace("https", "http")
+                                .replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(myViewHolder.img_product);
@@ -313,25 +308,25 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
         private MyViewHolder(View itemView) {
             super(itemView);
 
-            layout = (LinearLayout) itemView.findViewById(R.id.layout);
-            layout_cutype = (LinearLayout) itemView.findViewById(R.id.layout_cutype);
-            close = (ImageView) itemView.findViewById(R.id.close);
-            btn_ok = (TextView) itemView.findViewById(R.id.btn_ok);
-            layout_indicator = (FrameLayout) itemView.findViewById(R.id.layout_indicator);
-            indicator = (AVLoadingIndicatorView) itemView.findViewById(R.id.indicator);
+            layout = itemView.findViewById(R.id.layout);
+            layout_cutype = itemView.findViewById(R.id.layout_cutype);
+            close = itemView.findViewById(R.id.close);
+            btn_ok = itemView.findViewById(R.id.btn_ok);
+            layout_indicator = itemView.findViewById(R.id.layout_indicator);
+            indicator = itemView.findViewById(R.id.indicator);
 
-            img_product = (ImageView) itemView.findViewById(R.id.img_product);
-            txt_product_name = (TextView) itemView.findViewById(R.id.txt_product_name);
-            txt_OtherName = (TextView) itemView.findViewById(R.id.txt_product_othername);
-            txt_product_price = (TextView) itemView.findViewById(R.id.txt_product_price);
-            txt_SpecialPrice = (TextView) itemView.findViewById(R.id.txt_product_specialprice);
-            btn_addtocart=(LinearLayout) itemView.findViewById(R.id.btn_addtocart);
-            img_plus = (ImageView) itemView.findViewById(R.id.img_plus);
-            img_minus = (ImageView) itemView.findViewById(R.id.img_minus);
-            txt_quantity = (TextView) itemView.findViewById(R.id.txt_quantity);
-            txt_ordered_qty = (TextView) itemView.findViewById(R.id.txt_ordered_qty);
-            txt_cleaned_qty = (TextView) itemView.findViewById(R.id.txt_cleaned_qty);
-            group=(RadioGroup)itemView.findViewById(R.id.radiogroup);
+            img_product = itemView.findViewById(R.id.img_product);
+            txt_product_name = itemView.findViewById(R.id.txt_product_name);
+            txt_OtherName = itemView.findViewById(R.id.txt_product_othername);
+            txt_product_price = itemView.findViewById(R.id.txt_product_price);
+            txt_SpecialPrice = itemView.findViewById(R.id.txt_product_specialprice);
+            btn_addtocart= itemView.findViewById(R.id.btn_addtocart);
+            img_plus = itemView.findViewById(R.id.img_plus);
+            img_minus = itemView.findViewById(R.id.img_minus);
+            txt_quantity = itemView.findViewById(R.id.txt_quantity);
+            txt_ordered_qty = itemView.findViewById(R.id.txt_ordered_qty);
+            txt_cleaned_qty = itemView.findViewById(R.id.txt_cleaned_qty);
+            group= itemView.findViewById(R.id.radiogroup);
         }
     }
 
@@ -389,7 +384,7 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
                     if (jsonObj.getString("status").equals(String.valueOf(2))) {
                         mholder.layout.setVisibility(View.VISIBLE);
                         mholder.layout_indicator.setVisibility(View.GONE);
-                        CustomToast.info(mContext,jsonObj.getString("message").toString()).show();
+                        CustomToast.info(mContext, jsonObj.getString("message")).show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
                         Log.e("data/////////////","//////////////20"+jsonObj.toString());
                         //  Toast.makeText(mContext, "hiiiii "+jsonObj.getJSONObject("data").toString(), Toast.LENGTH_SHORT).show();
@@ -406,7 +401,7 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
                         mConfig.savePreferences(mContext,"CartID",jsonObj1.getString("id").trim());
                         Log.d("111111111",sPreferences.getString("CartID",""));
                         helper.Insert_Count(fillMaps);
-                        final List<HashMap<String, String>> Data_Item;;
+                        final List<HashMap<String, String>> Data_Item;
                         Data_Item = helper.getCount();
                         Log.d("1111111112","Cart Count "+Data_Item.get(0).get("cartcount"));
                         mConfig.savePreferences(mContext,"CartCount",Data_Item.get(0).get("cartcount"));
@@ -432,14 +427,6 @@ public class AllProductsGridAdapter extends RecyclerView.Adapter {
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("data_changed"));
         NavigationDrawerActivity.getInstance().updateCartCount( count);
 
-       /* Intent intent = new Intent(mContext, ProductViewActivity.class);
-        Log.d("11111111shared",sPreferences.getString("CategoryName",""));
-        Log.d("11111111shared",sPreferences.getString("CategoryID",""));
-        intent.putExtra("ID",sPreferences.getString("CategoryID",""));
-        intent.putExtra("NAME",sPreferences.getString("CategoryName",""));
-        intent.putExtra("PAGE","SUBPAGE");
-       // mContext.getWindow().setExitTransition(null);
-        mContext.startActivity(intent);*/
         holder.layout.setVisibility(View.VISIBLE);
         holder.layout_indicator.setVisibility(View.GONE);
         CustomToast.success(mContext, "Item successfully added to cart").show();

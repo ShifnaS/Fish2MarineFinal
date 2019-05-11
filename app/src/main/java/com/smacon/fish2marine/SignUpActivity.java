@@ -1,6 +1,5 @@
 package com.smacon.fish2marine;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -53,7 +52,6 @@ import com.smacon.fish2marine.Util.HttpOperations;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -290,19 +288,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void InitIdView(){
         subscribe=findViewById(R.id.subscribe);
-        mpwdtoggle1=(ToggleButton)findViewById(R.id.mpwdtoggle1);
-        mpwdtoggle2=(ToggleButton)findViewById(R.id.mpwdtoggle2);
+        mpwdtoggle1= findViewById(R.id.mpwdtoggle1);
+        mpwdtoggle2= findViewById(R.id.mpwdtoggle2);
 
         login=findViewById(R.id.login);
-        mFirstname = (MaterialEditText)findViewById(R.id.firstname);
-        mLastname = (MaterialEditText)findViewById(R.id.lastname);
-        mMobile = (MaterialEditText)findViewById(R.id.mobile);
-        mEmail = (MaterialEditText)findViewById(R.id.email);
-        mNewPassword = (MaterialEditText)findViewById(R.id.newpassword);
-        mConfirmpassword = (MaterialEditText)findViewById(R.id.confirmpassword);
-        mRegister = (Button) findViewById(R.id.register);
-        mClose = (ImageView) findViewById(R.id.close);
-        loading = (AVLoadingIndicatorView) findViewById(R.id.indicator);
+        mFirstname = findViewById(R.id.firstname);
+        mLastname = findViewById(R.id.lastname);
+        mMobile = findViewById(R.id.mobile);
+        mEmail = findViewById(R.id.email);
+        mNewPassword = findViewById(R.id.newpassword);
+        mConfirmpassword = findViewById(R.id.confirmpassword);
+        mRegister = findViewById(R.id.register);
+        mClose = findViewById(R.id.close);
+        loading = findViewById(R.id.indicator);
         loading.setVisibility(View.GONE);
         mRegister.setOnClickListener(this);
         mClose.setOnClickListener(this);

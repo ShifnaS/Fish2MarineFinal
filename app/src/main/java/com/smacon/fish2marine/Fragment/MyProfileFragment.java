@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.smacon.f2mlibrary.Button.FloatingActionButton;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
@@ -74,7 +73,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener{
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
         InitIdView(rootView);
         return rootView;
     }
@@ -88,23 +87,23 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener{
                 .setEmptyLabel((TextView) rootView.findViewById(R.id.empty_label))
                 .addEmptyView(rootView.findViewById(R.id.empty_view))
                 .build();
-        sub_layout=((LinearLayout)rootView.findViewById(R.id.sub_layout));
+        sub_layout= rootView.findViewById(R.id.sub_layout);
 
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
 
-        error_label_retry = ((TextView) rootView.findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView)rootView.findViewById(R.id.empty_label_retry));
+        error_label_retry = rootView.findViewById(R.id.error_label_retry);
+        empty_label_retry = rootView.findViewById(R.id.empty_label_retry);
 
-        firstname = ((TextView) rootView.findViewById(R.id.firstname));
-        lastname = ((TextView) rootView.findViewById(R.id.lastname));
-        name = ((TextView) rootView.findViewById(R.id.name));
-        email = ((TextView)rootView.findViewById(R.id.email));
-        mobile = ((TextView) rootView.findViewById(R.id.mobile));
-        fab_edit=((FloatingActionButton)rootView.findViewById(R.id.fab_edit));
-        mobile_heading = ((TextView) rootView.findViewById(R.id.mobile_heading));
-        company = ((TextView)rootView.findViewById(R.id.company));
-        address = ((TextView)rootView.findViewById(R.id.address));
+        firstname = rootView.findViewById(R.id.firstname);
+        lastname = rootView.findViewById(R.id.lastname);
+        name = rootView.findViewById(R.id.name);
+        email = rootView.findViewById(R.id.email);
+        mobile = rootView.findViewById(R.id.mobile);
+        fab_edit= rootView.findViewById(R.id.fab_edit);
+        mobile_heading = rootView.findViewById(R.id.mobile_heading);
+        company = rootView.findViewById(R.id.company);
+        address = rootView.findViewById(R.id.address);
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
         fab_edit.setOnClickListener(this);
@@ -185,18 +184,18 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener{
                         fab_edit.setVisibility(View.VISIBLE);
                         JSONObject jsonObj1 = jsonObj.getJSONObject("data");
                         Log.e("dataaaa","*************** "+jsonObj1.toString());
-                        name.setText(jsonObj1.getString("firstname").toString()+" "+jsonObj1.getString("lastname").toString());
-                        firstname.setText(jsonObj1.getString("firstname").toString());
-                        lastname.setText(jsonObj1.getString("lastname").toString());
-                        email.setText(jsonObj1.getString("email").toString());
+                        name.setText(jsonObj1.getString("firstname") +" "+ jsonObj1.getString("lastname"));
+                        firstname.setText(jsonObj1.getString("firstname"));
+                        lastname.setText(jsonObj1.getString("lastname"));
+                        email.setText(jsonObj1.getString("email"));
                      //   Toast.makeText(getContext(), "mobile "+jsonObj1.getString("mobile").toString(), Toast.LENGTH_SHORT).show();
-                        if(jsonObj1.getString("mobile").toString().equals("")||jsonObj1.getString("mobile").toString().equals("null")){
+                        if(jsonObj1.getString("mobile").equals("")|| jsonObj1.getString("mobile").equals("null")){
                             mobile.setText("");
                             mobile_heading.setVisibility(View.GONE);
                             mobile.setVisibility(View.GONE);
                         }
                         else {
-                            mobile.setText(jsonObj1.getString("mobile").toString());
+                            mobile.setText(jsonObj1.getString("mobile"));
                         }
 
                         if (jsonObj1.has("defaultbilling")) {
@@ -205,18 +204,18 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener{
                                 Log.d("11111111","here1");
                                 JSONObject jsonObj2 = jsonObj1.getJSONObject("defaultbilling");
                                 if (jsonObj2.length() != 0) {
-                                    if (jsonObj2.getString("company").toString().equals("") || jsonObj2.getString("company").toString().equals("null")) {
+                                    if (jsonObj2.getString("company").equals("") || jsonObj2.getString("company").equals("null")) {
                                         company.setVisibility(View.GONE);
                                     } else {
-                                        company.setText(jsonObj2.getString("company").toString());
+                                        company.setText(jsonObj2.getString("company"));
                                     }
                                     Log.d("111111111", "RESULT " + jsonObj2.length());
 
                                     address.setText(String.format("%s, %s \n%s \n%s, %s \n%s",
-                                            jsonObj2.getString("street1").toString(), jsonObj2.getString("street2").toString(),
-                                            jsonObj2.getString("city").toString(),
-                                            jsonObj2.getString("state").toString(), jsonObj2.getString("postcode").toString(),
-                                            jsonObj2.getString("country").toString()));
+                                            jsonObj2.getString("street1"), jsonObj2.getString("street2"),
+                                            jsonObj2.getString("city"),
+                                            jsonObj2.getString("state"), jsonObj2.getString("postcode"),
+                                            jsonObj2.getString("country")));
                                 } else {
                                     address.setText("No Address");
                                 }

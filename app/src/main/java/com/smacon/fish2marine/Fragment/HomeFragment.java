@@ -3,7 +3,6 @@ package com.smacon.fish2marine.Fragment;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,10 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,7 +23,6 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,12 +44,10 @@ import com.smacon.fish2marine.AdapterClass.BestSellerSnapperAdapter;
 import com.smacon.fish2marine.AdapterClass.CategorySnapperAdapter;
 import com.smacon.fish2marine.AdapterClass.FeaturedProductSnapperAdapter;
 import com.smacon.fish2marine.AdapterClass.HomeViewPagerAdapter;
-import com.smacon.fish2marine.AdapterClass.HotProductAdapter;
 import com.smacon.fish2marine.AdapterClass.NewProductSnapperAdapter;
 import com.smacon.fish2marine.HelperClass.ProductListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.Interface.RecycleviewInterface;
-import com.smacon.fish2marine.OrderSummaryActivity;
 import com.smacon.fish2marine.R;
 import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
@@ -143,8 +136,8 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
         sPreferences = getActivity().getSharedPreferences("Fish2Marine", MODE_PRIVATE);
         mConfig = new Config(getActivity());
 
-        location = (LinearLayout)rootView.findViewById(R.id.location);
-        searched_address=(TextView)rootView.findViewById(R.id.searched_address);
+        location = rootView.findViewById(R.id.location);
+        searched_address= rootView.findViewById(R.id.searched_address);
 
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
@@ -155,7 +148,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.dialog_progress);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.loading);
+        loading = progressdialog.findViewById(R.id.loading);
         updateListner=new UpdateListner() {
             @Override
             public void onClick(int count) {
@@ -193,30 +186,30 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
             }
         });
 
-        viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
-        sliderDotspanel = (LinearLayout)rootView.findViewById(R.id.SliderDots);
+        viewPager = rootView.findViewById(R.id.viewPager);
+        sliderDotspanel = rootView.findViewById(R.id.SliderDots);
         //img_loader_brands = (ImageView) rootView.findViewById(R.id.img_loader_brands);
-        layout_loader=(FrameLayout)rootView.findViewById(R.id.layout_indicator);
+        layout_loader= rootView.findViewById(R.id.layout_indicator);
 
         // NewProductSnapperAdapter firstAdapter = new NewProductSnapperAdapter(getApplicationContext(),NewProductName,NewProductPrice,NewImageId,Tag);
-        NewProductRecyclerview = (MultiSnapRecyclerView)rootView.findViewById(R.id.NewProductRecyclerview);
+        NewProductRecyclerview = rootView.findViewById(R.id.NewProductRecyclerview);
         LinearLayoutManager NewProductManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         NewProductRecyclerview.setLayoutManager(NewProductManager);
         //firstRecyclerView.setAdapter(firstAdapter);
 
         //HorizontalSnapperAdapter thirdAdapter = new HorizontalSnapperAdapter(getApplicationContext(),FeaturedProductName,FeaturedProductPrice,FeaturedImageId,Tag1);
-        FeaturedRecyclerview = (MultiSnapRecyclerView)rootView.findViewById(R.id.FeaturedRecyclerview);
+        FeaturedRecyclerview = rootView.findViewById(R.id.FeaturedRecyclerview);
         LinearLayoutManager FeaturedManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         FeaturedRecyclerview.setLayoutManager(FeaturedManager);
         //thirdRecyclerView.setAdapter(thirdAdapter);
 
         //HorizontalSnapperAdapter thirdAdapter = new HorizontalSnapperAdapter(getApplicationContext(),FeaturedProductName,FeaturedProductPrice,FeaturedImageId,Tag1);
-        BestSellerRecyclerview = (MultiSnapRecyclerView)rootView.findViewById(R.id.BestSellerRecyclerview);
+        BestSellerRecyclerview = rootView.findViewById(R.id.BestSellerRecyclerview);
         LinearLayoutManager BestSellerManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         BestSellerRecyclerview.setLayoutManager(BestSellerManager);
         //thirdRecyclerView.setAdapter(thirdAdapter);
 
-        CategoryRecyclerView = (MultiSnapRecyclerView)rootView.findViewById(R.id.CategoryRecyclerView);
+        CategoryRecyclerView = rootView.findViewById(R.id.CategoryRecyclerView);
         LinearLayoutManager CategoryManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         CategoryRecyclerView.setLayoutManager(CategoryManager);
 
@@ -227,7 +220,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
         featured_dataItem = new ArrayList<>();
         bestseller_dataItem = new ArrayList<>();
         // newcuttype_dataItem= new ArrayList<>();
-        // cuttype_dataItem= new ArrayList<>();
+        // cuttype_dataItem= fnew ArrayList<>();
         // hotcuttype_dataItem= new ArrayList<>();
         // bestcuttype_dataItem= new ArrayList<>();
 
@@ -304,7 +297,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
         //   btn_ok=(TextView)dialog.findViewById(R.id.btn_ok);
         //  radiogroup = (RadioGroup) dialog.findViewById(R.id.radiogroup);
 
-        RadioGroup rg = (RadioGroup) dialog.findViewById(R.id.radiogroup);
+        RadioGroup rg = dialog.findViewById(R.id.radiogroup);
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
                 RadioGroup.LayoutParams.WRAP_CONTENT,
                 RadioGroup.LayoutParams.WRAP_CONTENT);
@@ -322,35 +315,6 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
 
     }
 
-    public void cuttypeDialog(){
-       /* final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.custom_cuttype_dialog, null);
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.setTitle("Choose a Cut type");
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-            }
-        });
-        final AlertDialog b = dialogBuilder.create();
-        b.show();*/
-
-        dialog=new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_cuttype);
-        btn_ok=(TextView)dialog.findViewById(R.id.btn_ok);
-        radiogroup = (RadioGroup) dialog.findViewById(R.id.radiogroup);
-
-
-       /* for(int i=0;i<cuttype_dataItem.size();i++) {
-            LiquidRadioButton rb=new LiquidRadioButton(getActivity()); // dynamically creating RadioButton and adding to RadioGroup.
-            rb.setText(cuttype_dataItem.get(i).getCuttype_label());
-            radiogroup.addView(rb);
-        }*/
-
-    }
 
 
     public class MyTimerTask extends TimerTask {
@@ -360,15 +324,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                       /* if (viewPager.getCurrentItem() == 0) {
-                            viewPager.setCurrentItem(1);
-                        } else if (viewPager.getCurrentItem() == 1) {
-                            viewPager.setCurrentItem(2);
-                        } else if (viewPager.getCurrentItem() == 2) {
-                            viewPager.setCurrentItem(3);
-                        } else {
-                            viewPager.setCurrentItem(0);
-                        }*/
+
                         if (page_position == slider_dataItem.size()) {
                             page_position = 0;
                         } else {
@@ -389,6 +345,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
             LoadDashboardInitiate mLoadDashboardInitiate = new LoadDashboardInitiate(deliverycenterID);
             mLoadDashboardInitiate.execute((Void) null);
         }else {
+            Log.e("11112","No internet Connection");
             CustomToast.error(getActivity(),"No Internet Connection.").show();
         }
     }
@@ -418,7 +375,6 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                 if (jsonObj0.has("status")){
                     if (jsonObj0.getString("status").equals(String.valueOf(1))) {
                         JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
-                        //Log.d("1111221", "API_DASHBOARD_RESPONSE jsonObj1"+jsonObj1);
                         if(jsonObj1.has("dashboard")){
                             JSONObject jsonObj2 = jsonObj1.getJSONObject("dashboard");
                             if (jsonObj2.has("sliderImages")){
@@ -433,39 +389,26 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                 start = slider_dataItem.size();
                                 mviewPagerAdapter = new HomeViewPagerAdapter(getActivity(),slider_dataItem);
                                 viewPager.setAdapter(mviewPagerAdapter);
-                                //count=feedArray1.length();
                                 initviewpager();
                             }
                             if (jsonObj2.has("CategoryList")) {
                                 JSONArray feedArray = jsonObj2.getJSONArray("CategoryList");
-                                //List<HashMap<String, String>> fillMaps = new ArrayList<HashMap<String, String>>();
+                                Log.d("11111",""+feedArray.length());
+                                Log.d("11111",""+feedArray.toString());
+
                                 category_dataItem.clear();
                                 for (int i = 0; i < feedArray.length(); i++) {
                                     HashMap<String, String> map;
-
                                     ProductListItem item = new ProductListItem();
-
                                     JSONObject feedObj = (JSONObject) feedArray.get(i);
-
-                                   /* map = new HashMap<String, String>();
-                                    map.put("Name", feedObj.getString("Name").trim());
-                                    map.put("Id", feedObj.getString("Id").trim());
-                                    fillMaps.add(map);*/
-
                                     item.setcategory_name(feedObj.getString("Name"));
                                     item.setcategory_path(feedObj.getString("Path"));
                                     item.setcategory_id(feedObj.getString("Id"));
                                     category_dataItem.add(item);
                                 }
-                               /* start = fillMaps.size();
-                                Log.d("1111111",""+start);*/
-                                //helper.Insert_category(fillMaps);
+
                                 mCategoryAdapter = new CategorySnapperAdapter(getActivity(), category_dataItem);
                                 CategoryRecyclerView.setAdapter(mCategoryAdapter);
-                                /*SQLData_Item = helper.getCategory("Fish");
-                                Log.d("1111111",SQLData_Item.get(0).get("category_id"));
-                                Log.d("1111111",SQLData_Item.get(0).get("category_name"));
-                                */
 
                             }
                             if (jsonObj2.has("new_products")) {
@@ -606,11 +549,18 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                     }
                 }
             } catch (JSONException e) {
+                progressdialog.dismiss();
+
                 e.printStackTrace();
                 CustomToast.info(getActivity(),"Please Try Again",Toast.LENGTH_SHORT).show();
             } catch (NullPointerException e) {
+                progressdialog.dismiss();
+
+                Log.e("11113",""+e.getMessage());
                 CustomToast.error(getActivity(),"No Internet Connection",Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
+                progressdialog.dismiss();
+
                 CustomToast.info(getActivity(),"Please Try Again",Toast.LENGTH_SHORT).show();
             }
         }
@@ -622,6 +572,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
             LoadLocationInitiate mLoadLocationInitiate = new LoadLocationInitiate(Lat,Long,CustomerID,Location);
             mLoadLocationInitiate.execute((Void) null);
         }else {
+            Log.e("11114","No Internet Connection");
             CustomToast.error(getActivity(),"No Internet Connection.").show();
         }
     }
@@ -671,6 +622,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                 e.printStackTrace();
                 CustomToast.error(getActivity(),"Please Try Again",Toast.LENGTH_SHORT).show();
             } catch (NullPointerException e) {
+                Log.e("11111",""+e.getMessage());
                 CustomToast.error(getActivity(),"No Internet Connection",Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 CustomToast.error(getActivity(),"Please Try Again",Toast.LENGTH_SHORT).show();
@@ -684,7 +636,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
         Log.d("11111111","dotcount "+dotscount);
         dots = new ImageView[dotscount];
 
-        for(int i = 0; i < dotscount; i++){
+        for(int i = 1; i < dotscount; i++){
 
             dots[i] = new ImageView(getActivity());
             dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.nonactive_dot));
@@ -696,15 +648,26 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
             sliderDotspanel.addView(dots[i], params);
 
         }
-        dots[0].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.active_dot));
+        if(dotscount==1)
+        {
+
+        }
+        else
+        {
+            dots[0].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.active_dot));
+
+        }
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
+
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
             @Override
             public void onPageSelected(int position) {
-                for(int i = 0; i< dotscount; i++){
+                for(int i = 1; i< dotscount; i++){
+
                     dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.nonactive_dot));
                 }
 

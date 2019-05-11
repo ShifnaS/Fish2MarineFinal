@@ -1,18 +1,14 @@
 package com.smacon.fish2marine.AdapterClass;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smacon.fish2marine.HelperClass.ProductListItem;
-import com.smacon.fish2marine.ProductViewActivity;
 import com.smacon.fish2marine.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,8 +38,8 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.ViewHolder> {
         private RecyclerView horizontal_list;
         ViewHolder(final View itemView) {
             super(itemView);
-            this.date = (TextView) itemView.findViewById(R.id.date);
-            this.horizontal_list=(RecyclerView)itemView.findViewById(R.id.horizontal_list);
+            this.date = itemView.findViewById(R.id.date);
+            this.horizontal_list= itemView.findViewById(R.id.horizontal_list);
         }
     }
 

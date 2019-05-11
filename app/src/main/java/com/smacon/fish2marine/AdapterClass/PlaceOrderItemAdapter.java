@@ -1,36 +1,21 @@
 package com.smacon.fish2marine.AdapterClass;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.smacon.f2mlibrary.CustomToast;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.fish2marine.HelperClass.CartListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
-import com.smacon.fish2marine.NavigationDrawerActivity;
 import com.smacon.fish2marine.R;
-import com.smacon.fish2marine.UpdateProductActivity;
 import com.smacon.fish2marine.Util.Config;
-import com.smacon.fish2marine.Util.HttpOperations;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,14 +71,14 @@ public class PlaceOrderItemAdapter extends RecyclerView.Adapter<PlaceOrderItemAd
         ViewHolder(final View itemView) {
             super(itemView);
 
-            this.ProductImage = (ImageView) itemView.findViewById(R.id.img_product);
-            this.ProductName = (TextView) itemView.findViewById(R.id.txt_product_name);
-            this.OtherName = (TextView) itemView.findViewById(R.id.txt_product_othername);
-            this.CutType = (TextView) itemView.findViewById(R.id.txt_cuttype);
-            this.txt_ordered_qty = (TextView) itemView.findViewById(R.id.txt_ordered_qty);
-            this.txt_cleaned_qty = (TextView) itemView.findViewById(R.id.txt_cleaned_qty);
-            this.Quantity = (TextView) itemView.findViewById(R.id.txt_quantity);
-            this.SubTotal = (TextView) itemView.findViewById(R.id.txt_subtotal);
+            this.ProductImage = itemView.findViewById(R.id.img_product);
+            this.ProductName = itemView.findViewById(R.id.txt_product_name);
+            this.OtherName = itemView.findViewById(R.id.txt_product_othername);
+            this.CutType = itemView.findViewById(R.id.txt_cuttype);
+            this.txt_ordered_qty = itemView.findViewById(R.id.txt_ordered_qty);
+            this.txt_cleaned_qty = itemView.findViewById(R.id.txt_cleaned_qty);
+            this.Quantity = itemView.findViewById(R.id.txt_quantity);
+            this.SubTotal = itemView.findViewById(R.id.txt_subtotal);
 
         }
 
@@ -108,8 +93,10 @@ public class PlaceOrderItemAdapter extends RecyclerView.Adapter<PlaceOrderItemAd
 
         if(!item.getProductImage().equals("")||item.getProductImage().equals("none")){
             try {
-                Picasso.with(mContext)
-                        .load(mListItem.get(position).getProductImage().replaceAll(" ","%20"))
+                Picasso.get()
+                        .load(mListItem.get(position).getProductImage()
+                                .replace("https", "http")
+                                .replaceAll(" ","%20"))
                         .placeholder(R.drawable.ic_dummy)
                         .error(R.drawable.ic_dummy)
                         .into(holder.ProductImage);

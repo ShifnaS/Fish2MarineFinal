@@ -84,7 +84,7 @@ public class Config {
     }
 
     public void savePreferences(Context mContext, String key ,String value) {
-        sPreferences = mContext.getSharedPreferences("Fish2Marine", mContext.MODE_PRIVATE);
+        sPreferences = mContext.getSharedPreferences("Fish2Marine", Context.MODE_PRIVATE);
         prefEditor = sPreferences.edit();
         prefEditor.putString(key, value);
         prefEditor.commit();

@@ -14,11 +14,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.smacon.f2mlibrary.CustomEditText;
 import com.smacon.f2mlibrary.CustomToast;
 import com.smacon.f2mlibrary.Edittext.MaterialEditText;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
-import com.smacon.fish2marine.HelperClass.Utilities;
 import com.smacon.fish2marine.Util.Config;
 import com.smacon.fish2marine.Util.HttpOperations;
 
@@ -49,21 +47,21 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
     private void InitIdView(){
 
-        otp = (MaterialEditText)findViewById(R.id.otp);
-        newpassword = (MaterialEditText)findViewById(R.id.newpassword);
-        confirmpassword = (MaterialEditText)findViewById(R.id.confirmpassword);
-        message = (TextView) findViewById(R.id.message);
+        otp = findViewById(R.id.otp);
+        newpassword = findViewById(R.id.newpassword);
+        confirmpassword = findViewById(R.id.confirmpassword);
+        message = findViewById(R.id.message);
         message.setText("We have sent an OTP to your registered mobile number"+ Mobile);
 
-        setpassword = (Button) findViewById(R.id.setpassword);
-        resendotp = (TextView)findViewById(R.id.resendotp);
-        back = (ImageView) findViewById(R.id.back);
+        setpassword = findViewById(R.id.setpassword);
+        resendotp = findViewById(R.id.resendotp);
+        back = findViewById(R.id.back);
         dialog = new Dialog(ResetPasswordActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_progress);
         dialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) dialog.findViewById(R.id.loading);
+        loading = dialog.findViewById(R.id.loading);
         setpassword.setOnClickListener(this);
         back.setOnClickListener(this);
         resendotp.setOnClickListener(this);

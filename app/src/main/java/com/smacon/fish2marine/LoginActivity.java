@@ -44,7 +44,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -164,19 +163,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void InitIdView(){
 
-       login_gif=(ImageView)findViewById(R.id.login_gif);
+       login_gif= findViewById(R.id.login_gif);
         Glide.with(getApplicationContext())
                 .load(R.drawable.login_gif_background)
                 .into(login_gif);
-        mUsename = (MaterialEditText) findViewById(R.id.username);
-        mPassword = (MaterialEditText) findViewById(R.id.password);
-        mRemember = (CheckBox) findViewById(R.id.rememberpwd);
-        indicator = (AVLoadingIndicatorView) findViewById(R.id.indicator);
+        mUsename = findViewById(R.id.username);
+        mPassword = findViewById(R.id.password);
+        mRemember = findViewById(R.id.rememberpwd);
+        indicator = findViewById(R.id.indicator);
         indicator.setVisibility(View.INVISIBLE);
-        mButtonLogin = (Button) findViewById(R.id.buttonLogin);
-        mSignup=(TextView)findViewById(R.id.signup);
-        mForgotPassword=(TextView)findViewById(R.id.forgotpassword);
-        mpwdtoggle=(ToggleButton)findViewById(R.id.mpwdtoggle);
+        mButtonLogin = findViewById(R.id.buttonLogin);
+        mSignup= findViewById(R.id.signup);
+        mForgotPassword= findViewById(R.id.forgotpassword);
+        mpwdtoggle= findViewById(R.id.mpwdtoggle);
 
         mpwdtoggle.setChecked(true);
         mButtonLogin.setOnClickListener(this);
@@ -581,9 +580,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             super.onPreExecute();
 
             mConfig.savePreferences(getApplicationContext(),"signinpwd",
-                    mPwd.toString().trim());
+                    mPwd.trim());
             mConfig.savePreferences(getApplicationContext(),"signinuname",
-                    mUname.toString().trim());
+                    mUname.trim());
 
             helper.Delete_admin_details();
         }

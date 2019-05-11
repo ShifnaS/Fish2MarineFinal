@@ -3,17 +3,14 @@ package com.smacon.fish2marine.AdapterClass;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.smacon.f2mlibrary.CustomToast;
 import com.smacon.fish2marine.HelperClass.AllListItem;
 import com.smacon.fish2marine.OrderDetailsActivity;
 import com.smacon.fish2marine.R;
@@ -67,7 +64,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter {
             myViewHolder.txt_order_status.setTextColor(ContextCompat.getColor(mContext, R.color.red));
         }
         myViewHolder.txt_order_status.setText(dataItem.getPoints());
-        myViewHolder.txt_order_amount.setText("Amount: Rs. "+dataItem.getExpiry());
+        myViewHolder.txt_order_amount.setText("\u20B9 "+dataItem.getExpiry());
 
         myViewHolder.orderitem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,13 +79,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter {
             }
         });
 
-       /* if (position % 2 == 0) {
-            myViewHolder.cardview.setBackgroundResource(R.color.white);
-            //myViewHolder.image.setImageResource(R.mipmap.ic_working);
-        } else {
-            myViewHolder.cardview.setBackgroundResource(R.color.white);
-            //myViewHolder.image.setImageResource(R.mipmap.ic_business);
-        }*/
+
     }
 
     @Override
@@ -106,13 +97,13 @@ public class MyOrdersAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             //cardview = (CardView) itemView.findViewById(R.id.cardview);
-            txt_order_name = (TextView) itemView.findViewById(R.id.txt_order_name);
+            txt_order_name = itemView.findViewById(R.id.txt_order_name);
 
-            txt_order_id = (TextView) itemView.findViewById(R.id.txt_order_id);
-            txt_order_date = (TextView) itemView.findViewById(R.id.txt_order_date);
-            txt_order_status = (TextView) itemView.findViewById(R.id.txt_order_status);
-            txt_order_amount = (TextView) itemView.findViewById(R.id.txt_order_amount);
-            orderitem = (CardView) itemView.findViewById(R.id.orderitem);
+            txt_order_id = itemView.findViewById(R.id.txt_order_id);
+            txt_order_date = itemView.findViewById(R.id.txt_order_date);
+            txt_order_status = itemView.findViewById(R.id.txt_order_status);
+            txt_order_amount = itemView.findViewById(R.id.txt_order_amount);
+            orderitem = itemView.findViewById(R.id.orderitem);
 
         }
     }

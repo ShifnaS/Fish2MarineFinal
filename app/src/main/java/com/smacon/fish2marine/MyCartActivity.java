@@ -85,10 +85,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
         Log.d("1111221", "Customer ID "+CustomerID);
-        final List<HashMap<String, String>> Data_Item;;
-        Data_Item = helper.getCount();
-        String cart_count=Data_Item.get(0).get("cartcount");
-        
+
         mTitle=(TextView)findViewById(R.id.mTitle);
         mTitle.setText("My Cart");
 
@@ -141,18 +138,11 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                 InitGetCartData();
                 break;
             case R.id.back:
-                Intent i =new Intent(getApplicationContext(),NavigationDrawerActivity.class);
-                i.putExtra("PAGE","HOME");
-
-                startActivity(i);
-                finish();
-               // onBackPressed();
-               // finish();
+                onBackPressed();
                 break;
             case R.id.btn_checkout:
                 Intent intent = new Intent(MyCartActivity.this,Checkout_SetAddress.class);
                 startActivity(intent);
-                finish();
                 break;
             case R.id.applycoupon:
                 final NiftyDialogBuilder coupondialog=NiftyDialogBuilder.getInstance(this);
@@ -292,22 +282,16 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
             progressdialog.cancel();
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
-                Log.d("111111", "DATA1 "+jsonObj0.toString());
-
-                if (jsonObj0.has("success")) {
-                    if (jsonObj0.getInt("success")==1) {
+                if (jsonObj0.has("status")) {
+                    if (jsonObj0.getString("status").equals(String.valueOf(1))) {
                         switcher.showContentView();
                         sub_layout.setVisibility(View.VISIBLE);
-                       // JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
-                        CustomToast.info(MyCartActivity.this, ""+jsonObj0.getString("message"), Toast.LENGTH_SHORT).show();
-
-                        Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
+                        Log.d("111111", "here0 ");
+                        JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                        Intent i =new Intent(getApplicationContext(),MyCartActivity.class);
                         startActivity(i);
-
                     }else {
-                        CustomToast.info(MyCartActivity.this, ""+jsonObj0.getString("message"), Toast.LENGTH_SHORT).show();
-
-                        // switcher.showEmptyView();
+                        switcher.showEmptyView();
                     }
                 }
             } catch (JSONException e) {
@@ -355,22 +339,16 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
             progressdialog.cancel();
             try {
                 JSONObject jsonObj0 = new JSONObject(result.toString());
-                Log.d("111111", "DATA "+jsonObj0);
-
                 if (jsonObj0.has("status")) {
-                    if (jsonObj0.getInt("status")==1) {
+                    if (jsonObj0.getString("status").equals(String.valueOf(1))) {
                         switcher.showContentView();
                         sub_layout.setVisibility(View.VISIBLE);
-                        //JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
-                      //  String msg=jsonObj1
+                        Log.d("111111", "here0 ");
+                        JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
                         Intent i=new Intent(getApplicationContext(),MyCartActivity.class);
                         startActivity(i);
                     }else {
-                     //   Toast.makeText(MyCartActivity.this, "Invalid Coupon Code", Toast.LENGTH_SHORT).show();
-                       // switcher.showEmptyView();
-                        CustomToast.info(MyCartActivity.this, "Invalid Coupon Code", Toast.LENGTH_SHORT).show();
-
-                     //   CustomToast(MyCartActivity.this, "Invalid Coupon Code").show();
+                        switcher.showEmptyView();
                     }
                 }
             } catch (JSONException e) {
@@ -436,7 +414,7 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
                                 JSONObject feedObj1 = (JSONObject) feedArray1.get(i);
                                 item.setProductId(feedObj1.getString("productId"));
                                 item.setProductImage(feedObj1.getString("imagepath"));
-                                item.setProductName(feedObj1.getString("productname"));
+                                item.setProductName(feedObj1.getString("productname")+"/"+feedObj1.getString("itemId"));
                                 Log.d("111111", "here3 "+feedObj1.getString("productname"));
                                 item.setOtherName(feedObj1.getString("nameInMalayalam"));
                                 item.setQuantity(feedObj1.getString("qty"));
@@ -513,16 +491,10 @@ public class MyCartActivity extends AppCompatActivity implements View.OnClickLis
     }
     @Override
     public void onBackPressed() {
-      //  super.onBackPressed();
-        Intent i =new Intent(getApplicationContext(),NavigationDrawerActivity.class);
-          i.putExtra("PAGE","HOME");
-
-        startActivity(i);
+        Intent intent = new Intent(MyCartActivity.this,NavigationDrawerActivity.class);
+        intent.putExtra("PAGE","HOME");
+        startActivity(intent);
         finish();
-      //  Intent intent = new Intent(MyCartActivity.this,NavigationDrawerActivity.class);
-      //  intent.putExtra("PAGE","HOME");
-     //   startActivity(intent);
-     //   finish();
     }
     public interface CartUpdateListner {
         void onClick();

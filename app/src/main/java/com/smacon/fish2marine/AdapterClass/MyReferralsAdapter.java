@@ -83,11 +83,11 @@ public class MyReferralsAdapter extends RecyclerView.Adapter {
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            cardview = (CardView) itemView.findViewById(R.id.cardview);
-            name = (TextView) itemView.findViewById(R.id.name);
-            email = (TextView) itemView.findViewById(R.id.email);
-            status = (TextView) itemView.findViewById(R.id.status);
-            points = (TextView) itemView.findViewById(R.id.points);
+            cardview = itemView.findViewById(R.id.cardview);
+            name = itemView.findViewById(R.id.name);
+            email = itemView.findViewById(R.id.email);
+            status = itemView.findViewById(R.id.status);
+            points = itemView.findViewById(R.id.points);
         }
     }
 }

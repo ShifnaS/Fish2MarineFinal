@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -24,7 +23,6 @@ import com.smacon.f2mlibrary.CustomCheckBox;
 import com.smacon.f2mlibrary.CustomEditText;
 import com.smacon.f2mlibrary.CustomToast;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
-import com.smacon.fish2marine.Fragment.MyProfileFragment;
 import com.smacon.fish2marine.HelperClass.MessageConstants;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.HelperClass.Utilities;
@@ -78,33 +76,33 @@ public class EditProfileActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_progress);
         dialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) dialog.findViewById(R.id.loading);
+        loading = dialog.findViewById(R.id.loading);
 
 
         InitIdView();
     }
     private void InitIdView(){
-        edt_fname_profile = (CustomEditText) findViewById(R.id.edt_fname_profile);
-        edt_lname_profile = (CustomEditText) findViewById(R.id.edt_lname_profile);
-        edt_email_profile = (CustomEditText) findViewById(R.id.edt_email_profile);
-        edt_mobile_profile = (CustomEditText) findViewById(R.id.edt_mobile_profile);
-        edt_current_password = (CustomEditText) findViewById(R.id.edt_current_password);
-        edt_new_password = (CustomEditText) findViewById(R.id.edt_new_password);
-        edt_new_confirm_password = (CustomEditText) findViewById(R.id.edt_new_confirm_password);
+        edt_fname_profile = findViewById(R.id.edt_fname_profile);
+        edt_lname_profile = findViewById(R.id.edt_lname_profile);
+        edt_email_profile = findViewById(R.id.edt_email_profile);
+        edt_mobile_profile = findViewById(R.id.edt_mobile_profile);
+        edt_current_password = findViewById(R.id.edt_current_password);
+        edt_new_password = findViewById(R.id.edt_new_password);
+        edt_new_confirm_password = findViewById(R.id.edt_new_confirm_password);
 
-        txt_input_fname_profile = (TextInputLayout) findViewById(R.id.txt_input_fname_profile);
-        txt_input_lname_profile = (TextInputLayout) findViewById(R.id.txt_input_lname_profile);
-        txt_input_email_profile = (TextInputLayout) findViewById(R.id.txt_input_email_profile);
-        txt_input_mobile_profile = (TextInputLayout) findViewById(R.id.txt_input_mobile_profile);
-        txt_input_current_password = (TextInputLayout) findViewById(R.id.txt_input_current_password);
-        txt_input_new_password = (TextInputLayout) findViewById(R.id.txt_input_new_password);
-        txt_input_new_confirm_password = (TextInputLayout) findViewById(R.id.txt_input_new_confirm_password);
+        txt_input_fname_profile = findViewById(R.id.txt_input_fname_profile);
+        txt_input_lname_profile = findViewById(R.id.txt_input_lname_profile);
+        txt_input_email_profile = findViewById(R.id.txt_input_email_profile);
+        txt_input_mobile_profile = findViewById(R.id.txt_input_mobile_profile);
+        txt_input_current_password = findViewById(R.id.txt_input_current_password);
+        txt_input_new_password = findViewById(R.id.txt_input_new_password);
+        txt_input_new_confirm_password = findViewById(R.id.txt_input_new_confirm_password);
 
-        mpwdtoggle1 = (ToggleButton) findViewById(R.id.mpwdtoggle1);
-        mpwdtoggle2 = (ToggleButton) findViewById(R.id.mpwdtoggle2);
-        mpwdtoggle = (ToggleButton) findViewById(R.id.mpwdtoggle);
+        mpwdtoggle1 = findViewById(R.id.mpwdtoggle1);
+        mpwdtoggle2 = findViewById(R.id.mpwdtoggle2);
+        mpwdtoggle = findViewById(R.id.mpwdtoggle);
 
-        mback=(ImageView)findViewById(R.id.back);
+        mback= findViewById(R.id.back);
         mback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,10 +112,10 @@ public class EditProfileActivity extends AppCompatActivity {
         mpwdtoggle.setChecked(true);
         mpwdtoggle1.setChecked(true);
         mpwdtoggle2.setChecked(true);
-        chk_change_password = (CustomCheckBox) findViewById(R.id.chk_change_password);
+        chk_change_password = findViewById(R.id.chk_change_password);
 
-        btn_save = (Button) findViewById(R.id.btn_save);
-        lay_change_password = (LinearLayout) findViewById(R.id.lay_change_password);
+        btn_save = findViewById(R.id.btn_save);
+        lay_change_password = findViewById(R.id.lay_change_password);
 
         setProfileValues();
         setListeners();

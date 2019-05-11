@@ -24,7 +24,6 @@ import com.smacon.f2mlibrary.CustomEditText;
 import com.smacon.f2mlibrary.CustomTextView;
 import com.smacon.f2mlibrary.CustomToast;
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
-import com.smacon.fish2marine.CheckOut.Checkout_SetAddress;
 import com.smacon.fish2marine.Fragment.MyAddressFragment;
 import com.smacon.fish2marine.HelperClass.AddressListItem;
 import com.smacon.fish2marine.HelperClass.CartListItem;
@@ -95,19 +94,19 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         ViewHolder(final View itemView) {
             super(itemView);
 
-            this.txt_address_name = (CustomTextView) itemView.findViewById(R.id.txt_address_name);
-            this.txt_company = (CustomTextView) itemView.findViewById(R.id.txt_company);
-            this.txt_street = (CustomTextView) itemView.findViewById(R.id.txt_street);
-            this.txt_city = (CustomTextView) itemView.findViewById(R.id.txt_city);
-            this.txt_state_pin = (CustomTextView) itemView.findViewById(R.id.txt_state_pin);
-            this.txt_country = (CustomTextView) itemView.findViewById(R.id.txt_country);
-            this.txt_phone = (CustomTextView) itemView.findViewById(R.id.txt_phone);
-            this.txt_default_address = (CustomTextView) itemView.findViewById(R.id.txt_default_address);
-            this.edit = (ImageView) itemView.findViewById(R.id.edit);
-            this.delete = (ImageView) itemView.findViewById(R.id.delete);
-            this.layout = (LinearLayout) itemView.findViewById(R.id.layout);
-            this.layout_indicator = (FrameLayout) itemView.findViewById(R.id.layout_indicator);
-            indicator=(AVLoadingIndicatorView)itemView.findViewById(R.id.indicator);
+            this.txt_address_name = itemView.findViewById(R.id.txt_address_name);
+            this.txt_company = itemView.findViewById(R.id.txt_company);
+            this.txt_street = itemView.findViewById(R.id.txt_street);
+            this.txt_city = itemView.findViewById(R.id.txt_city);
+            this.txt_state_pin = itemView.findViewById(R.id.txt_state_pin);
+            this.txt_country = itemView.findViewById(R.id.txt_country);
+            this.txt_phone = itemView.findViewById(R.id.txt_phone);
+            this.txt_default_address = itemView.findViewById(R.id.txt_default_address);
+            this.edit = itemView.findViewById(R.id.edit);
+            this.delete = itemView.findViewById(R.id.delete);
+            this.layout = itemView.findViewById(R.id.layout);
+            this.layout_indicator = itemView.findViewById(R.id.layout_indicator);
+            indicator= itemView.findViewById(R.id.indicator);
 
         }
 
@@ -127,14 +126,14 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
                     CustomToast.error(mContext,"Default address cannot be deleted").show();
                 }
                 else {
-                    DeleteAddress(mListItem.get(position).getAddress_id().toString(),holder);
+                    DeleteAddress(mListItem.get(position).getAddress_id(),holder);
                 }
             }
         });
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    showAddDialog(mListItem.get(position).getAddress_id().toString(),position,holder);
+                    showAddDialog(mListItem.get(position).getAddress_id(),position,holder);
 
             }
         });
@@ -165,20 +164,20 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_add_address);
         // setDialogInputLayoutTF(dialog);
-        TextView txt_heading = (TextView) dialog.findViewById(R.id.txt_heading);
-        final CustomEditText edt_fname_add = (CustomEditText) dialog.findViewById(R.id.edt_fname_add);
-        final CustomEditText edt_lname_add = (CustomEditText) dialog.findViewById(R.id.edt_lname_add);
-        final CustomEditText edt_company_add = (CustomEditText) dialog.findViewById(R.id.edt_company_add);
-        final CustomEditText edt_phone_add = (CustomEditText) dialog.findViewById(R.id.edt_phone_add);
-        final CustomEditText edt_add1_add = (CustomEditText) dialog.findViewById(R.id.edt_add1_add);
-        final CustomEditText edt_add2_add = (CustomEditText) dialog.findViewById(R.id.edt_add2_add);
-        final CustomEditText edt_city_add = (CustomEditText) dialog.findViewById(R.id.edt_city_add);
-        final CustomEditText edt_state_add = (CustomEditText) dialog.findViewById(R.id.edt_state_add);
-        final CustomEditText edt_zip_add = (CustomEditText) dialog.findViewById(R.id.edt_zip_add);
-        final CustomEditText edt_country_add = (CustomEditText) dialog.findViewById(R.id.edt_country_add);
-        indicator=(AVLoadingIndicatorView)dialog.findViewById(R.id.indicator);
+        TextView txt_heading = dialog.findViewById(R.id.txt_heading);
+        final CustomEditText edt_fname_add = dialog.findViewById(R.id.edt_fname_add);
+        final CustomEditText edt_lname_add = dialog.findViewById(R.id.edt_lname_add);
+        final CustomEditText edt_company_add = dialog.findViewById(R.id.edt_company_add);
+        final CustomEditText edt_phone_add = dialog.findViewById(R.id.edt_phone_add);
+        final CustomEditText edt_add1_add = dialog.findViewById(R.id.edt_add1_add);
+        final CustomEditText edt_add2_add = dialog.findViewById(R.id.edt_add2_add);
+        final CustomEditText edt_city_add = dialog.findViewById(R.id.edt_city_add);
+        final CustomEditText edt_state_add = dialog.findViewById(R.id.edt_state_add);
+        final CustomEditText edt_zip_add = dialog.findViewById(R.id.edt_zip_add);
+        final CustomEditText edt_country_add = dialog.findViewById(R.id.edt_country_add);
+        indicator= dialog.findViewById(R.id.indicator);
 
-        final CustomCheckBox chk_default_shipping = (CustomCheckBox) dialog.findViewById(R.id.chk_default_shipping);
+        final CustomCheckBox chk_default_shipping = dialog.findViewById(R.id.chk_default_shipping);
 
         edt_fname_add.setText(mListItem.get(position).getFirstname());
         edt_lname_add.setText(mListItem.get(position).getLastname());
@@ -193,7 +192,7 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
 
         if(mListItem.get(position).getIs_default_shipping().equals("1")) chk_default_shipping.setChecked(true);
         else chk_default_shipping.setChecked(false);
-        btn_add = (Button) dialog.findViewById(R.id.btn_add);
+        btn_add = dialog.findViewById(R.id.btn_add);
         txt_heading.setText("Edit Address");
         btn_add.setText("Save");
 
@@ -223,8 +222,9 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
 
                             edt_phone_add.setError(null);
                             if (add1.length() > 0){
-
                                 edt_add1_add.setError(null);
+
+
                                 if (city.length() > 0){
 
                                     edt_city_add.setError(null);
@@ -260,7 +260,8 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
                                     edt_city_add.setError(MessageConstants.FILL_THIS_FIELD);
                                     edt_city_add.requestFocus();
                                 }
-                            }
+                                }
+
                             else {
 
                                 edt_add1_add.setError(MessageConstants.FILL_THIS_FIELD);
@@ -370,7 +371,7 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
             indicator.setVisibility(View.GONE);
             btn_add.setVisibility(View.VISIBLE);
             try {
-                Log.e("jsonObject REsult","/////"+result.toString());
+                Log.e("jsonObject REsult 1","/////"+result.toString());
 
                 JSONObject jsonObj = new JSONObject(result.toString());
                 Log.d("111111111",result.toString());
@@ -457,7 +458,7 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
                     if (jsonObj.getString("status").equals(String.valueOf(2))) {
                         mholder.layout.setVisibility(View.VISIBLE);
 
-                        CustomToast.info(mContext,jsonObj.getString("message").toString()).show();
+                        CustomToast.info(mContext, jsonObj.getString("message")).show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
                          //Checkout_SetAddress.getInstance().refresh();
                          CustomToast.success(mContext, "Address deleted").show();

@@ -48,7 +48,7 @@ public final class AddressActivity extends AppCompatActivity {
 
       //  list_view = (ListView) findViewById(R.id.list_view);
 
-        fab_add_address = (FloatingActionButton) findViewById(R.id.fab_add_address);
+        fab_add_address = findViewById(R.id.fab_add_address);
 
         init();
     }
@@ -88,20 +88,20 @@ public final class AddressActivity extends AppCompatActivity {
 
         setDialogInputLayoutTF(dialog);
 
-        final CustomEditText edt_fname_add = (CustomEditText) dialog.findViewById(R.id.edt_fname_add);
-        final CustomEditText edt_lname_add = (CustomEditText) dialog.findViewById(R.id.edt_lname_add);
-        final CustomEditText edt_company_add = (CustomEditText) dialog.findViewById(R.id.edt_company_add);
-        final CustomEditText edt_phone_add = (CustomEditText) dialog.findViewById(R.id.edt_phone_add);
-        final CustomEditText edt_add1_add = (CustomEditText) dialog.findViewById(R.id.edt_add1_add);
-        final CustomEditText edt_add2_add = (CustomEditText) dialog.findViewById(R.id.edt_add2_add);
-        final CustomEditText edt_city_add = (CustomEditText) dialog.findViewById(R.id.edt_city_add);
-        final CustomEditText edt_state_add = (CustomEditText) dialog.findViewById(R.id.edt_state_add);
-        final CustomEditText edt_zip_add = (CustomEditText) dialog.findViewById(R.id.edt_zip_add);
-        final CustomEditText edt_country_add = (CustomEditText) dialog.findViewById(R.id.edt_country_add);
+        final CustomEditText edt_fname_add = dialog.findViewById(R.id.edt_fname_add);
+        final CustomEditText edt_lname_add = dialog.findViewById(R.id.edt_lname_add);
+        final CustomEditText edt_company_add = dialog.findViewById(R.id.edt_company_add);
+        final CustomEditText edt_phone_add = dialog.findViewById(R.id.edt_phone_add);
+        final CustomEditText edt_add1_add = dialog.findViewById(R.id.edt_add1_add);
+        final CustomEditText edt_add2_add = dialog.findViewById(R.id.edt_add2_add);
+        final CustomEditText edt_city_add = dialog.findViewById(R.id.edt_city_add);
+        final CustomEditText edt_state_add = dialog.findViewById(R.id.edt_state_add);
+        final CustomEditText edt_zip_add = dialog.findViewById(R.id.edt_zip_add);
+        final CustomEditText edt_country_add = dialog.findViewById(R.id.edt_country_add);
 
-        final CheckBox chk_default_shipping = (CheckBox) dialog.findViewById(R.id.chk_default_shipping);
+        final CheckBox chk_default_shipping = dialog.findViewById(R.id.chk_default_shipping);
 
-        Button btn_add = (Button) dialog.findViewById(R.id.btn_add);
+        Button btn_add = dialog.findViewById(R.id.btn_add);
 
         edt_country_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,16 +210,16 @@ public final class AddressActivity extends AppCompatActivity {
 
     private void setDialogInputLayoutTF(Dialog dialog){
 
-        TextInputLayout txt_input_country_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_country_add);
-        TextInputLayout txt_input_zip_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_zip_add);
-        TextInputLayout txt_input_state_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_state_add);
-        TextInputLayout txt_input_city_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_city_add);
-        TextInputLayout txt_input_add2_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_add2_add);
-        TextInputLayout txt_input_add1_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_add1_add);
-        TextInputLayout txt_input_phone_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_phone_add);
-        TextInputLayout txt_input_company_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_company_add);
-        TextInputLayout txt_input_lname_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_lname_add);
-        TextInputLayout txt_input_fname_add = (TextInputLayout) dialog.findViewById(R.id.txt_input_fname_add);
+        TextInputLayout txt_input_country_add = dialog.findViewById(R.id.txt_input_country_add);
+        TextInputLayout txt_input_zip_add = dialog.findViewById(R.id.txt_input_zip_add);
+        TextInputLayout txt_input_state_add = dialog.findViewById(R.id.txt_input_state_add);
+        TextInputLayout txt_input_city_add = dialog.findViewById(R.id.txt_input_city_add);
+        TextInputLayout txt_input_add2_add = dialog.findViewById(R.id.txt_input_add2_add);
+        TextInputLayout txt_input_add1_add = dialog.findViewById(R.id.txt_input_add1_add);
+        TextInputLayout txt_input_phone_add = dialog.findViewById(R.id.txt_input_phone_add);
+        TextInputLayout txt_input_company_add = dialog.findViewById(R.id.txt_input_company_add);
+        TextInputLayout txt_input_lname_add = dialog.findViewById(R.id.txt_input_lname_add);
+        TextInputLayout txt_input_fname_add = dialog.findViewById(R.id.txt_input_fname_add);
 
         txt_input_fname_add.setTypeface(tf);
         txt_input_lname_add.setTypeface(tf);

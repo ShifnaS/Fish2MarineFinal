@@ -17,15 +17,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.f2mlibrary.Switcher.Switcher;
 import com.smacon.fish2marine.AdapterClass.PlaceOrderItemAdapter;
-import com.smacon.fish2marine.CCAvenuPay.utility.AvenuesParams;
 import com.smacon.fish2marine.CCAvenuPay.activity.WebViewActivity;
-import com.smacon.fish2marine.Constants.OrdersConstants;
-import com.smacon.fish2marine.HelperClass.AddressListItem;
+import com.smacon.fish2marine.CCAvenuPay.utility.AvenuesParams;
 import com.smacon.fish2marine.HelperClass.CartListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.Util.Config;
@@ -53,10 +50,11 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
     private RecyclerView mrecyclerview;
     private TextView mTitle,error_label_retry, empty_label_retry,
             carttotal,itemcount,ordertotal,shipping,tax,discount,
-            shippingmethod,deliverydate,deliveryslot,shipaddress;
+            shippingmethod,deliverydate,deliveryslot,shipaddress,paymentmethod,delDate;
     ArrayList<CartListItem> dataItem;
     ImageView back;
     Button placeorder;
+    double grand_total=0;
     LinearLayout sub_layout,main_layout;
     PlaceOrderItemAdapter myCartAdapter;
     private Intent mIntent;
@@ -75,7 +73,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
         progressdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
-        loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        loading = progressdialog.findViewById(R.id.indicator);
 
         InitIdView();
     }
@@ -86,7 +84,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
         CustomerID=SQLData_Item.get(0).get("admin_id");
         Log.d("1111221", "Customer ID "+CustomerID);
 
-        mTitle=(TextView)findViewById(R.id.mTitle);
+        mTitle= findViewById(R.id.mTitle);
         mTitle.setText("Order Summary");
 
         switcher = new Switcher.Builder(getApplicationContext())
@@ -96,35 +94,47 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
                 .setEmptyLabel((TextView) findViewById(R.id.empty_label))
                 .addEmptyView( findViewById(R.id.empty_view))
                 .build();
-        sub_layout=((LinearLayout)findViewById(R.id.sub_layout));
-        main_layout=((LinearLayout)findViewById(R.id.main_layout));
-        mrecyclerview = ((RecyclerView) findViewById(R.id.mrecyclerview));
+        sub_layout= findViewById(R.id.sub_layout);
+        main_layout= findViewById(R.id.main_layout);
+        mrecyclerview = findViewById(R.id.mrecyclerview);
+        paymentmethod=findViewById(R.id.paymentmethod);
         mrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        delDate=findViewById(R.id.delDate);
+        carttotal = findViewById(R.id.CartTotal);
+        shipping = findViewById(R.id.Shipping);
+        tax = findViewById(R.id.Taxamount);
+        discount = findViewById(R.id.Discount);
+        ordertotal = findViewById(R.id.OrderTotal);
+        itemcount = findViewById(R.id.itemcount);
 
-        carttotal = ((TextView)  findViewById(R.id.CartTotal));
-        shipping = ((TextView)  findViewById(R.id.Shipping));
-        tax = ((TextView)  findViewById(R.id.Taxamount));
-        discount = ((TextView) findViewById(R.id.Discount));
-        ordertotal = ((TextView) findViewById(R.id.OrderTotal));
-        itemcount = ((TextView)  findViewById(R.id.itemcount));
-
-        shippingmethod = ((TextView) findViewById(R.id.shippingmethod));
-        deliverydate = ((TextView) findViewById(R.id.deliverydate));
-        deliveryslot=((TextView) findViewById(R.id.deliveryslot));
-        shipaddress=((TextView) findViewById(R.id.shipaddress));
+        shippingmethod = findViewById(R.id.shippingmethod);
+        deliverydate = findViewById(R.id.deliverydate);
+        deliveryslot= findViewById(R.id.deliveryslot);
+        shipaddress= findViewById(R.id.shipaddress);
 
         mIntent = getIntent();
         QuoteID=mIntent.getExtras().getString("PLACEORDER_ID");
+     //   Toast.makeText(this, "sdsddfd "+mIntent.getExtras().getString("TAX"), Toast.LENGTH_SHORT).show();
+        double sub_total=Double.parseDouble(mIntent.getExtras().getString("SUBTOTAL"));
+        double shippingg=Double.parseDouble(mIntent.getExtras().getString("SHIPPING"));
+        double taxx=Double.parseDouble(mIntent.getExtras().getString("TAX"));
+        double discountt=Double.parseDouble(mIntent.getExtras().getString("DISCOUNT"));
 
-        carttotal.setText("Rs. "+mIntent.getExtras().getString("SUBTOTAL"));
-        shipping.setText("Rs. "+mIntent.getExtras().getString("SHIPPING"));
-        tax.setText("Rs. "+mIntent.getExtras().getString("TAX"));
-        discount.setText("Rs. "+mIntent.getExtras().getString("DISCOUNT"));
-        ordertotal.setText("Rs. "+mIntent.getExtras().getString("GRANDTOTAL"));
-        itemcount.setText(mIntent.getExtras().getString("ITEMCOUNT")+" items in the cart");
-        shippingmethod.setText("Shipping Method "+mIntent.getExtras().getString("SHIPPINGMETHOD"));
-        deliverydate.setText("Delivery Date: "+mIntent.getExtras().getString("DELIVERYDATE"));
-        deliveryslot.setText("Delivery Slot: "+mIntent.getExtras().getString("DELIVERYSLOT"));
+        grand_total=(sub_total+shippingg+taxx)+discountt;
+        paymentmethod.setText(mIntent.getExtras().getString("paymentTitle"));
+        carttotal.setText("\u20B9 "+mIntent.getExtras().getString("SUBTOTAL"));
+        shipping.setText("\u20B9 "+mIntent.getExtras().getString("SHIPPING"));
+        tax.setText("\u20B9 "+mIntent.getExtras().getString("TAX"));
+        discount.setText("\u20B9 "+mIntent.getExtras().getString("DISCOUNT"));
+        ordertotal.setText("\u20B9 "+grand_total);
+
+    //    itemcount.setText(mIntent.getExtras().getString("ITEMCOUNT")+" items in the cart");
+        shippingmethod.setText(mIntent.getExtras().getString("SHIPPINGMETHOD"));
+        deliverydate.setText(mIntent.getExtras().getString("DELIVERYDATE"));
+        delDate.setText(mIntent.getExtras().getString("DELIVERYDATE"));
+
+        deliveryslot.setText(mIntent.getExtras().getString("DELIVERYSLOT"));
+
         address_name=mIntent.getExtras().getString("FULLNAME");
         address=mIntent.getExtras().getString("ADDRESS");
         city=mIntent.getExtras().getString("CITY");
@@ -133,14 +143,14 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
         pincode=mIntent.getExtras().getString("PINCODE");
         phone=mIntent.getExtras().getString("PHONE");
         shipaddress.setText(address_name+",\n"+address+",\n"+city+",\n"+state+","+pincode+",\n"+country+",\n"+phone);
-        placeorder=((Button) findViewById(R.id.placeorder));
+        placeorder= findViewById(R.id.placeorder);
 
-        error_label_retry = ((TextView)  findViewById(R.id.error_label_retry));
-        empty_label_retry = ((TextView) findViewById(R.id.empty_label_retry));
+        error_label_retry = findViewById(R.id.error_label_retry);
+        empty_label_retry = findViewById(R.id.empty_label_retry);
         error_label_retry.setOnClickListener(this);
         empty_label_retry.setOnClickListener(this);
         placeorder.setOnClickListener(this);
-        back=(ImageView) findViewById(R.id.back);
+        back= findViewById(R.id.back);
         back.setOnClickListener(this);
 
         dataItem = new ArrayList<>();
@@ -332,7 +342,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
                             i.putExtra(AvenuesParams.ACCESS_CODE,jsonObj1.getString("access_code"));
                             i.putExtra(AvenuesParams.MERCHANT_ID,jsonObj1.getString("merchant_id"));
                             i.putExtra(AvenuesParams.CURRENCY, jsonObj1.getString("currency"));
-                            i.putExtra(AvenuesParams.AMOUNT, jsonObj1.getString("order_amount"));
+                            i.putExtra(AvenuesParams.AMOUNT, ""+grand_total);
                             i.putExtra(AvenuesParams.RSA_KEY_URL, jsonObj1.getString("rsa_url"));
                             i.putExtra(AvenuesParams.REDIRECT_URL, jsonObj1.getString("success_url"));
                             i.putExtra(AvenuesParams.CANCEL_URL, jsonObj1.getString("cancel_url"));

@@ -6,23 +6,10 @@ package com.smacon.fish2marine.HelperClass;
 
 public final class AllListItem {
 
-    String reward_id,comment,created,expiry,points,name,shipTo;
+    String reward_id,comment,created,expiry,points;
 
-    public String getShipTo() {
-        return shipTo;
-    }
 
-    public void setShipTo(String shipTo) {
-        this.shipTo = shipTo;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public final void setPoints(String points) {
         this.points = points;

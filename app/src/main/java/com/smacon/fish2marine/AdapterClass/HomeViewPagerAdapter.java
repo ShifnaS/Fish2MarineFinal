@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.smacon.fish2marine.AdapterClass.places.logger.Log;
 import com.smacon.fish2marine.HelperClass.ProductListItem;
 import com.smacon.fish2marine.R;
 import com.squareup.picasso.Picasso;
@@ -45,11 +46,18 @@ public class HomeViewPagerAdapter extends PagerAdapter {
 
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.viewpager_layout, null);
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+        ImageView imageView = view.findViewById(R.id.imageView);
         item = mListItem.get(position);
+
+        String s= item.get_sliderimage().replaceAll(" ","%20");
+        System.out.println(s);
+        Log.e("1111111",s);
+
         try {
-            Picasso.with(context)
-                    .load(item.get_sliderimage().replaceAll(" ","%20"))
+            Picasso.get()
+                    .load(item.get_sliderimage().replace("https", "http")
+                            .replace("https", "http")
+                            .replaceAll(" ","%20"))
                     .placeholder(R.drawable.ic_dummy)
                     .error(R.drawable.ic_dummy)
                     .into(imageView);

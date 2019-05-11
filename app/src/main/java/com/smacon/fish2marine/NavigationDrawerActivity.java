@@ -17,23 +17,17 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -45,22 +39,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.RuntimeRemoteException;
@@ -68,7 +55,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.smacon.f2mlibrary.Badge;
-import com.smacon.f2mlibrary.CustomEditText;
 import com.smacon.f2mlibrary.CustomToast;
 import com.smacon.f2mlibrary.SlidingDrawer.SlidingRootNav;
 import com.smacon.f2mlibrary.SlidingDrawer.SlidingRootNavBuilder;
@@ -93,7 +79,6 @@ import com.smacon.fish2marine.Util.HttpOperations;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -221,10 +206,10 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
         }*/
 
         SQLData_Item = helper.getCount();
-        toolbar=(Toolbar) findViewById(R.id.toolbar);
+        toolbar= findViewById(R.id.toolbar);
 
-        fg_title=(TextView) findViewById(R.id.fg_title);
-        location=(ImageView) findViewById(R.id.location);
+        fg_title= findViewById(R.id.fg_title);
+        location= findViewById(R.id.location);
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,17 +218,17 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.setContentView(R.layout.dialog_location);
                 dialog.show();
-                ImageView gifImageView=(ImageView)dialog.findViewById(R.id.gifImageView);
+                ImageView gifImageView= dialog.findViewById(R.id.gifImageView);
                 /* Glide.with(getApplicationContext())
                     .load(R.drawable.locationloader)
                     .into(gifImageView);*/
 
-                btn_ok=(Button)dialog.findViewById(R.id.btn_ok);
-                layout_indicator=(FrameLayout)dialog.findViewById(R.id.layout_indicator);
+                btn_ok= dialog.findViewById(R.id.btn_ok);
+                layout_indicator= dialog.findViewById(R.id.layout_indicator);
 
                 mGeoDataClient = Places.getGeoDataClient(NavigationDrawerActivity.this, null);
 
-                searched_address=(AutoCompleteTextView)dialog.findViewById(R.id.searched_address);
+                searched_address= dialog.findViewById(R.id.searched_address);
                 //   searched_address.setText(sPreferences.getString("Location",""));
                 searched_address.setOnItemClickListener(mAutocompleteClickListener);
 
@@ -258,12 +243,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 });
             }
         });
-        cartbadge = (Badge)findViewById(R.id.cartbadge);
+        cartbadge = findViewById(R.id.cartbadge);
 
 
 
       //  Toast.makeText(mainActivity, "CArt Count "+sPreferences.getString("CartCount",""), Toast.LENGTH_SHORT).show();
-        mycart=(ImageView) findViewById(R.id.mycart);
+        mycart= findViewById(R.id.mycart);
         //cartbadge.setText(SQLData_Item.get(0).get("cartcount"));
         cartbadge.setText(sPreferences.getString("CartCount",""));
         mycart.setOnClickListener(new View.OnClickListener() {
@@ -292,7 +277,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 .withSavedState(savedInstanceState)
                 .withMenuLayout(R.layout.drawer_menus)
                 .inject();
-        layout_drawermenu=(LinearLayout)findViewById(R.id.layout_drawermenu);
+        layout_drawermenu= findViewById(R.id.layout_drawermenu);
         layout_drawermenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -332,11 +317,11 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 createItemFor(POS_LOGOUT)));
         adapter.setListener(this);
 
-        TextView customer_name=(TextView)findViewById(R.id.Customer_Name);
+        TextView customer_name= findViewById(R.id.Customer_Name);
         String str = CustomerName;
         String[] splited = str.split("\\s+");
         customer_name.setText("Hi, "+splited[0]);
-        RecyclerView list = (RecyclerView) findViewById(R.id.menulist);
+        RecyclerView list = findViewById(R.id.menulist);
         list.setNestedScrollingEnabled(true);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(adapter);
@@ -536,22 +521,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     private void showFragment(Fragment fragment,String tag) {
 
 
-     /*   String backStateName = fragment.getClass().getName();
-
-        boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate (backStateName, 0);
-
-        if (!fragmentPopped) { //fragment not in back stack, create it.
-*/
 
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.container, fragment, tag);
             fragmentTransaction.addToBackStack(tag);
             fragmentTransaction.commitAllowingStateLoss();
             subscreensOnTheStack++;
-     //   }
-       /* getFragmentManager().beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();*/
+
     }
 
 
@@ -623,38 +599,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
         }
     }
 
-    /*@Override
-        public void onBackPressed() {
-
-            if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-
-                FirebaseAuth.getInstance().signOut();
-                LoginManager.getInstance().logOut();
-                GoogleSignInClient mGoogleSignInClient;
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
-                mGoogleSignInClient = GoogleSignIn.getClient(getBaseContext(), gso);
-                mGoogleSignInClient.signOut().addOnCompleteListener(NavigationDrawerActivity.this,
-                        new OnCompleteListener<Void>() {  //signout Google
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                FirebaseAuth.getInstance().signOut(); //signout firebase
-                            }
-                        });
-                finish();
-                Intent closepage = new Intent();
-                closepage.setAction(Intent.ACTION_MAIN);
-                closepage.addCategory(Intent.CATEGORY_HOME);
-                startActivity(closepage);
-
-
-            } else {
-                CustomToast.info(getApplicationContext(),"Press again to exit").show();
-            }
-            mBackPressed = System.currentTimeMillis();
-        }*/
     private void InitGetLocation(String Lat,String Long,String Location){
         Config mConfig = new Config(getApplicationContext());
         if(mConfig.isOnline(getApplicationContext())){
@@ -665,28 +609,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
         }
     }
 
-
-  /* public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-
-      //  if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
-        {
-            // this.moveTaskToBack(true);
-            //return true;
-            Fragment myFragment= getSupportFragmentManager().findFragmentByTag("HOMEFRAGMENT");
-            if (myFragment != null && myFragment.isVisible()) {
-                // add your code here
-                Toast.makeText(mainActivity, "current tag", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-       // } else {
-         //   CustomToast.info(getApplicationContext(),"Press again to exit").show();
-       // }
-      //  mBackPressed = System.currentTimeMillis();
-        return super.onKeyDown(keyCode, event);
-    }*/
 
     @Override
     public void userItemClick(int count) {
@@ -772,7 +694,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
             super.onPreExecute();
 
             mConfig.savePreferences(getApplicationContext(),"id",
-                    id.toString().trim());
+                    id.trim());
 
 
         }
