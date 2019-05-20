@@ -657,6 +657,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                             CustomToast.error(getApplicationContext(),"Please choose another location",Toast.LENGTH_SHORT).show();
                         }
                         else {
+                            SharedPreferences.Editor editor = sPreferences.edit();
+                            editor.remove("CartCount");
+                            editor.apply();
                             dialog.dismiss();
                             finish();
                             startActivity(getIntent());
