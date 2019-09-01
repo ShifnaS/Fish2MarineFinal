@@ -184,7 +184,7 @@ public class WebViewActivity extends AppCompatActivity {
                         AvenuesParams.BILLING_STATE + "=" + URLEncoder.encode(mainIntent.getStringExtra(AvenuesParams.BILLING_STATE), "UTF-8") + "&" +
                         AvenuesParams.BILLING_COUNTRY + "=" + URLEncoder.encode(mainIntent.getStringExtra(AvenuesParams.BILLING_COUNTRY), "UTF-8") + "&" +
                         AvenuesParams.BILLING_TEL + "=" + URLEncoder.encode(mainIntent.getStringExtra(AvenuesParams.BILLING_TEL), "UTF-8") + "&" +
-                        AvenuesParams.BILLING_EMAIL + "=" + URLEncoder.encode(email, "UTF-8") + "&" +
+                        AvenuesParams.BILLING_EMAIL + "=" + URLEncoder.encode(mainIntent.getStringExtra(AvenuesParams.BILLING_EMAIL), "UTF-8") + "&" +
                         AvenuesParams.ENC_VAL + "=" + URLEncoder.encode(encVal, "UTF-8");
              //   Log.d("111111","POST_DATA "+postData);
                 webview.postUrl(Constants.TRANS_URL, postData.getBytes());

@@ -122,12 +122,13 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mListItem.get(position).getIs_default_billing().equals("1")||mListItem.get(position).getIs_default_shipping().equals("1")){
+                /*if(mListItem.get(position).getIs_default_billing().equals("1")||mListItem.get(position).getIs_default_shipping().equals("1")){
                     CustomToast.error(mContext,"Default address cannot be deleted").show();
                 }
                 else {
                     DeleteAddress(mListItem.get(position).getAddress_id(),holder);
-                }
+                }*/
+                showAddDialogDeleteAddress(position,holder);
             }
         });
         holder.edit.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +147,7 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
 
         holder.txt_address_name.setText(item.getFirstname());
         holder.txt_company.setText(item.getCompany());
+        holder.txt_company.setVisibility(View.GONE);
         holder.txt_street.setText(item.getStreet1()+","+item.getStreet2());
         holder.txt_city.setText(item.getCity());
         holder.txt_state_pin.setText(item.getState()+","+item.getPostcode());
@@ -154,6 +156,44 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         if(item.getIs_default_billing().equals("1")||item.getIs_default_shipping().equals("1")){
             holder.txt_default_address.setVisibility(View.VISIBLE);
         }
+
+    }
+    private void showAddDialogDeleteAddress(final int position, final ViewHolder holder) {
+
+        final Dialog dialog = new Dialog(mContext);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_delete_address);
+        // setDialogInputLayoutTF(dialog);
+        Button btn_delete,btn_cancel;
+        indicator= dialog.findViewById(R.id.indicator);
+        btn_delete= dialog.findViewById(R.id.btn_delete);
+        btn_cancel= dialog.findViewById(R.id.btn_cancel);
+
+
+
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mListItem.get(position).getIs_default_billing().equals("1")||mListItem.get(position).getIs_default_shipping().equals("1")){
+                    CustomToast.error(mContext,"Default address cannot be deleted").show();
+                }
+                else {
+                    DeleteAddress(mListItem.get(position).getAddress_id(),holder);
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
+        Utilities.setDialogParamsWrapContent(mContext,dialog);
 
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,10 @@ import com.smacon.fish2marine.HelperClass.AllListItem;
 import com.smacon.fish2marine.OrderDetailsActivity;
 import com.smacon.fish2marine.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,7 +53,12 @@ public class MyOrdersAdapter extends RecyclerView.Adapter {
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
         myViewHolder.txt_order_name.setText(dataItem.getCreated());
         myViewHolder.txt_order_id.setText("Order No: "+dataItem.getReward_id());
-        myViewHolder.txt_order_date.setText("Date: "+dataItem.getComment());
+        String date=dataItem.getComment();
+        Log.e("Date",""+date);
+        String d[]=date.split("-");
+        String newDate=d[2]+"-"+d[1]+"-"+d[0];
+        myViewHolder.txt_order_date.setText(""+newDate);
+
         if(dataItem.getPoints().equals("Pending")){
             myViewHolder.txt_order_status.setTextColor(ContextCompat.getColor(mContext, R.color.color2));
            // myViewHolder.txt_order_status.setTextColor(Color.parseColor("#ff8f00"));

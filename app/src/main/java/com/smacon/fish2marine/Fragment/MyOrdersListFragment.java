@@ -51,7 +51,7 @@ public class MyOrdersListFragment extends Fragment implements View.OnClickListen
     String CustomerID = "";
     private Switcher switcher;
     private RecyclerView mrecyclerview;
-    private TextView error_label_retry, empty_label_retry,totalpoints;
+    private TextView error_label_retry, empty_label_retry,totalpoints,empty_label;
     LinearLayout sub_layout;
     GridLayoutManager mLayoutManager;
     MyOrdersAdapter mMyOrdersAdapter;
@@ -78,6 +78,8 @@ public class MyOrdersListFragment extends Fragment implements View.OnClickListen
     }
 
     private void InitIdView(View rootView){
+        empty_label = rootView.findViewById(R.id.empty_label);
+        empty_label.setText("No Data Found");
         switcher = new Switcher.Builder(getActivity())
                 .addContentView(rootView.findViewById(R.id.mrecyclerview))
                 .addErrorView(rootView.findViewById(R.id.error_view))

@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/empty_label"
             style="@style/layoutmatchwrap"
-            android:text="No Data Found"
+            android:text="Your Cart is empty"
             android:gravity="center"
             android:typeface="serif"
             android:textColor="@android:color/black"
@@ -27,7 +27,7 @@
             android:layout_height="40dp"
             android:layout_width="160dp"
             android:gravity="center"
-            android:text=" Shop Now"
+            android:text="Retry"
             android:padding="7dp"
             android:layout_marginTop="20dp"
             android:textColor="#ffffff"

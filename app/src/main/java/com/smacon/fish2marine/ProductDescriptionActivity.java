@@ -18,13 +18,25 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBufferResponse;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.RuntimeRemoteException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.smacon.f2mlibrary.Badge;
 import com.smacon.f2mlibrary.Button.FloatingActionButton;
 import com.smacon.f2mlibrary.CustomToast;
@@ -32,6 +44,7 @@ import com.smacon.f2mlibrary.Progress.AVLoadingIndicatorView;
 import com.smacon.f2mlibrary.Switcher.Switcher;
 import com.smacon.fish2marine.AdapterClass.HomeViewPagerAdapter;
 import com.smacon.fish2marine.AdapterClass.SpinnerAdapter;
+import com.smacon.fish2marine.AdapterClass.places.placecomplete.PlaceAutocompleteAdapter;
 import com.smacon.fish2marine.HelperClass.ProductListItem;
 import com.smacon.fish2marine.HelperClass.SqliteHelper;
 import com.smacon.fish2marine.Util.Config;
@@ -58,11 +71,12 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
     List<HashMap<String, String>> SQLData_Item ;
     String CustomerID = "";
     private SharedPreferences sPreferences;
+    private String mAction="",sLoc="",sLat,sLng;
 
     private TextView error_label_retry, empty_label_retry, mTitle,
             txt_product_name,txt_product_code,txt_product_stock,txt_product_price,
-            txt_product_special_price,txt_ordered_qty,txt_cleaned_qty,txt_product_description,txt_sold_by;
-    private ImageView opendrawer,icon_cart;
+            txt_product_special_price,txt_ordered_qty,txt_cleaned_qty,txt_product_description,txt_sold_by,txt_product_size;
+    private ImageView opendrawer,icon_cart,location;
     Button addtocart;
     FrameLayout maincontent,subcontent;
     LinearLayout layout_specialPrice,layout_spinner;
@@ -84,6 +98,19 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
     String OrderQty,AfterQty;
     Dialog progressdialog;
     AVLoadingIndicatorView loading;
+    Dialog dialog;
+    TextView tv_currLocation;
+    LinearLayout loc;
+    FrameLayout layout_indicator;
+    Button btn_ok;
+    AutoCompleteTextView searched_address;
+    //New places code
+    protected GeoDataClient mGeoDataClient;
+    private PlaceAutocompleteAdapter mAdapter;
+    //private AutoCompleteTextView mAutocompleteView;
+
+    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
+            new LatLng(9.999620, 76.314297), new LatLng(10.066215, 76.350793));
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,11 +127,60 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         progressdialog.setContentView(R.layout.progress_layout);
         progressdialog.setCanceledOnTouchOutside(false);
         loading = (AVLoadingIndicatorView) progressdialog.findViewById(R.id.indicator);
+        location= findViewById(R.id.location);
+
         icon_cart = ((ImageView) findViewById(R.id.icon));
         cartbadge = findViewById(R.id.cartbadge);
         cartbadge.setText(sPreferences.getString("CartCount",""));
         icon_cart.setOnClickListener(this);
         InitIdView();
+
+
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog=new Dialog(ProductDescriptionActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.setContentView(R.layout.dialog_location);
+                dialog.show();
+                ImageView gifImageView= dialog.findViewById(R.id.gifImageView);
+                tv_currLocation= dialog.findViewById(R.id.current_loc);
+                loc=dialog.findViewById(R.id.loc);
+
+                btn_ok= dialog.findViewById(R.id.btn_ok);
+                layout_indicator= dialog.findViewById(R.id.layout_indicator);
+
+                mGeoDataClient = Places.getGeoDataClient(ProductDescriptionActivity.this, null);
+                searched_address= dialog.findViewById(R.id.searched_address);
+
+                try
+                {
+                    loc.setVisibility(View.VISIBLE);
+                    String loc=sPreferences.getString("Location","");
+                    String location[]=loc.split(" ");
+                    String sec[]=location[1].split(",");
+                    String cur_loc=location[0]+" "+sec[0];
+                    tv_currLocation.setText(cur_loc);
+                }
+                catch (Exception e)
+                {
+                    Log.e("1111location error",""+e);
+                }
+                searched_address.setOnItemClickListener(mAutocompleteClickListener);
+
+                mAdapter = new PlaceAutocompleteAdapter(ProductDescriptionActivity.this, mGeoDataClient, BOUNDS_GREATER_SYDNEY,null);
+                searched_address.setThreshold(1);
+                searched_address.setAdapter(mAdapter);
+                btn_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //  InitGetLocation(sLat,sLng,sLoc);
+                    }
+                });
+            }
+        });
+
     }
     private void InitIdView(){
         switcher = new Switcher.Builder(getApplicationContext())
@@ -148,6 +224,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         Minus = (ImageView) findViewById(R.id.img_minus);
         Quantity = (TextView) findViewById(R.id.txt_quantity);
         share=(FloatingActionButton)findViewById(R.id.share);
+        txt_product_size= findViewById(R.id.txt_product_size);
 
         layout_spinner=(LinearLayout)findViewById(R.id.layout_spinner);
         spinner = (Spinner)findViewById(R.id.spinner);
@@ -333,6 +410,7 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
                                 txt_product_name.setText(feedObj1.getString("name")+" - "+feedObj1.getString("nameInMalayalam"));
                                 txt_product_code.setText("SKU# : "+feedObj1.getString("sku"));
                                 txt_product_stock.setVisibility(View.GONE);
+                                txt_product_size.setText("Fish Size :"+feedObj1.getString("fish_size"));
                                 if (feedObj1.getString("inStock").equals("")||feedObj1.getString("inStock").equals("0")){
                                     txt_product_stock.setText("Out of Stock");
                                     txt_product_stock.setTextColor(getResources().getColor(R.color.red));
@@ -559,5 +637,143 @@ public class ProductDescriptionActivity extends AppCompatActivity implements Vie
         intent.putExtra("PAGE","HOME");
         startActivity(intent);
         finish();
+    }
+
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            /*
+             Retrieve the place ID of the selected item from the Adapter.
+             The adapter stores each Place suggestion in a AutocompletePrediction from which we
+             read the place ID and title.
+              */
+            final AutocompletePrediction item = mAdapter.getItem(position);
+            final String placeId = item.getPlaceId();
+            final CharSequence primaryText = item.getFullText(null);
+
+            Log.d("111111Place1", "Autocomplete item selected: " + primaryText);
+            /*
+             Issue a request to the Places Geo Data Client to retrieve a Place object with
+             additional details about the place.
+              */
+            Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById(placeId);
+            placeResult.addOnCompleteListener(mUpdatePlaceDetailsCallback);
+
+            // Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
+            // Toast.LENGTH_SHORT).show();
+            Log.d("111111Place2", "Called getPlaceById to get Place details for " + placeId);
+        }
+    };
+
+    /**
+     * Callback for results from a Places Geo Data Client query that shows the first place result in
+     * the details view on screen.
+     */
+    private OnCompleteListener<PlaceBufferResponse> mUpdatePlaceDetailsCallback
+            = new OnCompleteListener<PlaceBufferResponse>() {
+        @Override
+        public void onComplete(Task<PlaceBufferResponse> task) {
+            try {
+                PlaceBufferResponse places = task.getResult();
+
+                // Get the Place object from the buffer.
+                final Place place = places.get(0);
+                mConfig.savePreferences(getApplicationContext(),"Location",place.getAddress().toString());
+
+                Log.d("11111111shared","Location "+sPreferences.getString("Location",""));
+                Log.d("1111111",place.getLatLng().toString());
+                Log.d("1111111",place.getAddress().toString());
+
+                String s = place.getLatLng().toString();
+                String[] latLng = s.substring(10, s.length() - 1).split(",");
+                sLat = latLng[0];
+                sLng = latLng[1];
+                sLoc=place.getAddress().toString();
+                Log.d("111111111", "Latitude is: "+sLat+", Longtitude is: "+sLng);
+                InitGetLocation(sLat,sLng,sLoc);
+
+                final CharSequence thirdPartyAttribution = places.getAttributions();
+                Log.d("111111Place3", "Place details received: " + place.getName());
+
+                places.release();
+            } catch (RuntimeRemoteException e) {
+                // Request did not complete successfully
+                Log.d("111111Place4", "Place query did not complete.", e);
+                return;
+            }
+        }
+    };
+    private void InitGetLocation(String Lat,String Long,String Location){
+        Config mConfig = new Config(getApplicationContext());
+        if(mConfig.isOnline(getApplicationContext())){
+            LoadLocationInitiate mLoadLocationInitiate = new LoadLocationInitiate(Lat,Long,CustomerID,Location);
+            mLoadLocationInitiate.execute((Void) null);
+        }else {
+            CustomToast.error(getApplicationContext(),"No Internet Connection.").show();
+        }
+    }
+    public class LoadLocationInitiate extends AsyncTask<Void, StringBuilder, StringBuilder> {
+
+        private String mLatitude,mLongitude,mCustomerId,mLocation;
+        LoadLocationInitiate(String latitude,String longitude,String customerid,String location) {
+            mLatitude=latitude;
+            mLongitude=longitude;
+            mCustomerId=customerid;
+            mLocation=location;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            btn_ok.setVisibility(View.GONE);
+            layout_indicator.setVisibility(View.VISIBLE);
+        }
+        @Override
+        protected StringBuilder doInBackground(Void... params) {
+            HttpOperations httpOperations = new HttpOperations(getApplicationContext());
+            StringBuilder result = httpOperations.doLocation(mLatitude,mLongitude,mCustomerId,mLocation);
+            Log.d("111111", "API_LOCATION_RESPONSE " + result);
+            return result;
+        }
+        @Override
+        protected void onPostExecute(StringBuilder result) {
+            super.onPostExecute(result);
+            try {
+                JSONObject jsonObj0 = new JSONObject(result.toString());
+                if (jsonObj0.has("status")){
+                    if (jsonObj0.getString("status").equals(String.valueOf(1))) {
+                        btn_ok.setVisibility(View.VISIBLE);
+                        layout_indicator.setVisibility(View.GONE);
+                        JSONObject jsonObj1 = jsonObj0.getJSONObject("data");
+                        mConfig.savePreferences(getApplicationContext(),"DeliveryCenter_ID",jsonObj1.getString("delivery_centerid").trim());
+                        Log.d("11111111shared","center id "+sPreferences.getString("DeliveryCenter_ID",""));
+                        if(jsonObj1.getString("delivery_centerid").trim().equals("")){
+                            CustomToast.error(getApplicationContext(),"Please choose another location", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            SharedPreferences.Editor editor = sPreferences.edit();
+                            editor.remove("CartCount");
+                            editor.apply();
+                            dialog.dismiss();
+                            finish();
+                            startActivity(getIntent());
+                            //  InitGetData(jsonObj1.getString("delivery_centerid").trim());
+                        }
+                    }else {
+                        btn_ok.setVisibility(View.VISIBLE);
+                        layout_indicator.setVisibility(View.GONE);
+                        searched_address.setText("");
+                        CustomToast.error(getApplicationContext(),"Please choose another location",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                CustomToast.error(getApplicationContext(),"Please Try Again",Toast.LENGTH_SHORT).show();
+            } catch (NullPointerException e) {
+                CustomToast.error(getApplicationContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                CustomToast.error(getApplicationContext(),"Please Try Again",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

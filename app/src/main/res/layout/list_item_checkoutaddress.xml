@@ -58,6 +58,7 @@
         </LinearLayout>
 
         <com.smacon.f2mlibrary.CustomTextView
+            android:visibility="gone"
             android:id="@+id/txt_company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -108,6 +109,10 @@
             android:padding="5dp"
             android:text="Default address"
             android:visibility="gone"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/btn_unpress_color"/>
     </LinearLayout>
     <FrameLayout
         android:id="@+id/layout_indicator"

@@ -121,7 +121,7 @@ public class CheckoutAddressListAdapter extends RecyclerView.Adapter<CheckoutAdd
         });
         holder.edit.setVisibility(View.GONE);
         holder.delete.setVisibility(View.GONE);
-        holder.txt_address_name.setText(item.getFirstname()+" "+item.getLastname()+"/"+item.getAddress_id());
+        holder.txt_address_name.setText(item.getFirstname()+" "+item.getLastname());
         holder.txt_company.setText(item.getCompany());
         holder.txt_street.setText(item.getStreet1()+","+item.getStreet2());
         holder.txt_city.setText(item.getCity());
@@ -158,7 +158,7 @@ public class CheckoutAddressListAdapter extends RecyclerView.Adapter<CheckoutAdd
 
         edt_fname_add.setText(mListItem.get(position).getFirstname());
         edt_lname_add.setText(mListItem.get(position).getLastname());
-        edt_company_add.setText(mListItem.get(position).getCompany());
+        //edt_company_add.setText(mListItem.get(position).getCompany());
         edt_phone_add.setText(mListItem.get(position).getTelephone());
         edt_add1_add.setText(mListItem.get(position).getStreet1());
         edt_add2_add.setText(mListItem.get(position).getStreet2());
@@ -180,7 +180,7 @@ public class CheckoutAddressListAdapter extends RecyclerView.Adapter<CheckoutAdd
 
                 String fname = Utilities.getTrimText(edt_fname_add);
                 String lname = Utilities.getTrimText(edt_lname_add);
-                String company = Utilities.getTrimText(edt_company_add);
+              //  String company = Utilities.getTrimText(edt_company_add);
                 String phone = Utilities.getTrimText(edt_phone_add);
                 String add1 = Utilities.getTrimText(edt_add1_add);
                 String add2 = Utilities.getTrimText(edt_add2_add);
@@ -215,7 +215,7 @@ public class CheckoutAddressListAdapter extends RecyclerView.Adapter<CheckoutAdd
 
                                             if(chk_default_shipping.isChecked()) default_add = 1;
 
-                                            processEditAddress(Customer_ID,fname,lname,company,add1,add2,
+                                            processEditAddress(Customer_ID,fname,lname,"",add1,add2,
                                                     city,zip,phone,country,state,String.valueOf(default_add),String.valueOf(default_add),addressid,dialog,holder);
                                             //dialog.dismiss();
                                         }
@@ -350,10 +350,7 @@ public class CheckoutAddressListAdapter extends RecyclerView.Adapter<CheckoutAdd
                 Log.d("111111111",result.toString());
                 if (jsonObj.has("status")) {
                     if (jsonObj.getString("status").equals(String.valueOf(2))) {
-                        //mEmail.setText("");
-                        // CustomToast.info(getApplicationContext(),"User already exist with this Email ID").show();
                     }else if (jsonObj.getString("status").equals(String.valueOf(3))) {
-                       // refresh(mholder);
                         Checkout_SetAddress.getInstance().refresh();
                         mdialog.dismiss();
                         CustomToast.success(mContext,"Address Updated succesfully").show();
@@ -422,9 +419,9 @@ public class CheckoutAddressListAdapter extends RecyclerView.Adapter<CheckoutAdd
                         mholder.layout.setVisibility(View.VISIBLE);
                         mholder.layout_indicator.setVisibility(View.GONE);
                         CustomToast.info(mContext, jsonObj.getString("message")).show();
-                    }else if (jsonObj.getString("status").equals(String.valueOf(1))) {
-                         //Checkout_SetAddress.getInstance().refresh();
-                         CustomToast.success(mContext, "Address deleted").show();
+                    }
+                    else if (jsonObj.getString("status").equals(String.valueOf(1))) {
+                        CustomToast.success(mContext, "Address deleted").show();
                         update(mholder);
 
                     }
@@ -442,22 +439,13 @@ public class CheckoutAddressListAdapter extends RecyclerView.Adapter<CheckoutAdd
     }
 
     private void update(ViewHolder holder){
-       /* LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("data_changed"));
-        NavigationDrawerActivity.getInstance().updateCartCount();*/
-
         holder.layout.setVisibility(View.VISIBLE);
         holder.layout_indicator.setVisibility(View.GONE);
-        //CustomToast.success(mContext, "Address deleted position "+holder.getAdapterPosition() ).show();
         mListItem.remove(holder.getAdapterPosition());
         notifyDataSetChanged();
         notifyItemRemoved(holder.getAdapterPosition());
         notifyItemRangeChanged(holder.getAdapterPosition(), mListItem.size());
         CustomToast.success(mContext, "Address deleted").show();
     }
- /*   private void refresh(ViewHolder holder){
-       notifyItemChanged(holder.getAdapterPosition());
-       notifyDataSetChanged();
-       CustomToast.success(mContext, "Address deleted").show();
-    }
-*/
+
 }

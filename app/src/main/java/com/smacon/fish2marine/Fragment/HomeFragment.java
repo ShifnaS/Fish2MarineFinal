@@ -117,6 +117,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
     RadioGroup radiogroup;
 
     RecycleviewInterface recycleviewInterface;
+    LinearLayout  new_layout,feature_layout,best_layout;
 
     public static HomeFragment newInstance(){
         return new HomeFragment();
@@ -139,6 +140,10 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
         location = rootView.findViewById(R.id.location);
         searched_address= rootView.findViewById(R.id.searched_address);
 
+        new_layout=rootView.findViewById(R.id.newid);
+        feature_layout=rootView.findViewById(R.id.featureid);
+        best_layout=rootView.findViewById(R.id.bestid);
+
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
         Log.d("1111221", "Customer ID "+CustomerID);
@@ -160,12 +165,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
             @Override
             public void onClick(View v) {
 
-               /*final Dialog dialog;
-                dialog=new Dialog(getActivity());
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_location);
-                dialog.show();*/
+
 
                 AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                         .setTypeFilter(AutocompleteFilter.TYPE_FILTER_NONE)
@@ -288,23 +288,17 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
 
     @Override
     public void userItemClick(int pos) {
-     //   Toast.makeText(getActivity(), "Clicked User : " + newproduct_dataItem.get(pos).getnewproduct_name(), Toast.LENGTH_SHORT).show();
-        // cuttypeDialog();
         dialog=new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_cuttype);
-        //   btn_ok=(TextView)dialog.findViewById(R.id.btn_ok);
-        //  radiogroup = (RadioGroup) dialog.findViewById(R.id.radiogroup);
 
         RadioGroup rg = dialog.findViewById(R.id.radiogroup);
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
                 RadioGroup.LayoutParams.WRAP_CONTENT,
                 RadioGroup.LayoutParams.WRAP_CONTENT);
 
-        // add 5 radio buttons to the group
         LiquidRadioButton rb;
-       // Toast.makeText(getActivity(), "Clicked User : " + newproduct_dataItem.get(pos).getnewproduct_name(), Toast.LENGTH_SHORT).show();
         for (int i = 0; i < newproduct_dataItem.get(pos).getCuttype_valuelist().size(); i++){
             rb = new LiquidRadioButton(getActivity());
             rb.setText(newproduct_dataItem.get(pos).getCuttype_valuelist().get(i));
@@ -413,6 +407,18 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                             }
                             if (jsonObj2.has("new_products")) {
                                 JSONArray feedArray = jsonObj2.getJSONArray("new_products");
+                                if(feedArray.length()==0)
+                                {
+                                  ///  Log.e("111111111111", ""+"empty");
+
+                                }
+                                else
+                                {
+                                    new_layout.setVisibility(View.VISIBLE);
+
+                                    Log.e("111111111111", "New Products"+feedArray.toString());
+
+                                }
                                 newproduct_dataItem.clear();
                                 for (int i = 0; i < feedArray.length(); i++) {
                                     ProductListItem item = new ProductListItem();
@@ -428,16 +434,11 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                     item.setnewcuttype_applicable(feedObj.getString("cutTypeApplicable"));
                                     List<String> newcuttype_dataItem= new ArrayList<>();
                                     if(feedObj.getString("cutTypeApplicable").equals("1")){
-                                        //newcuttype_dataItem.clear();
                                         if (feedObj.has("cutTypes")){
                                             JSONArray feedArray2 = feedObj.getJSONArray("cutTypes");
 
                                             for (int k = 0; k < feedArray2.length(); k++) {
-                                                // ProductListItem item1 = new ProductListItem();
                                                 JSONObject feedObj2 = (JSONObject) feedArray2.get(k);
-                                                //  item1.setcuttype_label(feedObj2.getString("label"));
-                                                // item1.setcuttype_value(feedObj2.getString("value"));
-                                                //  item1.setcuttype_imageurl(feedObj2.getString("ImageUrl"));
                                                 newcuttype_dataItem.add(feedObj2.getString("value"));
                                             }
                                         }
@@ -447,7 +448,6 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                     }
                                     item.setCuttype_valuelist(newcuttype_dataItem);
                                     newproduct_dataItem.add(item);
-                                    //Log.d("1111228", "API_DASHBOARD_RESPONSE " + spinnerdataItem.size());
                                 }
                                 start = newproduct_dataItem.size();
                                 mNewProductAdapter = new NewProductSnapperAdapter(getActivity(), newproduct_dataItem,CustomerID,HomeFragment.this,updateListner);
@@ -455,6 +455,18 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                             }
                             if (jsonObj2.has("featured_products")) {
                                 JSONArray feedArray = jsonObj2.getJSONArray("featured_products");
+                                if(feedArray.length()==0)
+                                {
+                                    Log.e("111111111111", ""+"empty");
+
+                                }
+                                else
+                                {
+                                    feature_layout.setVisibility(View.VISIBLE);
+                                    Log.e("111111111111", "New Products"+feedArray.toString());
+
+                                }
+                                Log.e("111111111111", "Featured Products"+feedArray.toString());
                                 featured_dataItem.clear();
                                 for (int i = 0; i < feedArray.length(); i++) {
                                     ProductListItem item = new ProductListItem();
@@ -475,11 +487,7 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                             JSONArray feedArray2 = feedObj.getJSONArray("cutTypes");
 
                                             for (int k = 0; k < feedArray2.length(); k++) {
-                                                // ProductListItem item1 = new ProductListItem();
                                                 JSONObject feedObj2 = (JSONObject) feedArray2.get(k);
-                                                //  item1.setcuttype_label(feedObj2.getString("label"));
-                                                // item1.setcuttype_value(feedObj2.getString("value"));
-                                                //  item1.setcuttype_imageurl(feedObj2.getString("ImageUrl"));
                                                 cuttype_dataItem.add(feedObj2.getString("value"));
                                             }
 
@@ -499,6 +507,19 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
 
                             if (jsonObj2.has("hot_products")) {
                                 JSONArray feedArray = jsonObj2.getJSONArray("hot_products");
+                                if(feedArray.length()==0)
+                                {
+                                    Log.e("111111111111", ""+"empty");
+
+                                }
+                                else
+                                {
+                                    best_layout.setVisibility(View.VISIBLE);
+
+                                    Log.e("111111111111", "New Products"+feedArray.toString());
+
+                                }
+                                Log.e("111111111111", "Hot Products"+feedArray.toString());
                                 bestseller_dataItem.clear();
                                 for (int i = 0; i < feedArray.length(); i++) {
                                     ProductListItem item = new ProductListItem();
@@ -519,14 +540,9 @@ public class HomeFragment extends Fragment implements PlaceSelectionListener,Rec
                                             JSONArray feedArray2 = feedObj.getJSONArray("cutTypes");
 
                                             for (int k = 0; k < feedArray2.length(); k++) {
-                                                // ProductListItem item1 = new ProductListItem();
                                                 JSONObject feedObj2 = (JSONObject) feedArray2.get(k);
-                                                //  item1.setcuttype_label(feedObj2.getString("label"));
-                                                // item1.setcuttype_value(feedObj2.getString("value"));
-                                                //  item1.setcuttype_imageurl(feedObj2.getString("ImageUrl"));
                                                 bestcuttype_dataItem.add(feedObj2.getString("value"));
                                             }
-                                            //int start=bestcuttype_dataItem.size();
                                         }
 
                                     }else {

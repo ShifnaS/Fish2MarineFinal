@@ -213,6 +213,7 @@
                                 android:tint="@color/black" />
                         </LinearLayout>
                         <com.smacon.f2mlibrary.CustomTextView
+                            android:visibility="gone"
                             android:id="@+id/txt_company"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -319,7 +320,7 @@
                 <LinearLayout
                     android:id="@+id/lay_delivery_slots"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:padding="@dimen/padding_small"
                     android:layout_gravity="center_vertical"
@@ -346,14 +347,13 @@
                         android:orientation="horizontal"
                         android:layout_margin="10dp">
                         <RadioGroup
+
                             android:id="@+id/radiogroup"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
                             android:orientation="vertical"
-                            android:layout_gravity="center"
-                            android:gravity="center">
+
+                            >
                         </RadioGroup>
                         <FrameLayout
                             android:id="@+id/deliveryslot_indicator"
@@ -401,10 +401,8 @@
                         android:layout_margin="10dp">
                         <RadioGroup
                             android:id="@+id/paymentradiogroup"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
                             android:orientation="vertical">
                         </RadioGroup>
                         <FrameLayout

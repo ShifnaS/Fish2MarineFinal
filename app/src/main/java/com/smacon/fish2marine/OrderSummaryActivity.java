@@ -342,6 +342,8 @@ public class OrderSummaryActivity extends AppCompatActivity implements View.OnCl
                             i.putExtra(AvenuesParams.ACCESS_CODE,jsonObj1.getString("access_code"));
                             i.putExtra(AvenuesParams.MERCHANT_ID,jsonObj1.getString("merchant_id"));
                             i.putExtra(AvenuesParams.CURRENCY, jsonObj1.getString("currency"));
+                            i.putExtra(AvenuesParams.BILLING_EMAIL, jsonObj1.getString("email"));
+
                             i.putExtra(AvenuesParams.AMOUNT, ""+grand_total);
                             i.putExtra(AvenuesParams.RSA_KEY_URL, jsonObj1.getString("rsa_url"));
                             i.putExtra(AvenuesParams.REDIRECT_URL, jsonObj1.getString("success_url"));

@@ -263,12 +263,12 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                     txt_address_name.setText(dataItem.get(RecyclerViewItemPosition).getFirstname()+" "+
                             dataItem.get(RecyclerViewItemPosition).getLastname());
                     //item.setAddress_id(feedObj1.getString("id"));
-                    if(dataItem.get(RecyclerViewItemPosition).getCompany().equals("")||dataItem.get(RecyclerViewItemPosition).getCompany().equals("null")){
+                  /*  if(dataItem.get(RecyclerViewItemPosition).getCompany().equals("")||dataItem.get(RecyclerViewItemPosition).getCompany().equals("null")){
                         txt_company.setVisibility(View.GONE);
                     }
                     else {
                         txt_company.setText(dataItem.get(RecyclerViewItemPosition).getCompany());
-                    }
+                    }*/
                     txt_street.setText(dataItem.get(RecyclerViewItemPosition).getStreet1()+","+dataItem.get(RecyclerViewItemPosition).getStreet2());
                     txt_city.setText(dataItem.get(RecyclerViewItemPosition).getCity());
                     txt_state_pin.setText(dataItem.get(RecyclerViewItemPosition).getState()+","+dataItem.get(RecyclerViewItemPosition).getPostcode());
@@ -342,13 +342,10 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                                 Iterator<String> keys = jsonObj3.keys();
                                 while (keys.hasNext()) {
                                     final String key = keys.next();
+                                    Log.e("22222221111",""+jsonObj3.toString());
                                     TextView txt = (TextView)getLayoutInflater().inflate(R.layout.template_textview, null);
-                                    //TextView txt=new TextView(Checkout_SetAddress.this);
                                     txt.setText(key);
-                                    // txt.setTextSize(18);
-                                    //txt.setTextColor(getResources().getColor(R.color.colorGrayDark));
-                                    radiogroup.addView(txt);
-                                    item.setProductName(key);
+
                                     if(jsonObj3.get(key) instanceof JSONArray) {
                                         JSONArray feedArray2 = jsonObj3.getJSONArray(key);
                                         for (int i = 0; i < feedArray2.length(); i++) {
@@ -358,16 +355,23 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                                             final String slot_id = feedObj1.getString("slot_id");
                                             final String slot_group = feedObj1.getString("slot_group");
 
-                                            LiquidRadioButton rdbtn = (LiquidRadioButton) getLayoutInflater().inflate(R.layout.template_radiobutton, null);
+                                            LinearLayout layout=(LinearLayout) getLayoutInflater().inflate(R.layout.template_layout,null);
+                                         //   LiquidRadioButton rdbtn = (LiquidRadioButton) getLayoutInflater().inflate(R.layout.template_radiobutton, null);
+                                            LiquidRadioButton rdbtn=layout.findViewById(R.id.radio);
                                             rdbtn.setText(slot);
                                             if (feedObj1.getInt("is_available")==1){
+                                                radiogroup.addView(txt);
+                                                item.setProductName(key);
+                                                radiogroup.addView(layout);
+                                                item.setAmount(slot);
                                                 Log.d("111111", "is_available " + is_available);
                                                 rdbtn.setTextColor(getResources().getColor(R.color.colorGrayDark));
                                             }
                                             else if(feedObj1.getInt("is_available")==0) {
-                                                rdbtn.setTextColor(getResources().getColor(R.color.red));
+                                          /*      rdbtn.setTextColor(getResources().getColor(R.color.red));
                                                 rdbtn.setClickable(false);
-                                                rdbtn.setEnabled(false);
+                                                rdbtn.setEnabled(false);*/
+
                                             }
                                             rdbtn.setOnClickListener(new View.OnClickListener() {
                                                 @Override
@@ -381,9 +385,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                                                 }
                                             });
 
-                                            radiogroup.addView(rdbtn);
-                                           // Log.d("111111", "here8 " + slot);
-                                            item.setAmount(slot);
+
                                         }
                                     }
                                 }
@@ -555,7 +557,7 @@ public class Checkout_SetAddress extends AppCompatActivity implements View.OnCli
                             item.setFirstname(feedObj1.getString("firstname"));
                             item.setLastname(feedObj1.getString("lastname"));
                             item.setAddress_id(feedObj1.getString("id"));
-                            item.setCompany(feedObj1.getString("company"));
+                          //  item.setCompany(feedObj1.getString("company"));
                             item.setStreet1(feedObj1.getString("street1"));
                             item.setStreet2(feedObj1.getString("street2"));
                             item.setCity(feedObj1.getString("city"));

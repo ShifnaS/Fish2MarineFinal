@@ -14,7 +14,7 @@
         <TextView
             android:id="@+id/empty_label"
             style="@style/layoutmatchwrap"
-            android:text="No Data Found"
+            android:text="No Products Found"
             android:gravity="center"
             android:typeface="serif"
             android:textColor="@android:color/black"
@@ -26,7 +26,7 @@
             android:layout_height="40dp"
             android:layout_width="160dp"
             android:gravity="center"
-            android:text=" TAP TO RETRY"
+            android:text="RETRY"
             android:padding="7dp"
             android:layout_marginTop="20dp"
             android:textColor="#ffffff"

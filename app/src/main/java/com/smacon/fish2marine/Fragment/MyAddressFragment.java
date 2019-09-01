@@ -55,7 +55,7 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener{
     private RecyclerView mrecyclerview;
     private FloatingActionButton fab_add_address;
 
-    private TextView mTitle,error_label_retry, empty_label_retry;
+    private TextView mTitle,error_label_retry, empty_label_retry,empty_label;
     ArrayList<AddressListItem> dataItem;
     ImageView back;
     private static MyAddressFragment addressActivity;
@@ -98,6 +98,8 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener{
         return rootView;
     }
     private void InitIdView(View rootview){
+        empty_label = rootview.findViewById(R.id.empty_label);
+        empty_label.setText("No Data Found");
         SQLData_Item = helper.getadmindetails();
         CustomerID=SQLData_Item.get(0).get("admin_id");
         Log.d("1111221", "Customer ID "+CustomerID);
@@ -112,6 +114,7 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener{
         mrecyclerview = rootview.findViewById(R.id.mrecyclerview);
         mrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         fab_add_address = rootview.findViewById(R.id.fab_add_address);
+
         error_label_retry = rootview.findViewById(R.id.error_label_retry);
         empty_label_retry = rootview.findViewById(R.id.empty_label_retry);
         error_label_retry.setOnClickListener(this);

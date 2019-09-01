@@ -134,13 +134,7 @@ public class Checkout_DeliverySlots extends AppCompatActivity implements View.On
                                             item.setAmount(slot);
 
                                         }
-                                        /*JSONObject innerJObject = jObject.getJSONObject(key);
-                                        String id = innerJObject.getString("id");
-                                        String name = innerJObject.getString("name");
-                                        String points = innerJObject.getString("points");
-                                        String ranking = innerJObject.getString("ranking");
-                                        String tour = innerJObject.getString("tour");
-                                        String lastUpdate = innerJObject.gettString("lastUpdate");*/
+
 
                                     }
                                     myCartAdapter = new DateAdapter(Checkout_DeliverySlots.this, dataItem);

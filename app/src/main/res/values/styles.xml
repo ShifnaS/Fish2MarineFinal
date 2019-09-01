@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
     <style name="matchtoolarlayout">
         <item name="android:layout_width">match_parent</item>
@@ -142,8 +143,9 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
     <style name="Spinner">
-        <item name="colorControlNormal">#aa2b00</item>
-        <item name="colorControlActivated">#aa2b00</item>
+        <item name="android:textSize">12dp</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
     <style name="FloatingButtonStyle">
         <item name="fab_size">normal</item>

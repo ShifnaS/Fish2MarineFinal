@@ -208,7 +208,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                        // txt_order_tax.setText("Rs."+jsonObj1.getString("tax")+"/-");
                         txt_order_sub_total.setText("\u20B9 "+jsonObj1.getString("subtotal"));
                         txt_order_status.setText(jsonObj1.getString("orderStatus"));
-                        txt_order_date.setText(jsonObj1.getString("orderDate"));
+                        String date=jsonObj1.getString("orderDate");
+                        String d[]=date.split("-");
+                        String newDate=d[2]+"-"+d[1]+"-"+d[0];
+                        txt_order_date.setText(""+newDate);
+                        txt_order_date.setText(newDate);
                         txt_order_shipping.setText(jsonObj1.getString("shippingMethod"));
                         txt_order_payment.setText(jsonObj1.getString("paymentMethod"));
                      //   txt_order_item_count.setText(jsonObj1.getString("totalqty"));

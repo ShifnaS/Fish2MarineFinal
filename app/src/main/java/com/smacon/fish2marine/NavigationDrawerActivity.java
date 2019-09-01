@@ -94,11 +94,11 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     private SqliteHelper helper;
     private Config mConfig;
     private static final int POS_HOME = 0;
-    private static final int POS_ORDERHISTORY = 1;
-    private static final int POS_MYADDRESS = 2;
-    private static final int POS_MYREWARDS= 3;
-    private static final int POS_MYREFFERALS = 4;
-    private static final int POS_MYPROFILE = 5;
+    private static final int POS_ORDERHISTORY = 2;
+    private static final int POS_MYADDRESS = 3;
+    private static final int POS_MYREWARDS= 4;
+    private static final int POS_MYREFFERALS = 5;
+    private static final int POS_MYPROFILE = 1;
     private static final int POS_CONTACTUS = 6;
     private static final int POS_ABOUT = 7;
     private static final int POS_LOGOUT = 8;
@@ -123,8 +123,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     String CustomerID = "",CustomerName="";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-
-
+    TextView tv_currLocation;
+    LinearLayout loc;
 
     //  AddressUpdateListner addressUpdateListner;
     List<HashMap<String, String>> SQLData_Item,SQLData_Item_customer ;
@@ -160,14 +160,14 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
         LocalBroadcastManager.getInstance(this).registerReceiver(dataChangeReceiver,inF1);
         mAuth = FirebaseAuth.getInstance();
 
+
         SQLData_Item_customer = helper.getadmindetails();
         CustomerID=SQLData_Item_customer.get(0).get("admin_id");
         CustomerName=SQLData_Item_customer.get(0).get("admin_name");
 
         String user=sharedPreferences.getString(KEY_USERNAME,"");
         String pass=sharedPreferences.getString(KEY_PASS,"");
-       // Toast.makeText(mainActivity, "User "+user, Toast.LENGTH_SHORT).show();
-      ///  Toast.makeText(mainActivity, "Pass "+pass, Toast.LENGTH_SHORT).show();
+
 
         Intent i=getIntent();
         if(i.hasExtra("PAGE"))
@@ -192,18 +192,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
 
         }
 
-        /*Intent mIntent = getIntent();
-        if(mIntent.hasExtra("PAGE"))n
-        {
-            mAction = mIntent.getExtras().getString("PAGE");
-
-        }n
-        if(mAction.equals("CART"))
-        {
-            Intent i=new Intent(getApplicationContext(),MyCartAcfkjksfjksjfkdfjksjfktivity.class);
-            startActivity(i);
-            finish();skfjkfjkfjkdjfksjfsijkejfksdjfkfjksfjkdfjkjjkjf
-        }*/
 
         SQLData_Item = helper.getCount();
         toolbar= findViewById(R.id.toolbar);
@@ -219,17 +207,28 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 dialog.setContentView(R.layout.dialog_location);
                 dialog.show();
                 ImageView gifImageView= dialog.findViewById(R.id.gifImageView);
-                /* Glide.with(getApplicationContext())
-                    .load(R.drawable.locationloader)
-                    .into(gifImageView);*/
+                tv_currLocation= dialog.findViewById(R.id.current_loc);
+                loc=dialog.findViewById(R.id.loc);
 
                 btn_ok= dialog.findViewById(R.id.btn_ok);
                 layout_indicator= dialog.findViewById(R.id.layout_indicator);
 
                 mGeoDataClient = Places.getGeoDataClient(NavigationDrawerActivity.this, null);
-
                 searched_address= dialog.findViewById(R.id.searched_address);
-                //   searched_address.setText(sPreferences.getString("Location",""));
+
+                try
+                {
+                    loc.setVisibility(View.VISIBLE);
+                    String loc=sPreferences.getString("Location","");
+                    String location[]=loc.split(" ");
+                    String sec[]=location[1].split(",");
+                    String cur_loc=location[0]+" "+sec[0];
+                    tv_currLocation.setText(cur_loc);
+                }
+                catch (Exception e)
+                {
+                    Log.e("1111location error",""+e);
+                }
                 searched_address.setOnItemClickListener(mAutocompleteClickListener);
 
                 mAdapter = new PlaceAutocompleteAdapter(NavigationDrawerActivity.this, mGeoDataClient, BOUNDS_GREATER_SYDNEY,null);
@@ -244,12 +243,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
             }
         });
         cartbadge = findViewById(R.id.cartbadge);
-
-
-
-      //  Toast.makeText(mainActivity, "CArt Count "+sPreferences.getString("CartCount",""), Toast.LENGTH_SHORT).show();
         mycart= findViewById(R.id.mycart);
-        //cartbadge.setText(SQLData_Item.get(0).get("cartcount"));
         cartbadge.setText(sPreferences.getString("CartCount",""));
         mycart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,8 +258,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
         fg_title.setText("Fish2Marine");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_action_menu);
-        // getSupportActionBar().setIcon(R.mipmap.ic_action_menu);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -306,11 +298,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
 
         DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
                 createItemFor(POS_HOME).setChecked(true),
+                createItemFor(POS_MYPROFILE),
                 createItemFor(POS_ORDERHISTORY),
                 createItemFor(POS_MYADDRESS),
                 createItemFor(POS_MYREWARDS),
                 createItemFor(POS_MYREFFERALS),
-                createItemFor(POS_MYPROFILE),
+
                 createItemFor(POS_CONTACTUS),
                 createItemFor(POS_ABOUT),
                 // new SpaceItem(28),
@@ -382,6 +375,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 // Get the Place object from the buffer.
                 final Place place = places.get(0);
                 mConfig.savePreferences(getApplicationContext(),"Location",place.getAddress().toString());
+                editor.putString("curLoc",sPreferences.getString("Location",""));
+                editor.apply();
                 Log.d("11111111shared","Location "+sPreferences.getString("Location",""));
                 Log.d("1111111",place.getLatLng().toString());
                 Log.d("1111111",place.getAddress().toString());
@@ -437,6 +432,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 Fragment dashboard = new HomeFragment();
                 showFragment(dashboard,"HOMEFRAGMENT");
                 break;
+            case POS_MYPROFILE:
+                slidingRootNav.closeMenu();
+                fg_title.setText("My Profile");
+                Fragment profile = new MyProfileFragment();
+                showFragment(profile,"MyProfile");
+                break;
             case POS_MYREWARDS:
                 slidingRootNav.closeMenu();
                 fg_title.setText("My Rewards");
@@ -461,12 +462,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
                 Fragment orders = new MyOrdersListFragment();
                 showFragment(orders,"MyOrder");
                 break;
-            case POS_MYPROFILE:
-                slidingRootNav.closeMenu();
-                fg_title.setText("My Profile");
-                Fragment profile = new MyProfileFragment();
-                showFragment(profile,"MyProfile");
-                break;
+
             case POS_ABOUT:
                 slidingRootNav.closeMenu();
                 fg_title.setText("About Us");
@@ -504,6 +500,11 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
 
                     }
                 });
+       //
+        SharedPreferences preferences1 =getSharedPreferences("Fish2Marine",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = preferences1.edit();
+        editor1.clear();
+        editor1.commit();
 
         SharedPreferences preferences =getSharedPreferences("prefs",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();

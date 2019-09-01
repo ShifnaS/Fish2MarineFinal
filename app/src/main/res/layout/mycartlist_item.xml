@@ -32,37 +32,6 @@
                     android:src="@mipmap/ic_launcher"
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="left|center"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/txt_ordered_qty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textColor="@color/colorGray"
-                        android:text="Order Qty: 500gm"/>
-                    <TextView
-                        android:id="@+id/txt_cleaned_qty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dp"
-                        android:textSize="15sp"
-                        android:textColor="@color/colorGray"
-                        android:text="After Cleaning: 900gm"/>
-                    <TextView
-                        android:id="@+id/txt_netqty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:paddingTop="5dp"
-                        android:visibility="gone"
-                        android:textColor="@color/colorGray"
-                        android:text="Net Quantity: 900gm"/>
-                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -74,7 +43,7 @@
                     android:id="@+id/txt_product_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="18sp"
                     android:textColor="@color/f2mcolor"
                     android:textStyle="bold"
                     android:text="Anchovy Fish"/>
@@ -83,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:textColor="@color/f2mcolor"
                     android:textStyle="bold"
                     android:text="Malayalam"/>
@@ -92,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
                     android:fontFamily="serif"
                     android:textStyle="bold"
                     android:textColor="@color/colorGrayDark"
@@ -102,7 +71,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"
-                    android:textSize="15sp"
                     android:maxLines="2"
                     android:textStyle="bold"
                     android:textColor="@color/colorGray"
@@ -114,7 +82,7 @@
                     android:paddingTop="5dp"
                     android:textStyle="bold"
                     android:textColor="@color/colorGrayDark"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
                     android:text="Qty: 6"/>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -126,7 +94,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
+                        android:textSize="18dp"
                         android:gravity="left|center"
                         android:layout_gravity="top"
                         android:textColor="@color/f2mcolor"
@@ -136,7 +104,7 @@
                         android:id="@+id/txt_subtotal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
+                        android:textSize="18dp"
                         android:layout_gravity="bottom|right"
                         android:gravity="center|right"
                         android:fontFamily="serif"
@@ -226,8 +194,39 @@
             android:gravity="center"
             android:layout_gravity="bottom">
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:gravity="left|center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txt_ordered_qty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorGray"
+                    android:text="Order Qty: 500gm"/>
+                <TextView
+                    android:id="@+id/txt_cleaned_qty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/colorGray"
+                    android:text="After Cleaning: 900gm"/>
+                <TextView
+                    android:id="@+id/txt_netqty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:paddingTop="5dp"
+                    android:visibility="gone"
+                    android:textColor="@color/colorGray"
+                    android:text="Net Quantity: 900gm"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/edit"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
